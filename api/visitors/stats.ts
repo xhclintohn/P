@@ -11,9 +11,15 @@ const visitors = pgTable("visitors", {
   lastReset: timestamp("last_reset").notNull().defaultNow(),
 });
 
-function getDb() {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-  return drizzle(pool);
+let pool: pg.Pool | null = null;
+function getPool() {
+  if (!pool) {
+    pool = new pg.Pool({
+      connectionString: process.env.DATABASE_URL,
+      max: 1,
+    });
+  }
+  return pool;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -22,7 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const db = getDb();
+    const db = drizzle(getPool());
     const records = await db.select().from(visitors).limit(1);
 
     if (records.length === 0) {

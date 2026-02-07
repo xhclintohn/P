@@ -19,9 +19,15 @@ const visitLogs = pgTable("visit_logs", {
   timestamp: timestamp("timestamp").notNull().defaultNow(),
 });
 
-function getDb() {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-  return drizzle(pool);
+let pool: pg.Pool | null = null;
+function getPool() {
+  if (!pool) {
+    pool = new pg.Pool({
+      connectionString: process.env.DATABASE_URL,
+      max: 1,
+    });
+  }
+  return pool;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -35,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: "visitorId is required" });
     }
 
-    const db = getDb();
+    const db = drizzle(getPool());
 
     await db.insert(visitLogs).values({ visitorId, page: page || "/" });
 
