@@ -57,13 +57,6 @@ export default function Status() {
 
   return (
     <div className="min-h-screen pt-16">
-      <style>{`
-        @keyframes fade-in-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        .anim-up { animation: fade-in-up 0.4s ease-out forwards; opacity: 0; }
-        .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; } .d3 { animation-delay: 0.18s; }
-        .d4 { animation-delay: 0.24s; } .d5 { animation-delay: 0.30s; }
-      `}</style>
-
       <section className="py-10 md:py-14 px-4">
         <div className="container mx-auto max-w-5xl">
           <div className="flex items-start justify-between gap-4 flex-wrap">

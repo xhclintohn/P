@@ -164,15 +164,6 @@ export default function Docs() {
 
   return (
     <div className="min-h-screen pt-16">
-      <style>{`
-        @keyframes fade-in-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        .anim-up { animation: fade-in-up 0.4s ease-out forwards; opacity: 0; }
-        .d1 { animation-delay: 0.06s; } .d2 { animation-delay: 0.12s; } .d3 { animation-delay: 0.18s; }
-        .expand-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.25s ease-out; }
-        .expand-content.expanded { grid-template-rows: 1fr; }
-        .expand-inner { overflow: hidden; }
-      `}</style>
-
       <section className="py-10 md:py-14 px-4">
         <div className="container mx-auto max-w-5xl">
           <BackButton to="/" label="Home" />
@@ -348,7 +339,13 @@ export default function Docs() {
                                         </Button>
                                       </div>
 
-                                      {needsParam && (
+                                      {endpoint.method === "POST" && (
+                                        <div className="rounded-md bg-muted/50 p-3 text-xs text-muted-foreground" data-testid={`notice-post-${key}`}>
+                                          This endpoint requires a POST request with file upload. Use the code examples below to test it programmatically.
+                                        </div>
+                                      )}
+
+                                      {endpoint.method !== "POST" && needsParam && (
                                         <div className="space-y-2.5">
                                           <div className="flex items-center justify-between gap-2 flex-wrap">
                                             <h5 className="text-xs font-medium text-foreground">Parameters</h5>
@@ -389,21 +386,23 @@ export default function Docs() {
                                         </div>
                                       )}
 
-                                      <div className="flex gap-2 flex-wrap">
-                                        <Button onClick={() => handleTest(endpoint, key)} disabled={isLoading} size="sm" className="gap-1.5" data-testid={`button-execute-${key}`}>
-                                          {isLoading ? (
-                                            <><Loader2 className="h-3.5 w-3.5 animate-spin" />Executing...</>
-                                          ) : (
-                                            <><Play className="h-3.5 w-3.5" />Execute</>
-                                          )}
-                                        </Button>
-                                        <a href={`${BASE_API_URL}${endpoint.path}`} target="_blank" rel="noopener noreferrer">
-                                          <Button variant="outline" size="sm" className="gap-1.5" data-testid={`button-open-${key}`}>
-                                            <ExternalLink className="h-3.5 w-3.5" />
-                                            Open
+                                      {endpoint.method !== "POST" && (
+                                        <div className="flex gap-2 flex-wrap">
+                                          <Button onClick={() => handleTest(endpoint, key)} disabled={isLoading} size="sm" className="gap-1.5" data-testid={`button-execute-${key}`}>
+                                            {isLoading ? (
+                                              <><Loader2 className="h-3.5 w-3.5 animate-spin" />Executing...</>
+                                            ) : (
+                                              <><Play className="h-3.5 w-3.5" />Execute</>
+                                            )}
                                           </Button>
-                                        </a>
-                                      </div>
+                                          <a href={`${BASE_API_URL}${endpoint.path}`} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="outline" size="sm" className="gap-1.5" data-testid={`button-open-${key}`}>
+                                              <ExternalLink className="h-3.5 w-3.5" />
+                                              Open
+                                            </Button>
+                                          </a>
+                                        </div>
+                                      )}
 
                                       {isLoading && (
                                         <div className="flex items-center gap-2.5 p-3 rounded-md bg-muted/50">
