@@ -29,6 +29,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const contentType = response.headers.get("content-type") || "";
 
+    if (contentType.includes("text/html")) {
+      return res.status(502).json({
+        error: "API endpoint returned HTML instead of data. The endpoint may be unavailable or the API server may be down.",
+        status: "unavailable",
+      });
+    }
+
     if (contentType.startsWith("image/") || contentType.includes("audio/")) {
       res.setHeader("Content-Type", contentType);
       const buffer = await response.arrayBuffer();

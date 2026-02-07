@@ -81,7 +81,9 @@ async function checkEndpointStatus(path: string): Promise<EndpointStatusResult> 
     });
     clearTimeout(timeout);
     const responseTime = Date.now() - start;
-    const isOnline = response.status < 500;
+    const contentType = response.headers.get("content-type") || "";
+    const isHtml = contentType.includes("text/html");
+    const isOnline = response.status < 500 && !isHtml;
     return { path, isOnline, responseTime, lastChecked: new Date().toISOString() };
   } catch {
     return { path, isOnline: false, responseTime: null, lastChecked: new Date().toISOString() };

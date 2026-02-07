@@ -9,7 +9,8 @@ import type { VisitorStats } from "@shared/schema";
 import {
   Brain, Download, Shuffle, Wrench, Search, Info, Repeat, Activity,
   ArrowRight, BookOpen, Zap, Shield, Clock, Users, Eye, BarChart3,
-  Globe, Server, Copy, Check, Sparkles, Cpu, Rocket,
+  Globe, Server, Copy, Check, Sparkles, Cpu, Rocket, Terminal,
+  Code2, Layers, ChevronRight,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -24,15 +25,16 @@ const iconMap: Record<string, typeof Brain> = {
   activity: Activity,
 };
 
-const categoryColors = [
-  "from-violet-500 to-purple-600",
-  "from-cyan-500 to-blue-600",
-  "from-pink-500 to-rose-600",
-  "from-emerald-500 to-green-600",
-  "from-amber-500 to-orange-600",
-  "from-indigo-500 to-blue-600",
-  "from-teal-500 to-cyan-600",
-  "from-red-500 to-pink-600",
+
+const categoryIconBg = [
+  "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+  "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+  "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+  "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+  "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+  "bg-red-500/10 text-red-600 dark:text-red-400",
 ];
 
 function AnimatedCounter({ target, duration = 2000 }: { target: number; duration?: number }) {
@@ -43,16 +45,13 @@ function AnimatedCounter({ target, duration = 2000 }: { target: number; duration
   useEffect(() => {
     if (hasAnimated.current) return;
     hasAnimated.current = true;
-    const start = 0;
     const startTime = performance.now();
     function animate(currentTime: number) {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(start + (target - start) * eased));
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
+      setCount(Math.floor(target * eased));
+      if (progress < 1) requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
   }, [target, duration]);
@@ -69,42 +68,12 @@ export default function Home() {
   });
 
   const features = [
-    {
-      icon: Brain,
-      title: "AI Integration",
-      desc: "GPT OSS 120B model with thinking mode for deep AI conversations and complex queries",
-      gradient: "from-violet-500 to-purple-600",
-    },
-    {
-      icon: Download,
-      title: "Media Downloaders",
-      desc: "Download from TikTok, Instagram, YouTube, Facebook, Twitter/X, CapCut and more platforms",
-      gradient: "from-cyan-500 to-blue-600",
-    },
-    {
-      icon: Shuffle,
-      title: "Random Content",
-      desc: "Anime images, waifu pictures, memes, quotes, jokes, and facts on demand",
-      gradient: "from-pink-500 to-rose-600",
-    },
-    {
-      icon: Wrench,
-      title: "Image Processing",
-      desc: "AI-powered unblur, upscale, screenshots, QR codes, and color palette extraction",
-      gradient: "from-emerald-500 to-green-600",
-    },
-    {
-      icon: Zap,
-      title: "Lightning Fast",
-      desc: "Sub-100ms response times with intelligent caching and CDN distribution",
-      gradient: "from-amber-500 to-orange-600",
-    },
-    {
-      icon: Shield,
-      title: "Reliable & Secure",
-      desc: "Multi-tier rate limiting, input validation, and 99.9% uptime guarantee",
-      gradient: "from-indigo-500 to-blue-600",
-    },
+    { icon: Brain, title: "AI Integration", desc: "GPT OSS 120B model with thinking mode for deep AI conversations and complex queries" },
+    { icon: Download, title: "Media Downloaders", desc: "Download from TikTok, Instagram, YouTube, Facebook, Twitter/X, CapCut and more" },
+    { icon: Shuffle, title: "Random Content", desc: "Anime images, waifu pictures, memes, quotes, jokes, and facts on demand" },
+    { icon: Wrench, title: "Image Processing", desc: "AI-powered unblur, upscale, screenshots, QR codes, and color palette extraction" },
+    { icon: Zap, title: "Lightning Fast", desc: "Sub-100ms response times with intelligent caching and CDN distribution" },
+    { icon: Shield, title: "Reliable & Secure", desc: "Multi-tier rate limiting, input validation, and 99.9% uptime guarantee" },
   ];
 
   const codeExamples = [
@@ -130,7 +99,7 @@ print(response.json())`,
     },
     {
       lang: "cURL",
-      icon: BarChart3,
+      icon: Terminal,
       code: `# Get a random waifu image
 curl -X GET "https://toxic-api-site.vercel.app/random/waifu"
 
@@ -148,218 +117,135 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
   return (
     <div className="min-h-screen pt-16">
       <style>{`
-        @keyframes fade-in-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-        @keyframes hero-particle { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
-        @keyframes typing-cursor { 0%, 100% { border-color: transparent; } 50% { border-color: hsl(142 76% 36%); } }
-        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; opacity: 0; }
-        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
-        .animation-delay-100 { animation-delay: 0.1s; }
-        .animation-delay-200 { animation-delay: 0.2s; }
-        .animation-delay-300 { animation-delay: 0.3s; }
-        .animation-delay-400 { animation-delay: 0.4s; }
-        .animation-delay-500 { animation-delay: 0.5s; }
-        .animation-delay-600 { animation-delay: 0.6s; }
-        .animation-delay-700 { animation-delay: 0.7s; }
-        .animation-delay-800 { animation-delay: 0.8s; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+        @keyframes slide-in { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+        .anim-up { animation: fade-in-up 0.5s ease-out forwards; opacity: 0; }
+        .anim-in { animation: fade-in 0.4s ease-out forwards; opacity: 0; }
+        .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.16s; } .d3 { animation-delay: 0.24s; }
+        .d4 { animation-delay: 0.32s; } .d5 { animation-delay: 0.40s; } .d6 { animation-delay: 0.48s; }
+        .d7 { animation-delay: 0.56s; } .d8 { animation-delay: 0.64s; }
       `}</style>
 
-      {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 md:py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-20" style={{ background: "linear-gradient(135deg, rgb(34 197 94), rgb(16 185 129))" }} />
-          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-15" style={{ background: "linear-gradient(135deg, rgb(59 130 246), rgb(99 102 241))" }} />
-          <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full blur-[100px] opacity-10" style={{ background: "linear-gradient(135deg, rgb(168 85 247), rgb(236 72 153))" }} />
-          <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" style={{ backgroundImage: "radial-gradient(hsl(var(--primary)) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+      <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/3 left-1/5 w-[600px] h-[600px] rounded-full blur-[180px] opacity-[0.08]" style={{ background: "radial-gradient(circle, rgb(34 197 94), transparent)" }} />
+          <div className="absolute bottom-1/4 right-1/5 w-[500px] h-[500px] rounded-full blur-[160px] opacity-[0.06]" style={{ background: "radial-gradient(circle, rgb(59 130 246), transparent)" }} />
+          <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]" style={{ backgroundImage: "radial-gradient(hsl(var(--foreground)) 0.5px, transparent 0.5px)", backgroundSize: "24px 24px" }} />
         </div>
 
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                width: Math.random() * 4 + 2 + "px",
-                height: Math.random() * 4 + 2 + "px",
-                left: Math.random() * 100 + "%",
-                bottom: "-5%",
-                background: `rgba(34, 197, 94, ${Math.random() * 0.3 + 0.1})`,
-                animation: `hero-particle ${Math.random() * 8 + 6}s linear ${Math.random() * 5}s infinite`,
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="animate-fade-in-up">
-              <Badge variant="outline" className="mb-6 gap-2 px-4 py-1.5" data-testid="badge-status">
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <div className="text-center">
+            <div className="anim-up">
+              <Badge variant="outline" className="mb-8 gap-2 px-3 py-1" data-testid="badge-status">
                 <StatusDot isOnline={true} size="sm" />
-                <span className="text-sm font-medium">All Systems Operational</span>
+                <span className="text-xs font-medium">All Systems Operational</span>
               </Badge>
             </div>
 
-            <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight tracking-tight animate-fade-in-up animation-delay-100"
-              data-testid="text-hero-title"
-            >
-              <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-400 bg-clip-text text-transparent">Toxic</span>
-              <span className="text-foreground">-APIs</span>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-[1.1] tracking-tight anim-up d1" data-testid="text-hero-title">
+              <span className="text-foreground">Toxic</span>
+              <span className="text-primary">-APIs</span>
             </h1>
 
-            <p
-              className="text-lg md:text-xl text-muted-foreground mb-4 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200"
-              data-testid="text-hero-description"
-            >
+            <p className="text-base md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed anim-up d2" data-testid="text-hero-description">
               Powerful RESTful API with AI integration, media downloaders,
-              random content generators, and image processing tools. Built for
-              developers who need fast, reliable API services.
+              random content generators, and image processing tools.
             </p>
 
-            <p className="text-sm font-mono text-muted-foreground/60 mb-10 animate-fade-in-up animation-delay-300" style={{ borderRight: "2px solid transparent", animation: "fade-in-up 0.6s ease-out 0.3s forwards, typing-cursor 1s step-end infinite", opacity: 0 }}>
-              {'> ready to serve requests_'}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap animate-fade-in-up animation-delay-400">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap anim-up d3">
               <Link to="/docs">
-                <Button size="lg" className="gap-2 text-base" data-testid="button-explore-docs">
-                  <BookOpen className="h-5 w-5" />
-                  Explore API Docs
+                <Button size="lg" className="gap-2" data-testid="button-explore-docs">
+                  <BookOpen className="h-4 w-4" />
+                  Explore Docs
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/status">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="gap-2 text-base"
-                  data-testid="button-view-status"
-                >
-                  <Activity className="h-5 w-5" />
+                <Button variant="outline" size="lg" className="gap-2" data-testid="button-view-status">
+                  <Activity className="h-4 w-4" />
                   View Status
                 </Button>
               </Link>
             </div>
+
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 anim-up d4">
+              {[
+                { label: "Endpoints", value: getTotalEndpoints(), suffix: "+" },
+                { label: "Categories", value: getTotalCategories(), suffix: "" },
+                { label: "Visitors", value: visitorStats?.totalVisits || 0, suffix: "" },
+                { label: "Unique", value: visitorStats?.uniqueVisitors || 0, suffix: "" },
+              ].map((stat, i) => (
+                <div key={i} className="text-center p-4" data-testid={`stat-${i}`}>
+                  <div className="text-2xl md:text-3xl font-bold text-foreground">
+                    <AnimatedCounter target={stat.value} />
+                    {stat.suffix}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {[
-              { label: "API Endpoints", value: getTotalEndpoints(), icon: Zap },
-              { label: "Categories", value: getTotalCategories(), icon: BarChart3 },
-              { label: "Total Visitors", value: visitorStats?.totalVisits || 0, icon: Eye },
-              { label: "Unique Visitors", value: visitorStats?.uniqueVisitors || 0, icon: Users },
-            ].map((stat, i) => (
-              <Card
-                key={i}
-                className={`p-5 md:p-8 text-center animate-fade-in-up animation-delay-${(i + 1) * 100}`}
-                data-testid={`card-stat-${i}`}
-              >
-                <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-                  <AnimatedCounter target={stat.value} />
-                  {stat.label === "API Endpoints" ? "+" : ""}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="mb-12 anim-up">
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Sparkles className="h-3 w-3" />
+              Features
+            </Badge>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground">
+              Everything you need
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map((feature, i) => (
+              <Card key={i} className={`p-6 hover-elevate anim-up d${i + 1}`} data-testid={`card-feature-${i}`}>
+                <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center mb-4">
+                  <feature.icon className="h-5 w-5 text-primary" />
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{feature.desc}</p>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary uppercase tracking-wider">Features</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Powerful <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Features</span>
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="mb-12 anim-up">
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Layers className="h-3 w-3" />
+              Categories
+            </Badge>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground">
+              {getTotalEndpoints()}+ endpoints across {getTotalCategories()} categories
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Everything you need to build amazing applications
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <Card
-                key={index}
-                className={`p-6 md:p-8 group hover-elevate animate-fade-in-up animation-delay-${(index + 1) * 100}`}
-                data-testid={`card-feature-${index}`}
-              >
-                <div
-                  className={`w-12 h-12 bg-gradient-to-br ${feature.gradient} rounded-md flex items-center justify-center mb-5`}
-                  style={{ animation: "float 3s ease-in-out infinite", animationDelay: `${index * 0.5}s` }}
-                >
-                  <feature.icon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-foreground">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  {feature.desc}
-                </p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <Cpu className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary uppercase tracking-wider">Categories</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Browse <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Categories</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore {getTotalEndpoints()}+ endpoints across {getTotalCategories()} categories
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {apiCategories.map((category, index) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {apiCategories.map((category, i) => {
               const Icon = iconMap[category.icon] || Zap;
               return (
                 <Link key={category.name} to={`/docs?category=${encodeURIComponent(category.name)}`}>
                   <Card
-                    className={`p-5 hover-elevate cursor-pointer group animate-fade-in-up animation-delay-${((index % 4) + 1) * 100}`}
+                    className="p-4 hover-elevate cursor-pointer group"
                     data-testid={`card-category-${category.name.toLowerCase()}`}
                   >
-                    <div className="flex items-start gap-3 mb-3">
-                      <div
-                        className={`w-10 h-10 bg-gradient-to-br ${categoryColors[index % categoryColors.length]} rounded-md flex items-center justify-center flex-shrink-0`}
-                      >
-                        <Icon className="h-5 w-5 text-white" />
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${categoryIconBg[i % categoryIconBg.length]}`}>
+                        <Icon className="h-4 w-4" />
                       </div>
-                      <div className="min-w-0">
-                        <h3 className="font-semibold text-foreground">
-                          {category.name}
-                        </h3>
-                        <p className="text-xs text-muted-foreground">
-                          {category.endpoints.length} endpoints
-                        </p>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold text-sm text-foreground">{category.name}</h3>
+                        <p className="text-xs text-muted-foreground">{category.endpoints.length} endpoints</p>
                       </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {category.description}
-                    </p>
-                    <div className="flex items-center gap-1 mt-3 text-primary text-sm font-medium invisible group-hover:visible transition-all">
-                      Explore <ArrowRight className="h-3.5 w-3.5" />
+                      <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                     </div>
                   </Card>
                 </Link>
@@ -369,45 +255,41 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
-      {/* Code Examples Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <Rocket className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary uppercase tracking-wider">Quick Start</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Quick <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Start</span>
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <div className="mb-8 anim-up">
+            <Badge variant="secondary" className="mb-3 gap-1.5">
+              <Code2 className="h-3 w-3" />
+              Quick Start
+            </Badge>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground">
+              Integrate in seconds
             </h2>
-            <p className="text-lg text-muted-foreground">
-              Integrate in seconds with any language
-            </p>
           </div>
 
-          <Card className="animate-fade-in-up animation-delay-200">
+          <Card className="anim-up d2 overflow-visible">
             <div className="flex border-b border-border flex-wrap gap-0">
               {codeExamples.map((ex, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 px-5 py-3.5 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-1.5 px-4 py-3 text-sm font-medium transition-colors ${
                     activeTab === i
-                      ? "text-primary border-b-2 border-primary bg-primary/5"
+                      ? "text-primary border-b-2 border-primary"
                       : "text-muted-foreground"
                   }`}
                   data-testid={`button-tab-${ex.lang.toLowerCase()}`}
                 >
-                  <ex.icon className="h-4 w-4" />
+                  <ex.icon className="h-3.5 w-3.5" />
                   {ex.lang}
                 </button>
               ))}
             </div>
-            <div className="relative p-5">
+            <div className="relative p-4">
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-3 right-3"
+                className="absolute top-2 right-2"
                 onClick={() => copyCode(codeExamples[activeTab].code, activeTab)}
                 data-testid="button-copy-code"
               >
@@ -417,7 +299,7 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
                   <Copy className="h-4 w-4" />
                 )}
               </Button>
-              <pre className="text-sm text-foreground overflow-x-auto font-mono leading-relaxed">
+              <pre className="text-sm text-foreground overflow-x-auto font-mono leading-relaxed pr-10">
                 {codeExamples[activeTab].code}
               </pre>
             </div>
@@ -425,51 +307,42 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 md:py-24 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="animate-fade-in-up">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
-              Ready to <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Get Started</span>?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Start building with Toxic-APIs today. Free to use, no API key required.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
-              <Link to="/docs">
-                <Button size="lg" className="gap-2 text-base" data-testid="button-cta-docs">
-                  <BookOpen className="h-5 w-5" />
-                  View Documentation
-                </Button>
-              </Link>
-              <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="lg" className="gap-2 text-base" data-testid="button-cta-github">
-                  <Globe className="h-5 w-5" />
-                  Star on GitHub
-                </Button>
-              </a>
-            </div>
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-3xl text-center anim-up">
+          <h2 className="text-2xl md:text-4xl font-bold mb-4 text-foreground">
+            Ready to get started?
+          </h2>
+          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+            Free to use, no API key required. Start building with Toxic-APIs today.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
+            <Link to="/docs">
+              <Button size="lg" className="gap-2" data-testid="button-cta-docs">
+                <BookOpen className="h-4 w-4" />
+                View Documentation
+              </Button>
+            </Link>
+            <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="lg" className="gap-2" data-testid="button-cta-github">
+                <Globe className="h-4 w-4" />
+                GitHub
+              </Button>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border py-8 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+      <footer className="border-t border-border py-6 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-2 flex-wrap">
-              <Zap className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-foreground">Toxic-APIs</span>
-              <span className="text-muted-foreground text-sm">v2.1.0</span>
+              <Zap className="h-4 w-4 text-primary" />
+              <span className="font-semibold text-sm text-foreground">Toxic-APIs</span>
+              <span className="text-muted-foreground text-xs">v2.1.0</span>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Built by{" "}
-              <a
-                href="https://github.com/xhclintohn"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
+              <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                 xh_clintohn
               </a>
             </p>

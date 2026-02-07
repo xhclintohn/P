@@ -89,7 +89,9 @@ async function checkEndpointStatus(
     });
     clearTimeout(timeout);
     const responseTime = Date.now() - start;
-    const isOnline = response.status < 500;
+    const contentType = response.headers.get("content-type") || "";
+    const isHtml = contentType.includes("text/html");
+    const isOnline = response.status < 500 && !isHtml;
     return {
       path,
       isOnline,
@@ -177,6 +179,13 @@ export async function registerRoutes(
       clearTimeout(timeout);
 
       const contentType = response.headers.get("content-type") || "";
+
+      if (contentType.includes("text/html")) {
+        return res.status(502).json({
+          error: "API endpoint returned HTML instead of data. The endpoint may be unavailable or the API server may be down.",
+          status: "unavailable",
+        });
+      }
 
       if (contentType.startsWith("image/")) {
         res.setHeader("Content-Type", contentType);
