@@ -1,99 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toxic-APIs</title>
-    <meta name="description" content="Toxic-APIs - Powerful RESTful API service with AI, downloaders, tools and more." />
-    <meta name="theme-color" content="#7c3aed" />
-    <meta property="og:title" content="Toxic-APIs" />
-    <meta property="og:description" content="Powerful RESTful API service with AI integration, media downloaders, random content generators, and image processing tools." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Toxic-APIs" />
-    <meta name="twitter:description" content="Powerful RESTful API service with AI integration, media downloaders, random content generators, and image processing tools." />
-    <meta name="twitter:site" content="@replit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Toxic-APIs | Powerful RESTful API Service</title>
+    <meta name="description" content="Powerful RESTful API with AI integration, media downloaders, random content generators, and image processing tools. Built for developers." />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Oxanium:wght@200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div id="loading-screen">
-      <div class="loader-container">
-        <div class="toxic-loader">
-          <div class="loader-ring"></div>
-          <div class="loader-ring"></div>
-          <div class="loader-ring"></div>
-          <span class="loader-text">TOXIC-APIs</span>
-        </div>
-        <p class="loader-sub">Loading awesomeness...</p>
-      </div>
-    </div>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    <style>
-      #loading-screen {
-        position: fixed;
-        inset: 0;
-        z-index: 99999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #0a0a1a;
-        transition: opacity 0.6s ease, visibility 0.6s ease;
-      }
-      #loading-screen.hide {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .loader-container {
-        text-align: center;
-      }
-      .toxic-loader {
-        position: relative;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 24px;
-      }
-      .loader-ring {
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        border: 3px solid transparent;
-      }
-      .loader-ring:nth-child(1) {
-        border-top-color: #a855f7;
-        animation: spin 1.2s linear infinite;
-      }
-      .loader-ring:nth-child(2) {
-        inset: 8px;
-        border-right-color: #06b6d4;
-        animation: spin 1.6s linear infinite reverse;
-      }
-      .loader-ring:nth-child(3) {
-        inset: 16px;
-        border-bottom-color: #10b981;
-        animation: spin 2s linear infinite;
-      }
-      .loader-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        font-size: 11px;
-        letter-spacing: 2px;
-        background: linear-gradient(135deg, #a855f7, #06b6d4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .loader-sub {
-        color: #6b7280;
-        font-family: 'Poppins', sans-serif;
-        font-size: 14px;
-        animation: pulse 1.5s ease-in-out infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
-      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    </style>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
