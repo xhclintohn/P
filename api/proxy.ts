@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
-const BASE_API_URL = "https://toxic-api-site.vercel.app";
+const BASE_API_URL = "https://api-ten-chi-14.vercel.app";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "GET") {
@@ -20,7 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .map(([k, v]) => `${k}=${encodeURIComponent(Array.isArray(v) ? v[0] : v as string)}`)
       .join("&");
 
-    const url = `${BASE_API_URL}${targetPath}${queryString ? "?" + queryString : ""}`;
+    const url = `${BASE_API_URL}${targetPath}${queryString ? (targetPath.includes("?") ? "&" : "?") + queryString : ""}`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
@@ -33,6 +33,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(502).json({
         error: "API endpoint returned HTML instead of data. The endpoint may be unavailable or the API server may be down.",
         status: "unavailable",
+      });
+    }
+
+    if (response.status >= 500) {
+      return res.status(502).json({
+        error: "The API server returned an error. The service may be temporarily down.",
+        status: "server_error",
+        httpStatus: response.status,
       });
     }
 
@@ -50,6 +58,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ rawResponse: text });
     }
   } catch (error: any) {
+    if (error.name === "AbortError") {
+      return res.status(504).json({ error: "Request timed out. The API server may be slow or unavailable." });
+    }
     return res.status(500).json({ error: error.message || "Proxy request failed" });
   }
 }

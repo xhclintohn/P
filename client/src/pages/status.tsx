@@ -172,7 +172,7 @@ export default function Status() {
           <div className="space-y-4">
             {apiCategories.map((category, catIndex) => {
               const Icon = iconMap[category.icon] || Zap;
-              const catOnline = category.endpoints.filter((ep) => statusMap?.[ep.path]?.isOnline).length;
+              const catOnline = category.endpoints.filter((ep) => statusMap?.[ep.path.split("?")[0]]?.isOnline).length;
               const catTotal = category.endpoints.length;
 
               return (
@@ -201,7 +201,7 @@ export default function Status() {
 
                   <div className="divide-y divide-border">
                     {category.endpoints.map((endpoint, epIndex) => {
-                      const epStatus = statusMap?.[endpoint.path];
+                      const epStatus = statusMap?.[endpoint.path.split("?")[0]];
                       const isOnline = epStatus?.isOnline ?? null;
                       const responseTime = epStatus?.responseTime;
 

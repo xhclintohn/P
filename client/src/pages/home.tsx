@@ -112,7 +112,7 @@ export default function Home() {
       lang: "JavaScript",
       icon: Globe,
       code: `const response = await fetch(
-  'https://toxic-api-site.vercel.app/ai/claude?text=Hello!'
+  window.location.origin + '/ai/claude?text=Hello!'
 );
 const data = await response.json();
 console.log(data.result);`,
@@ -123,7 +123,7 @@ console.log(data.result);`,
       code: `import requests
 
 response = requests.get(
-    'https://toxic-api-site.vercel.app/download/instagram',
+    'YOUR_REPLIT_URL/download/instagram',
     params={'url': 'https://instagram.com/reel/...'}
 )
 print(response.json())`,
@@ -132,10 +132,10 @@ print(response.json())`,
       lang: "cURL",
       icon: Terminal,
       code: `# Chat with Claude AI
-curl -X GET "https://toxic-api-site.vercel.app/ai/claude?text=Hello"
+curl -X GET "YOUR_REPLIT_URL/ai/claude?text=Hello"
 
 # Download from YouTube
-curl -X GET "https://toxic-api-site.vercel.app/download/youtube?url=VIDEO_URL"`,
+curl -X GET "YOUR_REPLIT_URL/download/youtube?url=VIDEO_URL"`,
     },
   ];
 

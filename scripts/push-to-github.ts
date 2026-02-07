@@ -5,7 +5,7 @@ import * as path from 'path';
 const OWNER = 'xhclintohn';
 const REPO = 'P';
 const BRANCH = 'main';
-const COMMIT_MESSAGE = 'Update Toxic-APIs documentation site with verified endpoints and animations';
+const COMMIT_MESSAGE = 'feat: Add 36 working API scrapers with Express routes and static apis.html frontend';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',

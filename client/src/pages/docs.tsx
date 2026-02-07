@@ -124,7 +124,8 @@ export default function Docs() {
 
       try {
         const params = testParams[key] || {};
-        const queryParts: string[] = [`path=${encodeURIComponent(endpoint.path)}`];
+        const basePath = endpoint.path.split("?")[0];
+        const queryParts: string[] = [`path=${encodeURIComponent(basePath)}`];
         Object.entries(params).forEach(([paramKey, value]) => {
           if (value) queryParts.push(`${paramKey}=${encodeURIComponent(value)}`);
         });
@@ -158,7 +159,8 @@ export default function Docs() {
 
   const getEndpointStatus = (path: string): boolean | null => {
     if (!statusMap) return null;
-    const status = statusMap[path];
+    const basePath = path.split("?")[0];
+    const status = statusMap[basePath];
     return status ? status.isOnline : null;
   };
 

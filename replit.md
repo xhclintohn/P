@@ -41,7 +41,7 @@ A powerful, beautiful API documentation and monitoring site for Toxic-APIs - a R
 - **Tools** (5): Image Upscaler, YouTube Transcript, Currency Converter, Korean Name Generator, Random ASCII Art
 
 ## External API
-The endpoints connect to: `https://toxic-api-site.vercel.app`
+The endpoints connect to: `https://api-ten-chi-14.vercel.app`
 All "Try It Out" requests go through `/api/proxy` to avoid CORS issues.
 
 ## Database Schema
