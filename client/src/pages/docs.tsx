@@ -7,11 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { StatusDot } from "@/components/status-dot";
 import { BackButton } from "@/components/back-button";
-import { apiCategories, BASE_API_URL, getTotalEndpoints } from "@/lib/endpoints";
+import { apiCategories, getTotalEndpoints } from "@/lib/endpoints";
 import type { EndpointStatus } from "@shared/schema";
 import {
   Brain, Download, Shuffle, Wrench, Search, Info, Repeat, Activity,
-  ChevronDown, Play, Copy, Check, ExternalLink, RotateCcw, Loader2,
+  ChevronDown, Play, Copy, Check, RotateCcw, Loader2,
   Zap, X, FileSearch, Code2, Globe, Terminal,
 } from "lucide-react";
 
@@ -39,25 +39,34 @@ function extractParams(path: string): string[] {
 
 function generateCodeExamples(endpoint: { path: string; method: string; name: string }, params: Record<string, string>) {
   const queryParams = Object.entries(params).filter(([, v]) => v);
-  let fullUrl = `${BASE_API_URL}${endpoint.path}`;
+  const basePath = endpoint.path.split("?")[0];
+  let paramString = "";
   if (queryParams.length > 0) {
-    const basePath = endpoint.path.split("?")[0];
-    const qs = queryParams.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&");
-    fullUrl = `${BASE_API_URL}${basePath}?${qs}`;
+    paramString = "?" + queryParams.map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join("&");
   }
 
-  const js = `const response = await fetch('${fullUrl}');
+  const displayPath = `\${BASE_URL}${basePath}${paramString}`;
+  const sampleUrl = `https://your-api.replit.app${basePath}${paramString}`;
+
+  const js = `const BASE_URL = 'https://your-api.replit.app';
+
+const response = await fetch(
+  \`${displayPath}\`
+);
 const data = await response.json();
 console.log(data);`;
 
   const python = `import requests
 
-response = requests.get('${fullUrl}')
+BASE_URL = 'https://your-api.replit.app'
+response = requests.${endpoint.method.toLowerCase()}(
+    f'${displayPath}'
+)
 print(response.json())`;
 
-  const curl = `curl -X ${endpoint.method} "${fullUrl}"`;
+  const curl = `curl -X ${endpoint.method} "${sampleUrl}"`;
 
-  return { js, python, curl, fullUrl };
+  return { js, python, curl };
 }
 
 export default function Docs() {
@@ -98,8 +107,7 @@ export default function Docs() {
           (ep) =>
             !searchInput ||
             ep.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-            ep.desc.toLowerCase().includes(searchInput.toLowerCase()) ||
-            ep.path.toLowerCase().includes(searchInput.toLowerCase())
+            ep.desc.toLowerCase().includes(searchInput.toLowerCase())
         ),
       }))
       .filter((cat) => cat.endpoints.length > 0);
@@ -173,7 +181,7 @@ export default function Docs() {
             API Documentation
           </h1>
           <p className="text-sm text-muted-foreground anim-up d1">
-            {getTotalEndpoints()} endpoints across {apiCategories.length} categories
+            {getTotalEndpoints()} endpoints across {apiCategories.length} categories &mdash; test any endpoint live
           </p>
         </div>
       </section>
@@ -294,7 +302,7 @@ export default function Docs() {
                           const key = `${category.name}-${epIndex}`;
                           const isExpanded = expandedEndpoints[key] || false;
                           const params = extractParams(endpoint.path);
-                          const needsParam = !!endpoint.example || params.length > 0;
+                          const hasParams = params.length > 0;
                           const result = testResults[key];
                           const isLoading = testLoading[key] || false;
                           const epStatus = getEndpointStatus(endpoint.path);
@@ -310,10 +318,9 @@ export default function Docs() {
                                       <Badge variant="secondary" className={`text-[11px] font-mono px-1.5 ${endpoint.method === "GET" ? "bg-green-500/10 text-green-600 dark:text-green-400" : "bg-blue-500/10 text-blue-600 dark:text-blue-400"}`}>
                                         {endpoint.method}
                                       </Badge>
-                                      <code className="text-[11px] text-muted-foreground break-all font-mono">{endpoint.path}</code>
+                                      <span className="text-sm font-semibold text-foreground">{endpoint.name}</span>
                                       <StatusDot isOnline={epStatus} size="sm" />
                                     </div>
-                                    <h3 className="font-semibold text-sm text-foreground">{endpoint.name}</h3>
                                     <p className="text-xs text-muted-foreground mt-0.5">{endpoint.desc}</p>
                                   </div>
                                   <div className="flex-shrink-0 mt-0.5">
@@ -333,21 +340,13 @@ export default function Docs() {
                                         <h4 className="font-bold text-xs uppercase tracking-wider">Try It Out</h4>
                                       </div>
 
-                                      <div className="flex items-center gap-1.5 flex-wrap rounded-md bg-muted/50 p-2.5">
-                                        <Badge variant="secondary" className="text-[11px] font-mono">{endpoint.method}</Badge>
-                                        <code className="text-[11px] text-muted-foreground font-mono break-all flex-1">{BASE_API_URL}{endpoint.path}</code>
-                                        <Button variant="ghost" size="icon" onClick={() => handleCopy(`${BASE_API_URL}${endpoint.path}`, `url-${key}`)} data-testid={`button-copy-url-${key}`}>
-                                          {copied === `url-${key}` ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
-                                        </Button>
-                                      </div>
-
                                       {endpoint.method === "POST" && (
                                         <div className="rounded-md bg-muted/50 p-3 text-xs text-muted-foreground" data-testid={`notice-post-${key}`}>
                                           This endpoint requires a POST request with file upload. Use the code examples below to test it programmatically.
                                         </div>
                                       )}
 
-                                      {endpoint.method !== "POST" && needsParam && (
+                                      {endpoint.method !== "POST" && hasParams && (
                                         <div className="space-y-2.5">
                                           <div className="flex items-center justify-between gap-2 flex-wrap">
                                             <h5 className="text-xs font-medium text-foreground">Parameters</h5>
@@ -356,54 +355,55 @@ export default function Docs() {
                                               Clear
                                             </Button>
                                           </div>
-                                          {params.length > 0 ? (
-                                            params.map((param) => (
-                                              <div key={`${key}-${param}`} className="space-y-1">
-                                                <label className="block text-[11px] font-medium text-muted-foreground">
-                                                  {param} <span className="text-red-500">*</span>
-                                                </label>
-                                                <Input
-                                                  placeholder={endpoint.example || `Enter ${param}...`}
-                                                  value={testParams[key]?.[param] || ""}
-                                                  onChange={(e) => updateTestParam(key, param, e.target.value)}
-                                                  className="text-sm"
-                                                  data-testid={`input-param-${key}-${param}`}
-                                                />
-                                              </div>
-                                            ))
-                                          ) : (
-                                            <div className="space-y-1">
+                                          {params.map((param) => (
+                                            <div key={`${key}-${param}`} className="space-y-1">
                                               <label className="block text-[11px] font-medium text-muted-foreground">
-                                                value <span className="text-red-500">*</span>
+                                                {param} <span className="text-red-500 dark:text-red-400">*</span>
                                               </label>
                                               <Input
-                                                placeholder={endpoint.example || "Enter value..."}
-                                                value={testParams[key]?.["value"] || ""}
-                                                onChange={(e) => updateTestParam(key, "value", e.target.value)}
+                                                placeholder={endpoint.example || `Enter ${param}...`}
+                                                value={testParams[key]?.[param] || ""}
+                                                onChange={(e) => updateTestParam(key, param, e.target.value)}
                                                 className="text-sm"
-                                                data-testid={`input-param-${key}-value`}
+                                                data-testid={`input-param-${key}-${param}`}
                                               />
                                             </div>
-                                          )}
+                                          ))}
+                                        </div>
+                                      )}
+
+                                      {endpoint.method !== "POST" && !hasParams && endpoint.path.includes("?") && (
+                                        <div className="space-y-2.5">
+                                          <div className="flex items-center justify-between gap-2 flex-wrap">
+                                            <h5 className="text-xs font-medium text-foreground">Parameters</h5>
+                                            <Button variant="ghost" size="sm" onClick={() => clearTest(key)} className="gap-1 text-[11px]" data-testid={`button-clear-${key}`}>
+                                              <RotateCcw className="h-3 w-3" />
+                                              Clear
+                                            </Button>
+                                          </div>
+                                          <div className="space-y-1">
+                                            <label className="block text-[11px] font-medium text-muted-foreground">
+                                              value <span className="text-red-500 dark:text-red-400">*</span>
+                                            </label>
+                                            <Input
+                                              placeholder={endpoint.example || "Enter value..."}
+                                              value={testParams[key]?.["value"] || ""}
+                                              onChange={(e) => updateTestParam(key, "value", e.target.value)}
+                                              className="text-sm"
+                                              data-testid={`input-param-${key}-value`}
+                                            />
+                                          </div>
                                         </div>
                                       )}
 
                                       {endpoint.method !== "POST" && (
-                                        <div className="flex gap-2 flex-wrap">
-                                          <Button onClick={() => handleTest(endpoint, key)} disabled={isLoading} size="sm" className="gap-1.5" data-testid={`button-execute-${key}`}>
-                                            {isLoading ? (
-                                              <><Loader2 className="h-3.5 w-3.5 animate-spin" />Executing...</>
-                                            ) : (
-                                              <><Play className="h-3.5 w-3.5" />Execute</>
-                                            )}
-                                          </Button>
-                                          <a href={`${BASE_API_URL}${endpoint.path}`} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="outline" size="sm" className="gap-1.5" data-testid={`button-open-${key}`}>
-                                              <ExternalLink className="h-3.5 w-3.5" />
-                                              Open
-                                            </Button>
-                                          </a>
-                                        </div>
+                                        <Button onClick={() => handleTest(endpoint, key)} disabled={isLoading} size="sm" className="gap-1.5" data-testid={`button-execute-${key}`}>
+                                          {isLoading ? (
+                                            <><Loader2 className="h-3.5 w-3.5 animate-spin" />Executing...</>
+                                          ) : (
+                                            <><Play className="h-3.5 w-3.5" />Execute</>
+                                          )}
+                                        </Button>
                                       )}
 
                                       {isLoading && (
@@ -422,7 +422,7 @@ export default function Docs() {
                                             <div className="flex items-center gap-1.5">
                                               <StatusDot isOnline={result.success} size="sm" />
                                               <span className={`font-semibold text-xs ${result.success ? "text-green-500" : "text-red-500"}`}>
-                                                {result.success ? "200 OK" : "Error"}
+                                                {result.success ? "Success" : "Error"}
                                               </span>
                                             </div>
                                             {!result.isImage && result.data && (

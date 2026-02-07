@@ -5,7 +5,7 @@ import * as path from 'path';
 const OWNER = 'xhclintohn';
 const REPO = 'P';
 const BRANCH = 'main';
-const COMMIT_MESSAGE = 'fix: Align endpoint methods and params across React frontend, apis.html, and server routes';
+const COMMIT_MESSAGE = 'feat: Premium UI overhaul - loading screen, notifications, animations, mobile-responsive';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',

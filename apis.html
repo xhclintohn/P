@@ -4,244 +4,389 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toxic-APIs - Free RESTful API Service</title>
-  <meta name="description" content="Toxic-APIs: 36 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, search utilities, and image processing.">
+  <meta name="description" content="Toxic-APIs: 36 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, search utilities, and image processing. No API key required.">
   <meta property="og:title" content="Toxic-APIs - Free RESTful API Service">
-  <meta property="og:description" content="36 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools">
+  <meta property="og:description" content="36 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools. No API key required.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xhclinton.com/apis">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--bg4:#16213e;
-      --text:#e4e4e7;--text2:#a1a1aa;--text3:#71717a;
-      --border:#27272a;--border2:#3f3f46;
-      --primary:#6366f1;--primary2:#818cf8;--primary3:#4f46e5;
+      --bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a26;--bg4:#16213e;
+      --text:#e8e8ec;--text2:#a1a1aa;--text3:#71717a;
+      --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);--border3:rgba(255,255,255,.18);
+      --primary:#6366f1;--primary2:#818cf8;--primary3:#4f46e5;--primary-glow:rgba(99,102,241,.25);
       --accent:#06b6d4;--accent2:#22d3ee;
       --green:#22c55e;--red:#ef4444;--yellow:#eab308;--orange:#f97316;
       --pink:#ec4899;--purple:#a855f7;
-      --card:#15151f;--card-hover:#1c1c2e;
-      --radius:12px;
+      --card:rgba(17,17,24,.8);--card-hover:rgba(26,26,38,.9);
+      --glass:rgba(17,17,24,.6);
+      --radius:14px;--radius-sm:10px;
     }
-    html{scroll-behavior:smooth}
-    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+    html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+    body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
     code,pre,.mono{font-family:'JetBrains Mono',monospace}
     a{text-decoration:none;color:inherit}
+    img{max-width:100%}
+    button{font-family:inherit}
+    .container{max-width:1140px;margin:0 auto;padding:0 20px}
+    @media(min-width:768px){.container{padding:0 32px}}
 
-    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    /* ====== LOADING SCREEN ====== */
+    #loadingScreen{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+    #loadingScreen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .loader-logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff;margin-bottom:28px;animation:loaderPulse 1.5s ease-in-out infinite;box-shadow:0 0 60px var(--primary-glow)}
+    @keyframes loaderPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px var(--primary-glow)}50%{transform:scale(1.08);box-shadow:0 0 80px var(--primary-glow)}}
+    .loader-text{font-size:22px;font-weight:800;letter-spacing:2px;margin-bottom:12px;background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .loader-subtitle{font-size:13px;color:var(--text3);letter-spacing:4px;text-transform:uppercase;margin-bottom:32px}
+    .loader-bar{width:200px;height:3px;background:var(--bg3);border-radius:3px;overflow:hidden}
+    .loader-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent2));border-radius:3px;animation:loaderFill 2s ease-in-out forwards}
+    @keyframes loaderFill{0%{width:0%}50%{width:70%}100%{width:100%}}
 
-    /* Animated gradient background */
-    .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,.15),transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(6,182,212,.1),transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(168,85,247,.1),transparent 50%);animation:bgPulse 8s ease-in-out infinite alternate}
-    @keyframes bgPulse{0%{opacity:.6}100%{opacity:1}}
+    /* ====== NOTIFICATION SYSTEM ====== */
+    #notifContainer{position:fixed;top:80px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:380px;width:calc(100% - 40px)}
+    .notif{pointer-events:all;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:14px 18px;display:flex;align-items:flex-start;gap:12px;animation:notifIn .4s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:all .3s ease}
+    .notif.removing{animation:notifOut .3s ease forwards}
+    .notif-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+    .notif-icon.success{background:rgba(34,197,94,.15);color:var(--green)}
+    .notif-icon.info{background:rgba(99,102,241,.15);color:var(--primary2)}
+    .notif-icon.warning{background:rgba(234,179,8,.15);color:var(--yellow)}
+    .notif-icon.error{background:rgba(239,68,68,.15);color:var(--red)}
+    .notif-body{flex:1;min-width:0}
+    .notif-title{font-size:13px;font-weight:700;margin-bottom:2px}
+    .notif-msg{font-size:12px;color:var(--text2);line-height:1.5}
+    .notif-close{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px;font-size:16px;line-height:1;flex-shrink:0;transition:color .2s}
+    .notif-close:hover{color:var(--text)}
+    .notif-progress{position:absolute;bottom:0;left:0;height:2px;background:var(--primary);border-radius:0 0 var(--radius-sm) var(--radius-sm);animation:notifProgress 4s linear forwards}
+    @keyframes notifIn{from{opacity:0;transform:translateX(100%) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+    @keyframes notifOut{to{opacity:0;transform:translateX(100%) scale(.9)}}
+    @keyframes notifProgress{from{width:100%}to{width:0%}}
 
-    .hero-content{text-align:center;position:relative;z-index:2;max-width:800px;padding:40px 20px}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:100px;padding:8px 20px;font-size:13px;font-weight:500;color:var(--primary2);margin-bottom:24px;animation:fadeUp .6s ease}
-    .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+    /* ====== NAVIGATION ====== */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:all .4s ease}
+    .nav.scrolled{background:rgba(10,10,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.3)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px}
+    .nav-logo .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;transition:transform .3s}
+    .nav-logo:hover .logo-icon{transform:rotate(-8deg) scale(1.05)}
+    .nav-links{display:flex;gap:4px;align-items:center}
+    .nav-links a{padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text2);transition:all .25s;position:relative}
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+    .nav-links a.active{color:var(--primary2);background:rgba(99,102,241,.1)}
+    .nav-links a.active::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:16px;height:2px;border-radius:2px;background:var(--primary2)}
+    .mobile-menu-btn{display:none;background:none;border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);cursor:pointer}
+    @media(max-width:640px){
+      .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(10,10,15,.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);flex-direction:column;padding:12px;gap:4px}
+      .nav-links.open{display:flex}
+      .mobile-menu-btn{display:flex}
+    }
 
-    .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:20px;animation:fadeUp .6s ease .1s both}
-    .gradient-text{background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% auto;animation:shimmer 3s linear infinite}
-    @keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+    /* ====== HERO ====== */
+    .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 0 40px}
+    .hero::before{content:'';position:absolute;inset:0;background:
+      radial-gradient(ellipse 800px 600px at 20% 40%,rgba(99,102,241,.12),transparent),
+      radial-gradient(ellipse 600px 500px at 80% 20%,rgba(6,182,212,.08),transparent),
+      radial-gradient(ellipse 500px 400px at 60% 80%,rgba(168,85,247,.06),transparent);
+      animation:heroBgPulse 10s ease-in-out infinite alternate}
+    @keyframes heroBgPulse{0%{opacity:.5}100%{opacity:1}}
+    .hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,255,255,.01) 1px,rgba(255,255,255,.01) 2px);pointer-events:none}
 
-    .hero p{font-size:clamp(1rem,2vw,1.25rem);color:var(--text2);max-width:600px;margin:0 auto 32px;animation:fadeUp .6s ease .2s both}
-    .hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;animation:fadeUp .6s ease .3s both}
-    .stat{text-align:center}
-    .stat-num{font-size:2rem;font-weight:800;color:var(--primary2)}
-    .stat-label{font-size:13px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+    .hero-content{text-align:center;position:relative;z-index:2;max-width:800px;padding:20px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:8px 22px;font-size:13px;font-weight:600;color:var(--primary2);margin-bottom:28px;animation:fadeUp .6s ease;backdrop-filter:blur(12px)}
+    .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+    .hero-badge .sparkle{animation:sparkleAnim 2s ease-in-out infinite}
+    @keyframes sparkleAnim{0%,100%{opacity:1;transform:rotate(0deg) scale(1)}50%{opacity:.6;transform:rotate(180deg) scale(.8)}}
+
+    .hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;line-height:1.08;margin-bottom:24px;animation:fadeUp .6s ease .1s both;letter-spacing:-1px}
+    .gradient-text{background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300% auto;animation:gradientShift 4s linear infinite}
+    @keyframes gradientShift{0%{background-position:0% center}100%{background-position:300% center}}
+
+    .hero p{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--text2);max-width:560px;margin:0 auto 36px;animation:fadeUp .6s ease .2s both;line-height:1.7}
+    .hero p strong{color:var(--primary2);font-weight:600}
+
+    .hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;animation:fadeUp .6s ease .3s both}
+    .stat{text-align:center;position:relative}
+    .stat-num{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--primary2),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;font-weight:600}
+    .stat+.stat::before{content:'';position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:1px;height:30px;background:var(--border2)}
 
     .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s ease .4s both}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:10px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .2s}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-primary:hover{background:var(--primary3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,.3)}
-    .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text)}
-    .btn-outline:hover{border-color:var(--primary);color:var(--primary2);transform:translateY(-2px)}
 
-    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;border:none;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+    .btn::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent)}
+    .btn:hover::after{opacity:1}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary3));color:#fff;box-shadow:0 4px 20px var(--primary-glow)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px var(--primary-glow)}
+    .btn-primary:active{transform:translateY(0)}
+    .btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text);backdrop-filter:blur(8px)}
+    .btn-outline:hover{border-color:var(--primary);color:var(--primary2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(99,102,241,.1)}
+    .btn-sm{padding:8px 16px;font-size:13px;border-radius:8px}
+    .btn-xs{padding:6px 12px;font-size:12px;border-radius:6px}
 
-    /* Floating particles */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+
+    /* Particles */
     .particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-    .particle{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--primary);opacity:.3;animation:float linear infinite}
-    @keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:.3}90%{opacity:.3}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
+    .particle{position:absolute;border-radius:50%;opacity:0;animation:floatUp linear infinite}
+    @keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg) scale(0);opacity:0}15%{opacity:.4;transform:scale(1)}85%{opacity:.4}100%{transform:translateY(-10vh) rotate(720deg) scale(0);opacity:0}}
 
-    /* Navigation */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px}
-    .nav-logo .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff}
-    .nav-links{display:flex;gap:8px;align-items:center}
-    .nav-links a{padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text2);transition:all .2s}
-    .nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--bg3)}
+    /* Glow orbs */
+    .glow-orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;animation:orbFloat 12s ease-in-out infinite alternate}
+    @keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}100%{transform:translate(-20px,20px)}}
 
-    /* Section headers */
-    section{padding:80px 0}
+    /* ====== SECTIONS ====== */
+    section{padding:80px 0;position:relative}
+    @media(min-width:768px){section{padding:100px 0}}
     .section-header{text-align:center;margin-bottom:48px}
-    .section-header h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800;margin-bottom:12px}
-    .section-header p{color:var(--text2);font-size:1.05rem;max-width:500px;margin:0 auto}
+    .section-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.15);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--primary2);margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+    .section-header h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
+    .section-header p{color:var(--text2);font-size:1rem;max-width:480px;margin:0 auto}
 
-    /* Category tabs */
-    .cat-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
-    .cat-tab{padding:10px 20px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
-    .cat-tab:hover{border-color:var(--border2);color:var(--text)}
-    .cat-tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
-    .cat-tab .count{font-size:12px;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:100px}
+    /* ====== FEATURES ====== */
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    @media(max-width:640px){.features-grid{grid-template-columns:1fr}}
+    .feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary-glow),transparent);opacity:0;transition:opacity .4s}
+    .feature-card:hover{border-color:var(--border2);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.2)}
+    .feature-card:hover::before{opacity:1}
+    .feature-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+    .feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+    .feature-card p{font-size:14px;color:var(--text2);line-height:1.7}
 
-    /* Endpoint cards */
-    .endpoints-grid{display:grid;gap:16px}
-    .endpoint-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s}
-    .endpoint-card:hover{border-color:var(--border2);background:var(--card-hover);transform:translateY(-2px)}
-    .endpoint-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;cursor:pointer;gap:16px}
-    .endpoint-left{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
-    .method-badge{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;flex-shrink:0}
-    .method-GET{background:rgba(34,197,94,.15);color:var(--green)}
-    .method-POST{background:rgba(249,115,22,.15);color:var(--orange)}
-    .endpoint-info h3{font-size:15px;font-weight:600;margin-bottom:2px}
-    .endpoint-info p{font-size:13px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px}
-    .endpoint-path{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text3);background:var(--bg);padding:6px 12px;border-radius:6px;flex-shrink:0;display:none}
-    @media(min-width:768px){.endpoint-path{display:block}}
-    .expand-icon{color:var(--text3);transition:transform .3s;flex-shrink:0}
+    /* ====== DOCS ====== */
+    .search-bar{position:relative;margin-bottom:24px}
+    .search-bar input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 14px 14px 48px;color:var(--text);font-size:15px;outline:none;transition:all .3s}
+    .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+    .search-bar input::placeholder{color:var(--text3)}
+    .search-bar .search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+
+    .cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:32px}
+    .cat-tab{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+    .cat-tab:hover{border-color:var(--border2);color:var(--text);background:var(--bg3)}
+    .cat-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 16px var(--primary-glow)}
+    .cat-tab .count{font-size:11px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:100px}
+
+    .endpoints-grid{display:grid;gap:12px}
+    .endpoint-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s cubic-bezier(.16,1,.3,1)}
+    .endpoint-card:hover{border-color:var(--border2)}
+    .endpoint-card.open{border-color:var(--border3);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+    .endpoint-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;gap:12px;transition:background .2s}
+    .endpoint-header:hover{background:rgba(255,255,255,.02)}
+    .endpoint-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+    .method-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;flex-shrink:0;text-transform:uppercase}
+    .method-GET{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.15)}
+    .method-POST{background:rgba(249,115,22,.12);color:var(--orange);border:1px solid rgba(249,115,22,.15)}
+    .endpoint-info{min-width:0}
+    .endpoint-info h3{font-size:15px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .endpoint-info p{font-size:13px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+    .endpoint-status{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .endpoint-status .status-dot{width:6px;height:6px;border-radius:50%;background:var(--text3)}
+    .endpoint-status .status-dot.online{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
+    .endpoint-status .status-dot.offline{background:var(--red)}
+    .expand-icon{color:var(--text3);transition:transform .4s cubic-bezier(.16,1,.3,1);flex-shrink:0}
     .endpoint-card.open .expand-icon{transform:rotate(180deg)}
 
-    .endpoint-body{display:none;padding:0 24px 24px;border-top:1px solid var(--border)}
-    .endpoint-card.open .endpoint-body{display:block}
+    .endpoint-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}
+    .endpoint-card.open .endpoint-body{max-height:2000px}
+    .endpoint-body-inner{padding:0 20px 20px;border-top:1px solid var(--border)}
 
-    .endpoint-url{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:16px 0;overflow-x:auto}
-    .endpoint-url code{font-size:13px;color:var(--accent2);flex:1;white-space:nowrap}
-    .copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .try-section{margin-top:16px}
+    .try-section label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text2);text-transform:uppercase;letter-spacing:1px}
+    .try-row{display:flex;gap:8px}
+    .try-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:all .3s}
+    .try-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+    .try-input::placeholder{color:var(--text3)}
+    .try-btn{background:linear-gradient(135deg,var(--primary),var(--primary3));color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;white-space:nowrap;box-shadow:0 2px 12px var(--primary-glow)}
+    .try-btn:hover{box-shadow:0 4px 24px var(--primary-glow);transform:translateY(-1px)}
+    .try-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+    .response-area{margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;animation:scaleIn .3s ease}
+    .response-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap}
+    .response-status{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
+    .response-status .dot{width:8px;height:8px;border-radius:50%}
+    .response-status .dot.success{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.5)}
+    .response-status .dot.error{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.5)}
+    .response-status .dot.loading{background:var(--yellow);animation:pulse 1s infinite}
+    .response-body{padding:16px;max-height:400px;overflow:auto}
+    .response-body pre{white-space:pre-wrap;word-break:break-all;font-size:13px;line-height:1.6;color:var(--text2)}
+    .response-body img{max-width:100%;border-radius:8px;margin-top:8px}
+    .hidden{display:none!important}
+
+    /* Copy button */
+    .copy-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .25s;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
     .copy-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
     .copy-btn.copied{background:var(--green);border-color:var(--green);color:#fff}
 
-    .try-section{margin-top:16px}
-    .try-section label{display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text2)}
-    .try-row{display:flex;gap:8px}
-    .try-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s}
-    .try-input:focus{border-color:var(--primary)}
-    .try-btn{background:var(--primary);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
-    .try-btn:hover{background:var(--primary3)}
-    .try-btn:disabled{opacity:.5;cursor:not-allowed}
-
-    .response-area{margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-    .response-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border)}
-    .response-status{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-    .response-status .dot{width:8px;height:8px;border-radius:50%}
-    .response-status .dot.success{background:var(--green)}
-    .response-status .dot.error{background:var(--red)}
-    .response-body{padding:16px;max-height:400px;overflow:auto;font-size:13px;line-height:1.6}
-    .response-body pre{white-space:pre-wrap;word-break:break-all;color:var(--text2)}
-    .response-body img{max-width:100%;border-radius:8px;margin-top:8px}
-    .hidden{display:none}
-
     /* Code examples */
-    .code-tabs{display:flex;gap:4px;margin:16px 0 0}
-    .code-tab{padding:6px 14px;border-radius:6px 6px 0 0;font-size:12px;font-weight:600;cursor:pointer;background:var(--bg);color:var(--text3);border:1px solid var(--border);border-bottom:none;transition:all .2s}
-    .code-tab.active{background:var(--bg2);color:var(--text)}
+    .code-tabs{display:flex;gap:2px;margin:16px 0 0}
+    .code-tab{padding:8px 16px;border-radius:8px 8px 0 0;font-size:12px;font-weight:600;cursor:pointer;background:var(--bg);color:var(--text3);border:1px solid var(--border);border-bottom:none;transition:all .2s}
+    .code-tab:hover{color:var(--text)}
+    .code-tab.active{background:var(--bg2);color:var(--primary2);border-color:var(--border2)}
     .code-block{background:var(--bg2);border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:16px;position:relative;overflow-x:auto}
-    .code-block code{font-size:13px;line-height:1.7;color:var(--text2);display:block;white-space:pre}
-    .code-copy{position:absolute;top:8px;right:8px}
+    .code-block code{font-size:13px;line-height:1.8;color:var(--text2);display:block;white-space:pre}
+    .code-copy{position:absolute;top:10px;right:10px}
 
-    /* Status section */
-    .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
-    .status-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:16px;transition:all .2s}
-    .status-card:hover{border-color:var(--border2)}
-    .status-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-    .status-dot.online{background:var(--green);box-shadow:0 0 12px rgba(34,197,94,.5);animation:pulse 2s infinite}
-    .status-dot.offline{background:var(--red);box-shadow:0 0 12px rgba(239,68,68,.5)}
-    .status-dot.checking{background:var(--yellow);animation:pulse 1s infinite}
-    .status-info h4{font-size:14px;font-weight:600;margin-bottom:2px}
-    .status-info p{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace}
-    .status-ms{margin-left:auto;font-size:13px;font-weight:600;color:var(--text3);font-family:'JetBrains Mono',monospace}
+    /* Base URL bar */
+    .base-url-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;backdrop-filter:blur(12px)}
+    .base-url-bar label{font-size:12px;font-weight:700;color:var(--text3);white-space:nowrap;text-transform:uppercase;letter-spacing:1px}
+    .base-url-bar code{font-size:14px;color:var(--accent2);word-break:break-all;flex:1}
 
-    /* Features grid */
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-    .feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .3s}
-    .feature-card:hover{border-color:var(--primary);transform:translateY(-4px)}
-    .feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
-    .feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
-    .feature-card p{font-size:14px;color:var(--text2);line-height:1.6}
+    /* Quick start */
+    .quickstart{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
+    .quickstart h3{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 
-    /* Footer */
-    footer{border-top:1px solid var(--border);padding:40px 0;text-align:center}
-    footer p{color:var(--text3);font-size:14px}
-    footer a{color:var(--primary2)}
-    footer a:hover{text-decoration:underline}
+    /* ====== STATUS ====== */
+    .status-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px}
+    .status-stat{text-align:center;padding:20px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
+    .status-stat .num{font-size:1.8rem;font-weight:800;margin-bottom:2px}
+    .status-stat .label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+    .status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+    @media(max-width:640px){.status-grid{grid-template-columns:1fr}}
+    .status-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:all .3s}
+    .status-card:hover{border-color:var(--border2);background:var(--card-hover)}
+    .status-dot-lg{width:10px;height:10px;border-radius:50%;flex-shrink:0;transition:all .3s}
+    .status-dot-lg.online{background:var(--green);box-shadow:0 0 10px rgba(34,197,94,.5);animation:pulse 2s infinite}
+    .status-dot-lg.offline{background:var(--red);box-shadow:0 0 10px rgba(239,68,68,.5)}
+    .status-dot-lg.checking{background:var(--yellow);animation:pulse 1s infinite}
+    .status-info{flex:1;min-width:0}
+    .status-info h4{font-size:14px;font-weight:600;margin-bottom:1px}
+    .status-info p{font-size:12px;color:var(--text3)}
+    .status-ms{font-size:13px;font-weight:600;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0}
 
-    /* Scrollbar */
+    /* ====== FOOTER ====== */
+    footer{border-top:1px solid var(--border);padding:40px 0}
+    .footer-inner{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+    .footer-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+    .footer-logo .logo-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff}
+    footer p{color:var(--text3);font-size:13px}
+    footer a{color:var(--primary2);transition:color .2s}
+    footer a:hover{text-decoration:underline;color:var(--accent2)}
+
+    /* ====== SCROLL REVEAL ====== */
+    .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-delay-1{transition-delay:.1s}
+    .reveal-delay-2{transition-delay:.2s}
+    .reveal-delay-3{transition-delay:.3s}
+
+    /* ====== SCROLLBAR ====== */
     ::-webkit-scrollbar{width:6px;height:6px}
     ::-webkit-scrollbar-track{background:var(--bg)}
     ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
     ::-webkit-scrollbar-thumb:hover{background:var(--text3)}
 
-    /* Loading spinner */
-    .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+    /* Spinner */
+    .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
+    .spinner-sm{width:14px;height:14px}
     @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Back to top */
+    .back-to-top{position:fixed;bottom:24px;right:24px;z-index:900;width:44px;height:44px;border-radius:12px;background:var(--primary);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--primary-glow);opacity:0;visibility:hidden;transition:all .3s;transform:translateY(10px)}
+    .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+    .back-to-top:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
 
     /* Responsive */
     @media(max-width:640px){
-      .hero-stats{gap:20px}
-      .endpoint-header{padding:16px}
-      .endpoint-body{padding:0 16px 16px}
-      .nav-links a{padding:6px 10px;font-size:13px}
+      .hero-stats{gap:16px}
+      .stat-num{font-size:1.8rem}
+      .stat+.stat::before{display:none}
+      .endpoint-header{padding:14px 16px}
+      .endpoint-body-inner{padding:0 16px 16px}
       .try-row{flex-direction:column}
-      .status-grid{grid-template-columns:1fr}
+      .code-tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+      .code-tab{flex-shrink:0}
+      section{padding:60px 0}
+      .features-grid{gap:12px}
     }
 
-    /* scroll reveal */
-    .reveal{opacity:0;transform:translateY(30px);transition:all .6s ease}
-    .reveal.visible{opacity:1;transform:translateY(0)}
+    /* Category header colors */
+    .cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
-    /* Tab content */
-    .tab-content{display:none}
-    .tab-content.active{display:block}
+    /* Floating animation for decorative elements */
+    @keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .float-anim{animation:gentleFloat 4s ease-in-out infinite}
 
-    .base-url-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 20px;margin-bottom:32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .base-url-bar label{font-size:13px;font-weight:600;color:var(--text2);white-space:nowrap}
-    .base-url-bar code{font-size:14px;color:var(--accent2);word-break:break-all}
-
-    /* Quick start code */
-    .quickstart{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:20px}
-    .quickstart h3{font-size:15px;font-weight:700;margin-bottom:16px;color:var(--text)}
-    .quickstart pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto}
-    .quickstart code{font-size:13px;color:var(--accent2);line-height:1.8}
-
-    /* Category colors */
-    .cat-ai{--cat-color:#6366f1}.cat-downloaders{--cat-color:#06b6d4}.cat-anime{--cat-color:#ec4899}
-    .cat-gaming{--cat-color:#eab308}.cat-search{--cat-color:#22c55e}.cat-tools{--cat-color:#a855f7}
+    /* Shimmer overlay for special cards */
+    .shimmer-line{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary-glow),transparent);opacity:0;transition:opacity .4s}
+    .endpoint-card:hover .shimmer-line{opacity:1}
   </style>
 </head>
 <body>
 
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-logo">T</div>
+  <div class="loader-text">TOXIC-APIS</div>
+  <div class="loader-subtitle">Loading Experience</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="notifContainer"></div>
+
+<!-- NAV -->
 <nav class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="#" class="nav-logo"><span class="logo-icon">T</span> Toxic-APIs</a>
-    <div class="nav-links">
+    <a href="#home" class="nav-logo">
+      <span class="logo-icon">T</span>
+      Toxic-APIs
+    </a>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="nav-links" id="navLinks">
       <a href="#home" class="active" data-nav>Home</a>
+      <a href="#features" data-nav>Features</a>
       <a href="#docs" data-nav>Docs</a>
       <a href="#status" data-nav>Status</a>
     </div>
   </div>
 </nav>
 
-<!-- HOME -->
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- HERO -->
 <section class="hero" id="home">
   <div class="particles" id="particles"></div>
+  <div class="glow-orb" style="width:500px;height:500px;background:rgba(99,102,241,.06);top:10%;left:5%"></div>
+  <div class="glow-orb" style="width:400px;height:400px;background:rgba(6,182,212,.04);bottom:10%;right:5%;animation-delay:3s"></div>
+
   <div class="hero-content">
-    <div class="hero-badge"><span class="dot"></span> Free & Open Source API</div>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      All Systems Operational
+      <svg class="sparkle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z"/></svg>
+    </div>
     <h1>The Ultimate<br><span class="gradient-text">REST API Service</span></h1>
-    <p>36 powerful endpoints for AI, media downloading, anime scraping, gaming tools, and more. Free, fast, and reliable.</p>
+    <p>36 powerful endpoints for AI chat, media downloading, anime scraping, gaming tools, and more. <strong>Free, fast, no API key required.</strong></p>
     <div class="hero-stats">
       <div class="stat"><div class="stat-num" data-count="36">0</div><div class="stat-label">Endpoints</div></div>
       <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">Categories</div></div>
       <div class="stat"><div class="stat-num" data-count="100">0</div><div class="stat-label">% Free</div></div>
+      <div class="stat"><div class="stat-num" data-count="0">0</div><div class="stat-label">API Keys</div></div>
     </div>
     <div class="hero-btns">
       <a href="#docs" class="btn btn-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         Explore Docs
       </a>
       <a href="#status" class="btn btn-outline">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        API Status
+        View Status
+      </a>
+      <a href="https://github.com/xhclintohn" target="_blank" rel="noopener" class="btn btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
       </a>
     </div>
   </div>
@@ -251,53 +396,14 @@
 <section id="features" style="background:var(--bg2)">
   <div class="container">
     <div class="section-header reveal">
+      <div class="section-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z"/></svg>
+        Features
+      </div>
       <h2>Why <span class="gradient-text">Toxic-APIs</span>?</h2>
       <p>Everything you need to build powerful applications</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(99,102,241,.15);color:var(--primary2)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        </div>
-        <h3>Lightning Fast</h3>
-        <p>Optimized scrapers deliver responses in milliseconds with efficient caching and processing.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(6,182,212,.15);color:var(--accent2)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </div>
-        <h3>No API Key Required</h3>
-        <p>Start making requests immediately. No registration, no authentication, no rate limits.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(34,197,94,.15);color:var(--green)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        </div>
-        <h3>Developer Friendly</h3>
-        <p>Clean JSON responses, comprehensive documentation, and code examples in multiple languages.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(168,85,247,.15);color:var(--purple)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <h3>CORS Enabled</h3>
-        <p>Full CORS support so you can call endpoints from any frontend application or website.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(236,72,153,.15);color:var(--pink)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        </div>
-        <h3>6 Categories</h3>
-        <p>AI chat, media downloaders, anime/manga, gaming, search, and utility tools all in one place.</p>
-      </div>
-      <div class="feature-card reveal">
-        <div class="feature-icon" style="background:rgba(234,179,8,.15);color:var(--yellow)">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h3>Reliable & Stable</h3>
-        <p>99.9% uptime with automatic health monitoring and real-time status tracking.</p>
-      </div>
-    </div>
+    <div class="features-grid" id="featuresGrid"></div>
   </div>
 </section>
 
@@ -305,22 +411,36 @@
 <section id="docs">
   <div class="container">
     <div class="section-header reveal">
+      <div class="section-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Documentation
+      </div>
       <h2>API <span class="gradient-text">Documentation</span></h2>
-      <p>Browse, test, and integrate 36 endpoints</p>
+      <p>Browse, test, and integrate all 36 endpoints</p>
     </div>
 
     <div class="base-url-bar reveal">
-      <label>Base URL:</label>
-      <code id="baseUrlDisplay"></code>
-      <button class="copy-btn" onclick="copyText(BASE_URL)">Copy</button>
+      <label>Base URL</label>
+      <code id="baseUrlDisplay">https://xhclinton.com/apis</code>
+      <button class="copy-btn" onclick="copyText('https://xhclinton.com/apis',this)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+
+    <div class="search-bar reveal">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search endpoints..." oninput="handleSearch(this.value)">
     </div>
 
     <div class="cat-tabs reveal" id="catTabs"></div>
-
     <div id="endpointsContainer"></div>
 
     <div class="quickstart reveal" style="margin-top:40px">
-      <h3>Quick Start</h3>
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary2)" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Quick Start
+      </h3>
       <div class="code-tabs">
         <div class="code-tab active" onclick="showQuickCode('js',this)">JavaScript</div>
         <div class="code-tab" onclick="showQuickCode('py',this)">Python</div>
@@ -328,7 +448,10 @@
       </div>
       <div class="code-block">
         <code id="quickCode"></code>
-        <button class="copy-btn code-copy" onclick="copyQuickCode()">Copy</button>
+        <button class="copy-btn code-copy" onclick="copyQuickCode(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
       </div>
     </div>
   </div>
@@ -338,10 +461,17 @@
 <section id="status" style="background:var(--bg2)">
   <div class="container">
     <div class="section-header reveal">
+      <div class="section-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Monitoring
+      </div>
       <h2>API <span class="gradient-text">Status</span></h2>
       <p>Real-time endpoint health monitoring</p>
     </div>
-    <div style="text-align:center;margin-bottom:32px" class="reveal">
+
+    <div class="status-overview reveal" id="statusOverview"></div>
+
+    <div style="text-align:center;margin-bottom:28px" class="reveal">
       <button class="btn btn-primary" id="checkStatusBtn" onclick="checkAllStatus()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         Check All Endpoints
@@ -351,139 +481,239 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="container">
-    <p style="margin-bottom:8px"><strong>Toxic-APIs</strong> &mdash; Free RESTful API Service</p>
-    <p>Built with real scrapers from <a href="https://github.com/ScraperCode/Scraper" target="_blank">ScraperCode/Scraper</a></p>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="logo-icon">T</span>
+        Toxic-APIs
+      </div>
+      <p>36 Free REST API Endpoints &mdash; No API Key Required</p>
+      <p>Built by <a href="https://github.com/xhclintohn" target="_blank" rel="noopener">xh_clintohn</a></p>
+    </div>
   </div>
 </footer>
 
 <script>
-const REPLIT_BACKEND = 'https://p-clintonyt.replit.app';
-const BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('.replit.dev') || window.location.hostname.includes('.replit.app'))
-  ? window.location.origin
-  : REPLIT_BACKEND;
+// ===== CONFIGURATION =====
+const BACKEND = 'https://toxic-apis.replit.app';
+const SITE_URL = 'https://xhclinton.com/apis';
 
+// ===== CATEGORIES DATA =====
 const categories = [
   {
-    name: "AI", icon: "brain", color: "#6366f1",
-    endpoints: [
-      { name: "Claude AI", desc: "Chat with Claude AI model", method: "GET", path: "/ai/claude", params: [{ key: "text", example: "Explain quantum computing" }] },
-      { name: "Gemini AI", desc: "Google Gemini AI chat", method: "GET", path: "/ai/gemini", params: [{ key: "text", example: "What is machine learning?" }] },
-      { name: "NoteGPT", desc: "GPT-4.1 Mini powered AI chat", method: "GET", path: "/ai/notegpt", params: [{ key: "text", example: "Write a short poem about coding" }] },
-      { name: "AI Image Generator", desc: "Generate images from text prompts", method: "GET", path: "/ai/imagine", params: [{ key: "prompt", example: "A futuristic city at sunset" }] },
-      { name: "Vider AI Art", desc: "Create AI art with Vider engine", method: "GET", path: "/ai/vider", params: [{ key: "prompt", example: "Anime girl with blue hair" }] },
+    name:"AI", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2 4 4 0 0 1-4 4 4 4 0 0 1-4-4 2 2 0 0 1-2-2V9a2 2 0 0 1 2-2V6a4 4 0 0 1 4-4z"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/></svg>', color:"#6366f1",
+    endpoints:[
+      {name:"Claude AI",desc:"Chat with Claude AI model - fast, intelligent responses",method:"GET",path:"/ai/claude",params:[{key:"text",example:"Explain quantum computing"}]},
+      {name:"Gemini AI",desc:"Google Gemini AI chat with multi-model options",method:"GET",path:"/ai/gemini",params:[{key:"text",example:"What is machine learning?"}]},
+      {name:"NoteGPT",desc:"GPT-4.1 Mini powered AI chat",method:"GET",path:"/ai/notegpt",params:[{key:"text",example:"Write a short poem about coding"}]},
+      {name:"AI Image Generator",desc:"Generate photorealistic images from text prompts",method:"GET",path:"/ai/imagine",params:[{key:"prompt",example:"A futuristic city at sunset"}]},
+      {name:"Vider AI Art",desc:"Create AI artwork with Vider engine",method:"GET",path:"/ai/vider",params:[{key:"prompt",example:"Anime girl with blue hair"}]}
     ]
   },
   {
-    name: "Downloaders", icon: "download", color: "#06b6d4",
-    endpoints: [
-      { name: "Facebook Video", desc: "Download Facebook videos in HD/SD", method: "GET", path: "/download/facebook", params: [{ key: "url", example: "https://www.facebook.com/watch?v=example" }] },
-      { name: "Instagram", desc: "Download Instagram reels & posts", method: "GET", path: "/download/instagram", params: [{ key: "url", example: "https://www.instagram.com/reel/example" }] },
-      { name: "Twitter/X Video", desc: "Download videos from Twitter/X", method: "GET", path: "/download/x", params: [{ key: "url", example: "https://x.com/user/status/123456789" }] },
-      { name: "Douyin Video", desc: "Download Douyin videos without watermark", method: "GET", path: "/download/douyin", params: [{ key: "url", example: "https://v.douyin.com/example" }] },
-      { name: "YouTube", desc: "Download YouTube videos", method: "GET", path: "/download/youtube", params: [{ key: "url", example: "https://youtu.be/dQw4w9WgXcQ" }] },
-      { name: "YouTube v2", desc: "Alt YouTube downloader", method: "GET", path: "/download/youtube2", params: [{ key: "url", example: "https://youtu.be/dQw4w9WgXcQ" }] },
-      { name: "MediaFire", desc: "Get direct download links from MediaFire", method: "GET", path: "/download/mediafire", params: [{ key: "url", example: "https://www.mediafire.com/file/example" }] },
-      { name: "TeraBox", desc: "Download from TeraBox cloud storage", method: "GET", path: "/download/terabox", params: [{ key: "url", example: "https://www.terabox.com/sharing/link?surl=example" }] },
-      { name: "Downr Universal", desc: "Universal video downloader", method: "GET", path: "/download/downr", params: [{ key: "url", example: "https://www.youtube.com/watch?v=example" }] },
+    name:"Downloaders", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>', color:"#06b6d4",
+    endpoints:[
+      {name:"Facebook Video",desc:"Download Facebook videos in HD/SD quality",method:"GET",path:"/download/facebook",params:[{key:"url",example:"https://www.facebook.com/watch?v=example"}]},
+      {name:"Instagram",desc:"Download Instagram reels, posts & stories",method:"GET",path:"/download/instagram",params:[{key:"url",example:"https://www.instagram.com/reel/example"}]},
+      {name:"Twitter/X Video",desc:"Download videos from Twitter/X posts",method:"GET",path:"/download/x",params:[{key:"url",example:"https://x.com/user/status/123456789"}]},
+      {name:"Douyin Video",desc:"Download Douyin videos without watermark",method:"GET",path:"/download/douyin",params:[{key:"url",example:"https://v.douyin.com/example"}]},
+      {name:"YouTube",desc:"Download YouTube videos in multiple formats",method:"GET",path:"/download/youtube",params:[{key:"url",example:"https://youtu.be/dQw4w9WgXcQ"}]},
+      {name:"YouTube v2",desc:"Alternative YouTube downloader",method:"GET",path:"/download/youtube2",params:[{key:"url",example:"https://youtu.be/dQw4w9WgXcQ"}]},
+      {name:"MediaFire",desc:"Get direct download links from MediaFire",method:"GET",path:"/download/mediafire",params:[{key:"url",example:"https://www.mediafire.com/file/example"}]},
+      {name:"TeraBox",desc:"Download from TeraBox cloud storage",method:"GET",path:"/download/terabox",params:[{key:"url",example:"https://www.terabox.com/sharing/link?surl=example"}]},
+      {name:"Downr Universal",desc:"Universal video downloader for multiple platforms",method:"GET",path:"/download/downr",params:[{key:"url",example:"https://www.youtube.com/watch?v=example"}]}
     ]
   },
   {
-    name: "Anime & Manga", icon: "film", color: "#ec4899",
-    endpoints: [
-      { name: "Doronime", desc: "Search anime on Doronime", method: "GET", path: "/anime/doronime", params: [{ key: "q", example: "Naruto" }] },
-      { name: "OtakDesu", desc: "Browse anime on OtakDesu", method: "GET", path: "/anime/otakdesu", params: [{ key: "q", example: "One Piece" }] },
-      { name: "Donghua Film", desc: "Search Chinese animated films", method: "GET", path: "/anime/donghua", params: [{ key: "q", example: "Soul Land" }] },
-      { name: "Nanobana AI", desc: "AI anime image generation", method: "POST", path: "/anime/nanobana", params: [] },
-      { name: "KomikCast", desc: "Search manga on KomikCast", method: "GET", path: "/manga/komikcast", params: [{ key: "q", example: "Solo Leveling" }] },
-      { name: "KomikIndo", desc: "Browse manga on KomikIndo", method: "GET", path: "/manga/komikindo", params: [{ key: "q", example: "Tower of God" }] },
-      { name: "OppaDrama", desc: "Search Korean dramas", method: "GET", path: "/drama/oppadrama", params: [{ key: "q", example: "Squid Game" }] },
-      { name: "DramaBox", desc: "Browse short-form dramas", method: "GET", path: "/drama/dramabox", params: [{ key: "q", example: "Romance drama" }] },
+    name:"Anime & Manga", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>', color:"#ec4899",
+    endpoints:[
+      {name:"Doronime",desc:"Search and stream anime with episode listings",method:"GET",path:"/anime/doronime",params:[{key:"q",example:"Naruto"}]},
+      {name:"OtakDesu",desc:"Browse anime on OtakDesu with detailed info",method:"GET",path:"/anime/otakdesu",params:[{key:"q",example:"One Piece"}]},
+      {name:"Donghua Film",desc:"Search Chinese animated films (Donghua)",method:"GET",path:"/anime/donghua",params:[{key:"q",example:"Soul Land"}]},
+      {name:"Nanobana AI",desc:"AI anime image generation via Nanobana",method:"POST",path:"/anime/nanobana",params:[]},
+      {name:"KomikCast",desc:"Search manga on KomikCast with chapters",method:"GET",path:"/manga/komikcast",params:[{key:"q",example:"Solo Leveling"}]},
+      {name:"KomikIndo",desc:"Browse manga & manhwa on KomikIndo",method:"GET",path:"/manga/komikindo",params:[{key:"q",example:"Tower of God"}]},
+      {name:"OppaDrama",desc:"Search Korean dramas with episodes",method:"GET",path:"/drama/oppadrama",params:[{key:"q",example:"Squid Game"}]},
+      {name:"DramaBox",desc:"Browse short-form drama series",method:"GET",path:"/drama/dramabox",params:[{key:"q",example:"Romance drama"}]}
     ]
   },
   {
-    name: "Gaming", icon: "gamepad", color: "#eab308",
-    endpoints: [
-      { name: "Enka Network", desc: "Genshin Impact player profiles", method: "GET", path: "/game/enka", params: [{ key: "uid", example: "800123456" }] },
-      { name: "Free Fire Characters", desc: "Get FF character stats", method: "GET", path: "/game/ff-character", params: [] },
-      { name: "Character Guide", desc: "Game character guides", method: "GET", path: "/game/character-guide", params: [{ key: "name", example: "Raiden Shogun" }] },
+    name:"Gaming", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>', color:"#eab308",
+    endpoints:[
+      {name:"Enka Network",desc:"Genshin Impact player profiles & builds",method:"GET",path:"/game/enka",params:[{key:"uid",example:"800123456"}]},
+      {name:"Free Fire Characters",desc:"Get Free Fire character stats & abilities",method:"GET",path:"/game/ff-character",params:[]},
+      {name:"Character Guide",desc:"Game character guides with tips & builds",method:"GET",path:"/game/character-guide",params:[{key:"name",example:"Raiden Shogun"}]}
     ]
   },
   {
-    name: "Search", icon: "search", color: "#22c55e",
-    endpoints: [
-      { name: "Song Finder", desc: "Search songs with metadata", method: "GET", path: "/search/song", params: [{ key: "q", example: "Bohemian Rhapsody" }] },
-      { name: "F-Droid Apps", desc: "Search open-source Android apps", method: "GET", path: "/search/fdroid", params: [{ key: "q", example: "Termux" }] },
-      { name: "Meme Templates", desc: "Search meme templates", method: "GET", path: "/search/meme", params: [{ key: "q", example: "Drake meme" }] },
-      { name: "Sound Effects", desc: "Browse instant sound effects", method: "GET", path: "/search/sounds", params: [] },
+    name:"Search", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>', color:"#22c55e",
+    endpoints:[
+      {name:"Song Finder",desc:"Search songs with metadata & album art",method:"GET",path:"/search/song",params:[{key:"q",example:"Bohemian Rhapsody"}]},
+      {name:"F-Droid Apps",desc:"Search open-source Android apps",method:"GET",path:"/search/fdroid",params:[{key:"q",example:"Termux"}]},
+      {name:"Meme Templates",desc:"Search popular meme templates",method:"GET",path:"/search/meme",params:[{key:"q",example:"Drake meme"}]},
+      {name:"Sound Effects",desc:"Browse instant sound effects",method:"GET",path:"/search/sounds",params:[]}
     ]
   },
   {
-    name: "Tools", icon: "wrench", color: "#a855f7",
-    endpoints: [
-      { name: "Image Upscaler", desc: "AI image upscaling", method: "GET", path: "/tools/upscale", params: [{ key: "code", example: "CHECK_CODE" }] },
-      { name: "YouTube Transcript", desc: "Extract YouTube transcripts", method: "GET", path: "/tools/transcript", params: [{ key: "url", example: "https://www.youtube.com/watch?v=example" }] },
-      { name: "Currency Converter", desc: "Real-time currency conversion", method: "GET", path: "/tools/currency", params: [{ key: "amount", example: "100" }, { key: "from", example: "USD" }, { key: "to", example: "EUR" }] },
-      { name: "Korean Name Generator", desc: "Generate Korean names", method: "GET", path: "/tools/korean-name", params: [{ key: "name", example: "Rizki" }] },
-      { name: "Random ASCII Art", desc: "Generate ASCII character strings", method: "GET", path: "/tools/ascii", params: [{ key: "length", example: "32" }] },
+    name:"Tools", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', color:"#a855f7",
+    endpoints:[
+      {name:"Image Upscaler",desc:"AI-powered image upscaling",method:"GET",path:"/tools/upscale",params:[{key:"code",example:"CHECK_CODE"}]},
+      {name:"YouTube Transcript",desc:"Extract YouTube video transcripts",method:"GET",path:"/tools/transcript",params:[{key:"url",example:"https://www.youtube.com/watch?v=example"}]},
+      {name:"Currency Converter",desc:"Real-time currency conversion",method:"GET",path:"/tools/currency",params:[{key:"amount",example:"100"},{key:"from",example:"USD"},{key:"to",example:"EUR"}]},
+      {name:"Korean Name Generator",desc:"Generate authentic Korean names",method:"GET",path:"/tools/korean-name",params:[{key:"name",example:"Rizki"}]},
+      {name:"Random ASCII Art",desc:"Generate random ASCII character strings",method:"GET",path:"/tools/ascii",params:[{key:"length",example:"32"}]}
     ]
   }
 ];
 
-let activeCategory = "all";
-let quickCodeLang = "js";
+// ===== STATE =====
+let activeCategory = 'all';
+let searchQuery = '';
+let statusResults = {};
 
-document.getElementById('baseUrlDisplay').textContent = BASE_URL;
+// ===== NOTIFICATION SYSTEM =====
+function showNotif(type, title, msg, duration = 4000) {
+  const container = document.getElementById('notifContainer');
+  const notif = document.createElement('div');
+  notif.className = 'notif';
+  const icons = {
+    success: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',
+    info: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+    warning: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+    error: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+  };
+  notif.innerHTML = `
+    <div class="notif-icon ${type}">${icons[type]}</div>
+    <div class="notif-body">
+      <div class="notif-title">${title}</div>
+      <div class="notif-msg">${msg}</div>
+    </div>
+    <button class="notif-close" onclick="dismissNotif(this)">&times;</button>
+    <div class="notif-progress" style="animation-duration:${duration}ms"></div>
+  `;
+  container.appendChild(notif);
+  setTimeout(() => dismissNotif(notif.querySelector('.notif-close')), duration);
+}
 
-// Particles
+function dismissNotif(btn) {
+  const notif = btn.closest('.notif');
+  if (!notif || notif.classList.contains('removing')) return;
+  notif.classList.add('removing');
+  setTimeout(() => notif.remove(), 300);
+}
+
+// ===== LOADING SCREEN =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+    setTimeout(() => {
+      animateCounters();
+      showNotif('success', 'Welcome to Toxic-APIs', '36 free API endpoints ready to use. No API key required!');
+    }, 400);
+  }, 2200);
+});
+
+// ===== PARTICLES =====
 function createParticles() {
   const container = document.getElementById('particles');
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 35; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
+    const colors = ['var(--primary)', 'var(--accent)', 'var(--purple)', 'var(--pink)'];
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
     p.style.left = Math.random() * 100 + '%';
-    p.style.animationDuration = (8 + Math.random() * 12) + 's';
-    p.style.animationDelay = Math.random() * 10 + 's';
-    p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+    p.style.animationDuration = (10 + Math.random() * 15) + 's';
+    p.style.animationDelay = Math.random() * 12 + 's';
+    const size = 2 + Math.random() * 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
     container.appendChild(p);
   }
 }
 createParticles();
 
-// Counter animation
+// ===== COUNTER ANIMATION =====
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
-    let current = 0;
-    const step = target / 40;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) { current = target; clearInterval(timer); }
-      el.textContent = Math.round(current);
-    }, 30);
+    const duration = 1500;
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased);
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   });
 }
-setTimeout(animateCounters, 500);
 
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ===== SCROLL REVEAL =====
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+function observeReveals() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+}
 
-// Nav active state
-document.querySelectorAll('[data-nav]').forEach(link => {
-  link.addEventListener('click', function(e) {
-    document.querySelectorAll('[data-nav]').forEach(l => l.classList.remove('active'));
-    this.classList.add('active');
+// ===== NAV =====
+const nav = document.getElementById('nav');
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  backToTop.classList.toggle('visible', window.scrollY > 600);
+  // Active nav
+  const sections = ['home', 'features', 'docs', 'status'];
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  });
+  document.querySelectorAll('[data-nav]').forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
   });
 });
 
-// Category tabs
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// Mobile menu
+document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('[data-nav]').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// ===== FEATURES =====
+function renderFeatures() {
+  const features = [
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>', title: 'Lightning Fast', desc: 'Optimized scrapers deliver responses in milliseconds with efficient processing.', bg: 'rgba(99,102,241,.12)', color: 'var(--primary2)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', title: 'No API Key Required', desc: 'Start making requests immediately. No registration, no authentication needed.', bg: 'rgba(6,182,212,.12)', color: 'var(--accent2)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', title: 'Developer Friendly', desc: 'Clean JSON responses, comprehensive docs, and code examples in multiple languages.', bg: 'rgba(34,197,94,.12)', color: 'var(--green)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', title: 'CORS Enabled', desc: 'Full CORS support - call endpoints from any frontend application or website.', bg: 'rgba(168,85,247,.12)', color: 'var(--purple)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>', title: '6 Categories', desc: 'AI, downloaders, anime/manga, gaming, search, and tools - all in one place.', bg: 'rgba(236,72,153,.12)', color: 'var(--pink)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', title: 'Reliable & Stable', desc: '99.9% uptime with automatic health monitoring and real-time status tracking.', bg: 'rgba(234,179,8,.12)', color: 'var(--yellow)' }
+  ];
+  const grid = document.getElementById('featuresGrid');
+  grid.innerHTML = features.map((f, i) => `
+    <div class="feature-card reveal reveal-delay-${(i % 3) + 1}">
+      <div class="feature-icon" style="background:${f.bg};color:${f.color}">${f.icon}</div>
+      <h3>${f.title}</h3>
+      <p>${f.desc}</p>
+    </div>
+  `).join('');
+}
+
+// ===== CATEGORY TABS =====
 function renderCategoryTabs() {
   const tabs = document.getElementById('catTabs');
-  let html = `<div class="cat-tab ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">All <span class="count">36</span></div>`;
+  const total = categories.reduce((s, c) => s + c.endpoints.length, 0);
+  let html = `<div class="cat-tab ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">All <span class="count">${total}</span></div>`;
   categories.forEach(cat => {
     html += `<div class="cat-tab ${activeCategory === cat.name ? 'active' : ''}" onclick="filterCategory('${cat.name}')">${cat.name} <span class="count">${cat.endpoints.length}</span></div>`;
   });
@@ -494,138 +724,191 @@ function filterCategory(name) {
   activeCategory = name;
   renderCategoryTabs();
   renderEndpoints();
+  showNotif('info', 'Filter Applied', name === 'all' ? 'Showing all 36 endpoints' : `Showing ${categories.find(c=>c.name===name)?.endpoints.length || 0} ${name} endpoints`);
 }
 
-// Render endpoints
+// ===== SEARCH =====
+function handleSearch(query) {
+  searchQuery = query.toLowerCase().trim();
+  renderEndpoints();
+}
+
+// ===== RENDER ENDPOINTS =====
 function renderEndpoints() {
   const container = document.getElementById('endpointsContainer');
   let html = '';
   const filtered = activeCategory === 'all' ? categories : categories.filter(c => c.name === activeCategory);
 
   filtered.forEach(cat => {
-    html += `<div style="margin-bottom:32px" class="reveal visible">
-      <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px">
-        <span style="width:10px;height:10px;border-radius:50%;background:${cat.color}"></span>
-        ${cat.name} <span style="color:var(--text3);font-size:14px;font-weight:400">(${cat.endpoints.length} endpoints)</span>
+    const eps = searchQuery
+      ? cat.endpoints.filter(ep => ep.name.toLowerCase().includes(searchQuery) || ep.desc.toLowerCase().includes(searchQuery))
+      : cat.endpoints;
+    if (eps.length === 0) return;
+
+    html += `<div style="margin-bottom:28px" class="reveal visible">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px">
+        <span class="cat-dot" style="background:${cat.color}"></span>
+        ${cat.name}
+        <span style="color:var(--text3);font-size:13px;font-weight:400">${eps.length} endpoint${eps.length > 1 ? 's' : ''}</span>
       </h3>
       <div class="endpoints-grid">`;
 
-    cat.endpoints.forEach((ep, i) => {
-      const id = cat.name.replace(/\s/g,'') + '_' + i;
-      const fullUrl = BASE_URL + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
-
-      html += `<div class="endpoint-card" id="card_${id}">
-        <div class="endpoint-header" onclick="toggleCard('${id}')">
-          <div class="endpoint-left">
-            <span class="method-badge method-${ep.method}">${ep.method}</span>
-            <div class="endpoint-info">
-              <h3>${ep.name}</h3>
-              <p>${ep.desc}</p>
-            </div>
-          </div>
-          <span class="endpoint-path">${ep.path}</span>
-          <svg class="expand-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="endpoint-body">
-          <div class="endpoint-url">
-            <code>${fullUrl}</code>
-            <button class="copy-btn" onclick="copyText('${fullUrl.replace(/'/g,"\\'")}')">Copy URL</button>
-          </div>`;
-
-      if (ep.method === 'GET' && ep.params.length > 0) {
-        html += `<div class="try-section">
-          <label>Try it out</label>
-          <div class="try-row">`;
-        ep.params.forEach(p => {
-          html += `<input class="try-input" id="input_${id}_${p.key}" placeholder="${p.key}: ${p.example}" value="${p.example}">`;
-        });
-        html += `<button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',${JSON.stringify(ep.params.map(p=>p.key))})">Send</button>
-          </div>
-        </div>
-        <div class="response-area hidden" id="response_${id}">
-          <div class="response-header">
-            <div class="response-status" id="resStatus_${id}"></div>
-            <button class="copy-btn" onclick="copyResponse('${id}')">Copy Response</button>
-          </div>
-          <div class="response-body"><pre id="resBody_${id}"></pre></div>
-        </div>`;
-      } else if (ep.method === 'GET' && ep.params.length === 0) {
-        html += `<div class="try-section">
-          <button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',[])">Send Request</button>
-        </div>
-        <div class="response-area hidden" id="response_${id}">
-          <div class="response-header">
-            <div class="response-status" id="resStatus_${id}"></div>
-            <button class="copy-btn" onclick="copyResponse('${id}')">Copy Response</button>
-          </div>
-          <div class="response-body"><pre id="resBody_${id}"></pre></div>
-        </div>`;
-      } else {
-        html += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:12px;color:var(--text2);font-size:13px">
-          This is a POST endpoint. Use programmatic access (fetch/axios/curl) to interact with this endpoint.
-        </div>`;
-      }
-
-      // Code examples
-      html += `<div class="code-tabs" style="margin-top:16px">
-        <div class="code-tab active" onclick="showCode('${id}','js',this)">JavaScript</div>
-        <div class="code-tab" onclick="showCode('${id}','py',this)">Python</div>
-        <div class="code-tab" onclick="showCode('${id}','curl',this)">cURL</div>
-      </div>
-      <div class="code-block">
-        <code id="codeBlock_${id}">${getCodeExample(ep, 'js')}</code>
-        <button class="copy-btn code-copy" onclick="copyCodeBlock('${id}')">Copy</button>
-      </div>`;
-
-      html += `</div></div>`;
+    eps.forEach((ep, i) => {
+      const id = cat.name.replace(/\s/g, '') + '_' + i;
+      html += buildEndpointCard(ep, id, cat);
     });
 
     html += `</div></div>`;
   });
 
+  if (!html) {
+    html = `<div style="text-align:center;padding:60px 20px;color:var(--text3)">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 16px;display:block;opacity:.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p style="font-size:16px;font-weight:600;color:var(--text2)">No endpoints found</p>
+      <p style="font-size:14px;margin-top:4px">Try a different search term</p>
+    </div>`;
+  }
+
   container.innerHTML = html;
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  observeReveals();
+}
+
+function buildEndpointCard(ep, id, cat) {
+  const statusDot = statusResults[ep.path] ? (statusResults[ep.path].ok ? 'online' : 'offline') : '';
+
+  let body = `<div class="endpoint-body"><div class="endpoint-body-inner">`;
+
+  if (ep.method === 'GET') {
+    if (ep.params.length > 0) {
+      body += `<div class="try-section">
+        <label>Try it out</label>
+        <div class="try-row">`;
+      ep.params.forEach(p => {
+        body += `<input class="try-input" id="input_${id}_${p.key}" placeholder="${p.key}" value="${p.example}">`;
+      });
+      body += `<button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',${JSON.stringify(ep.params.map(p=>p.key))})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Execute
+        </button></div></div>`;
+    } else {
+      body += `<div class="try-section">
+        <button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',[])">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Execute
+        </button></div>`;
+    }
+    body += `<div class="response-area hidden" id="response_${id}">
+      <div class="response-header">
+        <div class="response-status" id="resStatus_${id}"></div>
+        <button class="copy-btn" onclick="copyResponse('${id}',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>
+      <div class="response-body"><pre id="resBody_${id}"></pre></div>
+    </div>`;
+  } else {
+    body += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:12px;color:var(--text2);font-size:13px;line-height:1.7">
+      <strong style="color:var(--orange)">POST Endpoint</strong> &mdash; Use programmatic access (fetch, axios, or curl) to interact with this endpoint. See code examples below.
+    </div>`;
+  }
+
+  // Code examples
+  body += `<div class="code-tabs" style="margin-top:16px">
+    <div class="code-tab active" onclick="showCode('${id}','js',this)">JavaScript</div>
+    <div class="code-tab" onclick="showCode('${id}','py',this)">Python</div>
+    <div class="code-tab" onclick="showCode('${id}','curl',this)">cURL</div>
+  </div>
+  <div class="code-block">
+    <code id="codeBlock_${id}">${getCodeExample(ep, 'js')}</code>
+    <button class="copy-btn code-copy" onclick="copyCodeBlock('${id}',this)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy
+    </button>
+  </div>`;
+
+  body += `</div></div>`;
+
+  return `<div class="endpoint-card" id="card_${id}">
+    <div class="shimmer-line"></div>
+    <div class="endpoint-header" onclick="toggleCard('${id}')">
+      <div class="endpoint-left">
+        <span class="method-badge method-${ep.method}">${ep.method}</span>
+        <div class="endpoint-info">
+          <h3>${ep.name}</h3>
+          <p>${ep.desc}</p>
+        </div>
+      </div>
+      <div class="endpoint-status">
+        ${statusDot ? `<span class="status-dot ${statusDot}"></span>` : ''}
+      </div>
+      <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    ${body}
+  </div>`;
 }
 
 function getCodeExample(ep, lang) {
-  const url = BASE_URL + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
+  const paramStr = ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '';
+  const url = SITE_URL + ep.path + paramStr;
+
   if (lang === 'js') {
+    if (ep.method === 'POST') {
+      return `const response = await fetch("${url}", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ /* your data */ })
+});
+const data = await response.json();
+console.log(data);`;
+    }
     return `const response = await fetch("${url}");
 const data = await response.json();
 console.log(data);`;
   } else if (lang === 'py') {
+    if (ep.method === 'POST') {
+      return `import requests
+
+response = requests.post("${url}",
+    json={"key": "value"})
+print(response.json())`;
+    }
     return `import requests
 
 response = requests.get("${url}")
-data = response.json()
-print(data)`;
+print(response.json())`;
   } else {
+    if (ep.method === 'POST') {
+      return `curl -X POST "${url}" \\
+  -H "Content-Type: application/json" \\
+  -d '{"key": "value"}'`;
+    }
     return `curl "${url}"`;
   }
 }
 
 function showCode(id, lang, tab) {
-  const card = document.getElementById('card_' + id);
-  const idx = categories.flatMap(c => c.endpoints.map((ep,i) => ({ep, cat: c.name, i}))).findIndex(x => (x.cat.replace(/\s/g,'') + '_' + x.i) === id);
-  if (idx === -1) return;
-  const item = categories.flatMap(c => c.endpoints)[idx];
-  document.getElementById('codeBlock_' + id).textContent = getCodeExample(item, lang);
+  const allEps = categories.flatMap(c => c.endpoints.map((ep, i) => ({ ep, cat: c.name, i })));
+  const match = allEps.find(x => (x.cat.replace(/\s/g, '') + '_' + x.i) === id);
+  if (!match) return;
+  document.getElementById('codeBlock_' + id).textContent = getCodeExample(match.ep, lang);
   tab.parentElement.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
 }
 
 function toggleCard(id) {
-  document.getElementById('card_' + id).classList.toggle('open');
+  const card = document.getElementById('card_' + id);
+  card.classList.toggle('open');
 }
 
-// Try endpoint
+// ===== TRY ENDPOINT =====
 async function tryEndpoint(id, path, paramKeys) {
   const btn = document.getElementById('tryBtn_' + id);
   const responseArea = document.getElementById('response_' + id);
   const resStatus = document.getElementById('resStatus_' + id);
   const resBody = document.getElementById('resBody_' + id);
 
-  let url = BASE_URL + path;
+  let url = BACKEND + path;
   if (paramKeys.length > 0) {
     const params = paramKeys.map(key => {
       const input = document.getElementById('input_' + id + '_' + key);
@@ -635,9 +918,9 @@ async function tryEndpoint(id, path, paramKeys) {
   }
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Loading...';
+  btn.innerHTML = '<span class="spinner spinner-sm"></span> Executing...';
   responseArea.classList.remove('hidden');
-  resStatus.innerHTML = '<span class="dot checking"></span> Requesting...';
+  resStatus.innerHTML = '<span class="dot loading"></span> Sending request...';
   resBody.textContent = '';
 
   try {
@@ -647,35 +930,59 @@ async function tryEndpoint(id, path, paramKeys) {
     const contentType = res.headers.get('content-type') || '';
 
     if (contentType.includes('image')) {
-      resStatus.innerHTML = `<span class="dot success"></span> ${res.status} OK <span style="color:var(--text3)">${ms}ms</span>`;
-      resBody.innerHTML = `<img src="${url}" alt="Response image" style="max-width:100%;border-radius:8px">`;
+      resStatus.innerHTML = `<span class="dot success"></span> ${res.status} OK <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
+      resBody.innerHTML = `<img src="${url}" alt="Response image">`;
+      showNotif('success', 'Request Successful', `Image response received in ${ms}ms`);
     } else {
       const data = await res.json();
-      resStatus.innerHTML = `<span class="dot ${res.ok ? 'success' : 'error'}"></span> ${res.status} ${res.ok ? 'OK' : 'Error'} <span style="color:var(--text3)">${ms}ms</span>`;
+      resStatus.innerHTML = `<span class="dot ${res.ok ? 'success' : 'error'}"></span> ${res.status} ${res.ok ? 'OK' : 'Error'} <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
       resBody.textContent = JSON.stringify(data, null, 2);
+      if (res.ok) {
+        showNotif('success', 'Request Successful', `Response received in ${ms}ms`);
+      } else {
+        showNotif('warning', 'Request Failed', `Server returned ${res.status} status`);
+      }
     }
   } catch (err) {
-    resStatus.innerHTML = `<span class="dot error"></span> Error`;
-    resBody.textContent = 'Request failed: ' + err.message;
+    resStatus.innerHTML = '<span class="dot error"></span> Connection Error';
+    resBody.textContent = 'Failed to connect: ' + err.message;
+    showNotif('error', 'Request Error', err.message);
   }
 
   btn.disabled = false;
-  btn.textContent = 'Send';
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Execute';
 }
 
-// Status check
+// ===== STATUS =====
+function renderStatusOverview() {
+  const total = categories.reduce((s, c) => s + c.endpoints.length, 0);
+  const checked = Object.keys(statusResults).length;
+  const online = Object.values(statusResults).filter(r => r.ok).length;
+  const offline = checked - online;
+  document.getElementById('statusOverview').innerHTML = `
+    <div class="status-stat"><div class="num" style="color:var(--primary2)">${total}</div><div class="label">Total</div></div>
+    <div class="status-stat"><div class="num" style="color:var(--green)">${online}</div><div class="label">Online</div></div>
+    <div class="status-stat"><div class="num" style="color:var(--red)">${offline}</div><div class="label">Offline</div></div>
+    <div class="status-stat"><div class="num" style="color:var(--accent2)">${checked > 0 ? Math.round(online / total * 100) : 0}%</div><div class="label">Uptime</div></div>
+  `;
+}
+
 function renderStatusGrid() {
   const grid = document.getElementById('statusGrid');
   let html = '';
   categories.forEach(cat => {
     cat.endpoints.forEach(ep => {
-      html += `<div class="status-card" id="status_${ep.path.replace(/\//g,'_')}">
-        <span class="status-dot checking"></span>
+      const r = statusResults[ep.path];
+      const dotClass = r ? (r.ok ? 'online' : 'offline') : 'checking';
+      const msText = r ? (r.ok ? r.ms + 'ms' : 'FAIL') : '--';
+      const msColor = r ? (r.ok ? 'var(--green)' : 'var(--red)') : 'var(--text3)';
+      html += `<div class="status-card" id="status_${ep.path.replace(/\//g, '_')}">
+        <span class="status-dot-lg ${dotClass}"></span>
         <div class="status-info">
           <h4>${ep.name}</h4>
-          <p>${ep.path}</p>
+          <p>${ep.desc}</p>
         </div>
-        <span class="status-ms">--</span>
+        <span class="status-ms" style="color:${msColor}">${msText}</span>
       </div>`;
     });
   });
@@ -685,139 +992,148 @@ function renderStatusGrid() {
 async function checkAllStatus() {
   const btn = document.getElementById('checkStatusBtn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Checking...';
+  btn.innerHTML = '<span class="spinner spinner-sm"></span> Checking all endpoints...';
+  showNotif('info', 'Status Check Started', 'Checking all 36 endpoints...');
 
   const allEndpoints = categories.flatMap(c => c.endpoints);
+  let completed = 0;
+  let onlineCount = 0;
 
   for (const ep of allEndpoints) {
-    const id = 'status_' + ep.path.replace(/\//g,'_');
-    const card = document.getElementById(id);
-    if (!card) continue;
-    const dot = card.querySelector('.status-dot');
-    const msEl = card.querySelector('.status-ms');
-    dot.className = 'status-dot checking';
-    msEl.textContent = '...';
+    const sid = 'status_' + ep.path.replace(/\//g, '_');
+    const card = document.getElementById(sid);
+    if (card) {
+      card.querySelector('.status-dot-lg').className = 'status-dot-lg checking';
+      card.querySelector('.status-ms').textContent = '...';
+    }
 
     try {
-      const url = BASE_URL + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
+      const url = BACKEND + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
       const start = Date.now();
       const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
       const ms = Date.now() - start;
-      dot.className = 'status-dot ' + (res.ok ? 'online' : 'offline');
-      msEl.textContent = ms + 'ms';
-      msEl.style.color = res.ok ? 'var(--green)' : 'var(--red)';
+      statusResults[ep.path] = { ok: res.ok, ms };
+      if (res.ok) onlineCount++;
+      if (card) {
+        card.querySelector('.status-dot-lg').className = 'status-dot-lg ' + (res.ok ? 'online' : 'offline');
+        card.querySelector('.status-ms').textContent = ms + 'ms';
+        card.querySelector('.status-ms').style.color = res.ok ? 'var(--green)' : 'var(--red)';
+      }
     } catch {
-      dot.className = 'status-dot offline';
-      msEl.textContent = 'FAIL';
-      msEl.style.color = 'var(--red)';
+      statusResults[ep.path] = { ok: false, ms: 0 };
+      if (card) {
+        card.querySelector('.status-dot-lg').className = 'status-dot-lg offline';
+        card.querySelector('.status-ms').textContent = 'FAIL';
+        card.querySelector('.status-ms').style.color = 'var(--red)';
+      }
     }
+    completed++;
   }
+
+  renderStatusOverview();
+  renderEndpoints();
 
   btn.disabled = false;
   btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Check All Endpoints';
+
+  showNotif(onlineCount === allEndpoints.length ? 'success' : 'warning',
+    'Status Check Complete',
+    `${onlineCount}/${allEndpoints.length} endpoints online`
+  );
 }
 
-// Copy helpers
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    event.target.textContent = 'Copied!';
-    event.target.classList.add('copied');
-    setTimeout(() => {
-      event.target.textContent = event.target.textContent === 'Copied!' ? 'Copy' : event.target.textContent;
-      event.target.classList.remove('copied');
-    }, 1500);
-  });
-}
-
-function copyResponse(id) {
-  const text = document.getElementById('resBody_' + id).textContent;
-  navigator.clipboard.writeText(text);
-  event.target.textContent = 'Copied!';
-  event.target.classList.add('copied');
-  setTimeout(() => { event.target.textContent = 'Copy Response'; event.target.classList.remove('copied'); }, 1500);
-}
-
-function copyCodeBlock(id) {
-  const text = document.getElementById('codeBlock_' + id).textContent;
-  navigator.clipboard.writeText(text);
-  event.target.textContent = 'Copied!';
-  event.target.classList.add('copied');
-  setTimeout(() => { event.target.textContent = 'Copy'; event.target.classList.remove('copied'); }, 1500);
-}
-
-// Quick start code
+// ===== QUICK START CODE =====
 const quickCodeExamples = {
-  js: `// Fetch AI response
-const res = await fetch("${'{BASE_URL}'}/ai/claude?text=Hello");
-const data = await res.json();
+  js: `// Chat with Claude AI
+const response = await fetch("${SITE_URL}/ai/claude?text=Hello");
+const data = await response.json();
 console.log(data);
 
 // Download YouTube video info
-const yt = await fetch("${'{BASE_URL}'}/download/youtube?url=https://youtu.be/example");
+const yt = await fetch("${SITE_URL}/download/youtube?url=VIDEO_URL");
 console.log(await yt.json());
 
 // Search for songs
-const songs = await fetch("${'{BASE_URL}'}/search/song?q=Bohemian Rhapsody");
+const songs = await fetch("${SITE_URL}/search/song?q=Bohemian+Rhapsody");
 console.log(await songs.json());`,
   py: `import requests
 
-# Fetch AI response
-res = requests.get(f"${'{BASE_URL}'}/ai/claude?text=Hello")
+# Chat with Claude AI
+res = requests.get("${SITE_URL}/ai/claude", params={"text": "Hello"})
 print(res.json())
 
 # Currency conversion
-currency = requests.get(f"${'{BASE_URL}'}/tools/currency?amount=100&from=USD&to=EUR")
+currency = requests.get("${SITE_URL}/tools/currency",
+    params={"amount": "100", "from": "USD", "to": "EUR"})
 print(currency.json())
 
 # Search anime
-anime = requests.get(f"${'{BASE_URL}'}/anime/doronime?q=Naruto")
+anime = requests.get("${SITE_URL}/anime/doronime", params={"q": "Naruto"})
 print(anime.json())`,
   curl: `# AI Chat
-curl "${'{BASE_URL}'}/ai/claude?text=Hello"
+curl "${SITE_URL}/ai/claude?text=Hello"
 
 # Song Search
-curl "${'{BASE_URL}'}/search/song?q=Bohemian+Rhapsody"
+curl "${SITE_URL}/search/song?q=Bohemian+Rhapsody"
 
 # Currency Converter
-curl "${'{BASE_URL}'}/tools/currency?amount=100&from=USD&to=EUR"
+curl "${SITE_URL}/tools/currency?amount=100&from=USD&to=EUR"
 
 # Korean Name Generator
-curl "${'{BASE_URL}'}/tools/korean-name?name=Rizki"`
+curl "${SITE_URL}/tools/korean-name?name=Rizki"`
 };
 
 function showQuickCode(lang, tab) {
-  quickCodeLang = lang;
-  document.getElementById('quickCode').textContent = quickCodeExamples[lang].replace(/\{BASE_URL\}/g, BASE_URL);
+  document.getElementById('quickCode').textContent = quickCodeExamples[lang];
   tab.parentElement.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
 }
 
-function copyQuickCode() {
-  navigator.clipboard.writeText(document.getElementById('quickCode').textContent);
-  event.target.textContent = 'Copied!';
-  event.target.classList.add('copied');
-  setTimeout(() => { event.target.textContent = 'Copy'; event.target.classList.remove('copied'); }, 1500);
+function copyQuickCode(btn) {
+  const text = document.getElementById('quickCode').textContent;
+  navigator.clipboard.writeText(text);
+  markCopied(btn);
+  showNotif('success', 'Copied!', 'Quick start code copied to clipboard');
 }
 
-// Init
+// ===== COPY HELPERS =====
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text);
+  markCopied(btn);
+}
+
+function copyResponse(id, btn) {
+  const text = document.getElementById('resBody_' + id).textContent;
+  navigator.clipboard.writeText(text);
+  markCopied(btn);
+  showNotif('success', 'Copied!', 'API response copied to clipboard');
+}
+
+function copyCodeBlock(id, btn) {
+  const text = document.getElementById('codeBlock_' + id).textContent;
+  navigator.clipboard.writeText(text);
+  markCopied(btn);
+}
+
+function markCopied(btn) {
+  if (!btn) return;
+  const original = btn.innerHTML;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.innerHTML = original;
+    btn.classList.remove('copied');
+  }, 1500);
+}
+
+// ===== INIT =====
+renderFeatures();
 renderCategoryTabs();
 renderEndpoints();
+renderStatusOverview();
 renderStatusGrid();
 showQuickCode('js', document.querySelector('.quickstart .code-tab'));
-
-// Smooth scroll nav highlighting
-window.addEventListener('scroll', () => {
-  const sections = ['home', 'docs', 'status'];
-  let current = 'home';
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top <= 100) current = id;
-  });
-  document.querySelectorAll('[data-nav]').forEach(l => {
-    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-  });
-});
+observeReveals();
 </script>
-
 </body>
 </html>

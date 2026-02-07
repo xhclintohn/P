@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StatusDot } from "@/components/status-dot";
 import { BackButton } from "@/components/back-button";
-import { apiCategories, BASE_API_URL } from "@/lib/endpoints";
+import { apiCategories } from "@/lib/endpoints";
 import type { EndpointStatus, VisitorStats } from "@shared/schema";
 import {
   Brain, Download, Shuffle, Wrench, Search, Info, Repeat, Activity,
@@ -215,7 +215,12 @@ export default function Status() {
                             <StatusDot isOnline={isOnline} size="sm" />
                             <div className="min-w-0">
                               <p className="font-medium text-sm text-foreground truncate">{endpoint.name}</p>
-                              <code className="text-[11px] text-muted-foreground font-mono">{endpoint.method} {endpoint.path}</code>
+                              <p className="text-[11px] text-muted-foreground">
+                                <Badge variant="secondary" className="text-[10px] py-0 px-1 mr-1">
+                                  {endpoint.method}
+                                </Badge>
+                                {endpoint.desc.length > 60 ? endpoint.desc.slice(0, 60) + "..." : endpoint.desc}
+                              </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 flex-shrink-0">

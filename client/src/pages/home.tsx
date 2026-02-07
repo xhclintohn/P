@@ -111,19 +111,23 @@ export default function Home() {
     {
       lang: "JavaScript",
       icon: Globe,
-      code: `const response = await fetch(
-  window.location.origin + '/ai/claude?text=Hello!'
+      code: `const BASE_URL = 'https://your-api.replit.app';
+
+const response = await fetch(
+  \`\${BASE_URL}/ai/claude?text=Hello!\`
 );
 const data = await response.json();
-console.log(data.result);`,
+console.log(data.data);`,
     },
     {
       lang: "Python",
       icon: Server,
       code: `import requests
 
+BASE_URL = 'https://your-api.replit.app'
+
 response = requests.get(
-    'YOUR_REPLIT_URL/download/instagram',
+    f'{BASE_URL}/download/instagram',
     params={'url': 'https://instagram.com/reel/...'}
 )
 print(response.json())`,
@@ -132,10 +136,10 @@ print(response.json())`,
       lang: "cURL",
       icon: Terminal,
       code: `# Chat with Claude AI
-curl -X GET "YOUR_REPLIT_URL/ai/claude?text=Hello"
+curl "https://your-api.replit.app/ai/claude?text=Hello"
 
 # Download from YouTube
-curl -X GET "YOUR_REPLIT_URL/download/youtube?url=VIDEO_URL"`,
+curl "https://your-api.replit.app/download/youtube?url=VIDEO_URL"`,
     },
   ];
 
