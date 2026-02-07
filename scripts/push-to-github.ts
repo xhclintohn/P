@@ -5,7 +5,7 @@ import * as path from 'path';
 const OWNER = 'xhclintohn';
 const REPO = 'P';
 const BRANCH = 'main';
-const COMMIT_MESSAGE = 'feat: Add 36 working API scrapers with Express routes and static apis.html frontend';
+const COMMIT_MESSAGE = 'fix: Align endpoint methods and params across React frontend, apis.html, and server routes';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',

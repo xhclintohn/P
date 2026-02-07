@@ -161,9 +161,9 @@ export const apiCategories: ApiCategory[] = [
       {
         name: "Nanobana AI",
         desc: "AI-powered anime image generation via Nanobana platform",
-        method: "GET",
+        method: "POST",
         path: "/anime/nanobana",
-        example: "Requires image upload",
+        example: "Requires image upload (POST)",
         status: "active",
       },
       {
@@ -262,10 +262,10 @@ export const apiCategories: ApiCategory[] = [
       },
       {
         name: "Sound Effects",
-        desc: "Search instant sound buttons and effects from MyInstants",
+        desc: "Browse instant sound buttons and effects from MyInstants",
         method: "GET",
-        path: "/search/sounds?q=",
-        example: "Bruh sound effect",
+        path: "/search/sounds",
+        example: "List all sounds",
         status: "active",
       },
     ],

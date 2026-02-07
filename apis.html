@@ -359,9 +359,10 @@
 </footer>
 
 <script>
-const BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('.replit.dev'))
+const REPLIT_BACKEND = 'https://p-clintonyt.replit.app';
+const BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('.replit.dev') || window.location.hostname.includes('.replit.app'))
   ? window.location.origin
-  : 'https://toxic-apis.replit.app';
+  : REPLIT_BACKEND;
 
 const categories = [
   {
@@ -415,7 +416,7 @@ const categories = [
       { name: "Song Finder", desc: "Search songs with metadata", method: "GET", path: "/search/song", params: [{ key: "q", example: "Bohemian Rhapsody" }] },
       { name: "F-Droid Apps", desc: "Search open-source Android apps", method: "GET", path: "/search/fdroid", params: [{ key: "q", example: "Termux" }] },
       { name: "Meme Templates", desc: "Search meme templates", method: "GET", path: "/search/meme", params: [{ key: "q", example: "Drake meme" }] },
-      { name: "Sound Effects", desc: "Search sound effects", method: "GET", path: "/search/sounds", params: [{ key: "q", example: "Bruh sound effect" }] },
+      { name: "Sound Effects", desc: "Browse instant sound effects", method: "GET", path: "/search/sounds", params: [] },
     ]
   },
   {
