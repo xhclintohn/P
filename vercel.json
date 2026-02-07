@@ -3,6 +3,7 @@
   "installCommand": "npm install && cd client && npm install",
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "dist",
+  "framework": null,
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
@@ -19,6 +20,7 @@
     { "source": "/metrics", "destination": "/api/index" },
     { "source": "/health", "destination": "/api/index" },
     { "source": "/status", "destination": "/api/index" },
-    { "source": "/endpoints", "destination": "/api/index" }
+    { "source": "/endpoints", "destination": "/api/index" },
+    { "source": "/((?!api|ai|download|random|tools|metrics|health|status|endpoints).*)", "destination": "/index.html" }
   ]
 }

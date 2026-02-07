@@ -1,68 +1,74 @@
 {
-  "openai": [
+  "ai": [
     {
-      "name": "OSS",
-      "desc": "OSS ai",
+      "name": "AI Chat (OSS)",
+      "desc": "Chat with OSS 120B AI model - supports thinking mode for complex queries",
       "method": "GET",
       "status": "Active",
-      "path": "/ai/oss?text="
+      "path": "/ai/oss?text=",
+      "example": "Hello, explain quantum computing in simple terms"
     }
   ],
   "downloader": [
     {
-      "name": "Capcut",
-      "desc": "Downloader capcut",
+      "name": "CapCut Downloader",
+      "desc": "Download CapCut videos without watermark",
       "method": "GET",
       "status": "Active",
-      "path": "/download/capcut?url="
+      "path": "/download/capcut?url=",
+      "example": "https://www.capcut.com/t/example"
     },
     {
-      "name": "Facebook",
-      "desc": "Downloader facebook",
+      "name": "Facebook Video",
+      "desc": "Download Facebook videos and reels in HD quality",
       "method": "GET",
       "status": "Active",
-      "path": "/download/facebook?url="
+      "path": "/download/facebook?url=",
+      "example": "https://www.facebook.com/watch?v=example"
     },
     {
       "name": "SnackVideo",
-      "desc": "Downloader snack video",
+      "desc": "Download SnackVideo clips without watermark",
       "method": "GET",
       "status": "Active",
-      "path": "/download/snackvideo?url="
+      "path": "/download/snackvideo?url=",
+      "example": "https://www.snackvideo.com/video/example"
     },
     {
-      "name": "Twitter",
-      "desc": "Downloader twitter",
+      "name": "Twitter/X Video",
+      "desc": "Download videos and media from Twitter/X posts",
       "method": "GET",
       "status": "Active",
-      "path": "/download/x?url="
+      "path": "/download/x?url=",
+      "example": "https://twitter.com/user/status/example"
     },
     {
-      "name": "Mediafire",
-      "desc": "Downloader mediafire",
+      "name": "MediaFire",
+      "desc": "Get direct download links from MediaFire",
       "method": "GET",
       "status": "Active",
-      "path": "/download/mediafire?url="
+      "path": "/download/mediafire?url=",
+      "example": "https://www.mediafire.com/file/example"
     }
   ],
   "random": [
     {
       "name": "Blue Archive",
-      "desc": "Random foto blue archive",
+      "desc": "Get random Blue Archive character images",
       "method": "GET",
       "status": "Active",
       "path": "/random/ba"
     },
     {
       "name": "Random Waifu",
-      "desc": "Random foto waifu",
+      "desc": "Get random anime waifu images in HD",
       "method": "GET",
       "status": "Active",
       "path": "/random/waifu"
     },
     {
       "name": "Pap Ayang",
-      "desc": "Random pap ayang",
+      "desc": "Get random couple/aesthetic images",
       "method": "GET",
       "status": "Active",
       "path": "/random/papayang"
@@ -70,83 +76,49 @@
   ],
   "tools": [
     {
-      "name": "Unblur",
-      "desc": "Convert image to unblur",
+      "name": "Image Unblur",
+      "desc": "AI-powered image enhancement - remove blur and upscale quality",
       "method": "GET",
       "status": "Active",
-      "path": "/tools/unblur?url="
+      "path": "/tools/unblur?url=",
+      "example": "https://example.com/blurry-image.jpg"
     }
   ],
   "api": [
     {
-      "name": "Status Api",
-      "desc": "Server status and statistics",
+      "name": "API Status",
+      "desc": "Get server status, uptime, and request statistics",
       "method": "GET",
       "status": "Active",
       "path": "/api/status"
     },
     {
-      "name": "Metadata",
-      "desc": "Get API metadata and creator information",
-      "method": "GET",
-      "status": "Active",
-      "path": "/api/metadata"
-    },
-    {
-      "name": "Endpoints List",
-      "desc": "Get list of all available endpoints",
-      "method": "GET",
-      "status": "Active",
-      "path": "/api/endpoints"
-    },
-    {
       "name": "Health Check",
-      "desc": "Detailed health check with system metrics",
+      "desc": "Detailed health check with system metrics and memory usage",
       "method": "GET",
       "status": "Active",
       "path": "/api/health"
     },
     {
+      "name": "All Endpoints",
+      "desc": "Get a complete list of all available API endpoints",
+      "method": "GET",
+      "status": "Active",
+      "path": "/api/endpoints"
+    },
+    {
       "name": "Cache Statistics",
-      "desc": "Get cache performance statistics",
+      "desc": "View cache performance - hits, misses, and hit ratio",
       "method": "GET",
       "status": "Active",
       "path": "/api/cache/stats"
     },
     {
-      "name": "Prometheus Metrics",
-      "desc": "Get Prometheus metrics for monitoring",
-      "method": "GET",
-      "status": "Active",
-      "path": "/metrics"
-    },
-    {
-      "name": "Realtime Statistics",
-      "desc": "Get realtime endpoint statistics and response times",
-      "method": "GET",
-      "status": "Active",
-      "path": "/api/stats/realtime"
-    },
-    {
-      "name": "Endpoint Stats",
-      "desc": "Get statistics for specific endpoint",
-      "method": "GET",
-      "status": "Active",
-      "path": "/api/stats/endpoint?path="
-    },
-    {
       "name": "Top Endpoints",
-      "desc": "Get most requested endpoints",
+      "desc": "See the most popular endpoints by request count",
       "method": "GET",
       "status": "Active",
       "path": "/api/stats/top?limit=10"
-    },
-    {
-      "name": "Slowest Endpoints",
-      "desc": "Get endpoints with highest response time",
-      "method": "GET",
-      "status": "Active",
-      "path": "/api/stats/slowest?limit=10"
     }
   ]
 }

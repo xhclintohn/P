@@ -28,7 +28,7 @@
   }
 
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,212,255,0.4)];
+    @apply px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(168,85,247,0.4)];
   }
 
   .btn-secondary {
@@ -36,7 +36,7 @@
   }
 
   .card {
-    @apply bg-dark-card border border-dark-border rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-lg;
+    @apply bg-dark-card border border-dark-border rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5;
   }
 
   .input-field {
@@ -58,6 +58,20 @@
   .badge-error {
     @apply bg-red-500/10 text-red-400 border border-red-500/30;
   }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+
+  .shimmer-bg {
+    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
 }
 
 @layer utilities {
@@ -66,12 +80,23 @@
   }
 
   .glow {
-    @apply shadow-[0_0_20px_rgba(0,212,255,0.3)];
+    @apply shadow-[0_0_20px_rgba(168,85,247,0.3)];
+  }
+
+  .glow-lg {
+    @apply shadow-[0_0_40px_rgba(168,85,247,0.4)];
   }
 
   .animate-blink {
     animation: blink 2s ease-in-out infinite;
   }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
 }
 
 @keyframes blink {
@@ -79,10 +104,9 @@
   50% { opacity: 0.5; }
 }
 
-/* Scrollbar Styling */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
