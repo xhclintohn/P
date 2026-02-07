@@ -1,9 +1,7 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, writeFile } from "fs/promises";
 
-// server deps to bundle to reduce openat(2) syscalls
-// which helps cold start times
 const allowlist = [
   "@google/generative-ai",
   "axios",
@@ -62,6 +60,11 @@ async function buildAll() {
     external: externals,
     logLevel: "info",
   });
+
+  console.log("creating CJS entry point...");
+  await writeFile("dist/index.cjs", `(async () => { await import("./index.mjs"); })();\n`);
+
+  console.log("build complete!");
 }
 
 buildAll().catch((err) => {

@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toxic-APIs - Free RESTful API Service</title>
-  <meta name="description" content="Toxic-APIs: 36 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, search utilities, and image processing. No API key required.">
+  <meta name="description" content="Toxic-APIs: 43 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, sports scores, search utilities, and more. No API key required.">
   <meta property="og:title" content="Toxic-APIs - Free RESTful API Service">
-  <meta property="og:description" content="36 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools. No API key required.">
+  <meta property="og:description" content="43 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools, Sports. No API key required.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xhclinton.com/apis">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,20 +35,21 @@
     .container{max-width:1140px;margin:0 auto;padding:0 20px}
     @media(min-width:768px){.container{padding:0 32px}}
 
-    /* ====== LOADING SCREEN ====== */
-    #loadingScreen{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s ease}
+    /* LOADING SCREEN */
+    #loadingScreen{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility .8s}
     #loadingScreen.hidden{opacity:0;visibility:hidden;pointer-events:none}
     .loader-logo{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff;margin-bottom:28px;animation:loaderPulse 1.5s ease-in-out infinite;box-shadow:0 0 60px var(--primary-glow)}
     @keyframes loaderPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px var(--primary-glow)}50%{transform:scale(1.08);box-shadow:0 0 80px var(--primary-glow)}}
-    .loader-text{font-size:22px;font-weight:800;letter-spacing:2px;margin-bottom:12px;background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .loader-subtitle{font-size:13px;color:var(--text3);letter-spacing:4px;text-transform:uppercase;margin-bottom:32px}
-    .loader-bar{width:200px;height:3px;background:var(--bg3);border-radius:3px;overflow:hidden}
-    .loader-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent2));border-radius:3px;animation:loaderFill 2s ease-in-out forwards}
-    @keyframes loaderFill{0%{width:0%}50%{width:70%}100%{width:100%}}
+    .loader-text{font-size:22px;font-weight:800;letter-spacing:2px;margin-bottom:8px;background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .loader-terminal{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);margin-bottom:24px;height:18px;text-align:center;opacity:.9}
+    .loader-progress-wrap{width:260px;position:relative;margin-bottom:8px}
+    .loader-bar{width:100%;height:4px;background:var(--bg3);border-radius:4px;overflow:hidden}
+    .loader-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--accent2));border-radius:4px;transition:width .3s ease}
+    .loader-percent{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3);text-align:center;margin-top:6px}
 
-    /* ====== NOTIFICATION SYSTEM ====== */
+    /* NOTIFICATIONS */
     #notifContainer{position:fixed;top:80px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;max-width:380px;width:calc(100% - 40px)}
-    .notif{pointer-events:all;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:14px 18px;display:flex;align-items:flex-start;gap:12px;animation:notifIn .4s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:all .3s ease}
+    .notif{pointer-events:all;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:14px 18px;display:flex;align-items:flex-start;gap:12px;animation:notifIn .4s cubic-bezier(.16,1,.3,1) forwards;box-shadow:0 8px 32px rgba(0,0,0,.4);position:relative}
     .notif.removing{animation:notifOut .3s ease forwards}
     .notif-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
     .notif-icon.success{background:rgba(34,197,94,.15);color:var(--green)}
@@ -65,11 +66,11 @@
     @keyframes notifOut{to{opacity:0;transform:translateX(100%) scale(.9)}}
     @keyframes notifProgress{from{width:100%}to{width:0%}}
 
-    /* ====== NAVIGATION ====== */
+    /* NAV */
     .nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:all .4s ease}
     .nav.scrolled{background:rgba(10,10,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.3)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;gap:8px}
+    .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;flex-shrink:0}
     .nav-logo .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;transition:transform .3s}
     .nav-logo:hover .logo-icon{transform:rotate(-8deg) scale(1.05)}
     .nav-links{display:flex;gap:4px;align-items:center}
@@ -84,7 +85,7 @@
       .mobile-menu-btn{display:flex}
     }
 
-    /* ====== HERO ====== */
+    /* HERO */
     .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 0 40px}
     .hero::before{content:'';position:absolute;inset:0;background:
       radial-gradient(ellipse 800px 600px at 20% 40%,rgba(99,102,241,.12),transparent),
@@ -93,27 +94,22 @@
       animation:heroBgPulse 10s ease-in-out infinite alternate}
     @keyframes heroBgPulse{0%{opacity:.5}100%{opacity:1}}
     .hero::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(255,255,255,.01) 1px,rgba(255,255,255,.01) 2px);pointer-events:none}
-
     .hero-content{text-align:center;position:relative;z-index:2;max-width:800px;padding:20px}
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:8px 22px;font-size:13px;font-weight:600;color:var(--primary2);margin-bottom:28px;animation:fadeUp .6s ease;backdrop-filter:blur(12px)}
     .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,.6);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
     .hero-badge .sparkle{animation:sparkleAnim 2s ease-in-out infinite}
     @keyframes sparkleAnim{0%,100%{opacity:1;transform:rotate(0deg) scale(1)}50%{opacity:.6;transform:rotate(180deg) scale(.8)}}
-
     .hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:900;line-height:1.08;margin-bottom:24px;animation:fadeUp .6s ease .1s both;letter-spacing:-1px}
     .gradient-text{background:linear-gradient(135deg,var(--primary2),var(--accent2),var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300% auto;animation:gradientShift 4s linear infinite}
     @keyframes gradientShift{0%{background-position:0% center}100%{background-position:300% center}}
-
     .hero p{font-size:clamp(1rem,2.2vw,1.2rem);color:var(--text2);max-width:560px;margin:0 auto 36px;animation:fadeUp .6s ease .2s both;line-height:1.7}
     .hero p strong{color:var(--primary2);font-weight:600}
-
     .hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;animation:fadeUp .6s ease .3s both}
     .stat{text-align:center;position:relative}
     .stat-num{font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--primary2),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     .stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;font-weight:600}
     .stat+.stat::before{content:'';position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:1px;height:30px;background:var(--border2)}
-
     .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .6s ease .4s both}
 
     /* Buttons */
@@ -136,12 +132,10 @@
     .particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
     .particle{position:absolute;border-radius:50%;opacity:0;animation:floatUp linear infinite}
     @keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg) scale(0);opacity:0}15%{opacity:.4;transform:scale(1)}85%{opacity:.4}100%{transform:translateY(-10vh) rotate(720deg) scale(0);opacity:0}}
-
-    /* Glow orbs */
     .glow-orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;animation:orbFloat 12s ease-in-out infinite alternate}
     @keyframes orbFloat{0%{transform:translate(0,0)}50%{transform:translate(30px,-40px)}100%{transform:translate(-20px,20px)}}
 
-    /* ====== SECTIONS ====== */
+    /* SECTIONS */
     section{padding:80px 0;position:relative}
     @media(min-width:768px){section{padding:100px 0}}
     .section-header{text-align:center;margin-bottom:48px}
@@ -149,7 +143,7 @@
     .section-header h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
     .section-header p{color:var(--text2);font-size:1rem;max-width:480px;margin:0 auto}
 
-    /* ====== FEATURES ====== */
+    /* FEATURES */
     .features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
     @media(max-width:640px){.features-grid{grid-template-columns:1fr}}
     .feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
@@ -160,19 +154,17 @@
     .feature-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
     .feature-card p{font-size:14px;color:var(--text2);line-height:1.7}
 
-    /* ====== DOCS ====== */
+    /* DOCS */
     .search-bar{position:relative;margin-bottom:24px}
     .search-bar input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 14px 14px 48px;color:var(--text);font-size:15px;outline:none;transition:all .3s}
     .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
     .search-bar input::placeholder{color:var(--text3)}
     .search-bar .search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
-
     .cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:32px}
     .cat-tab{padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px;white-space:nowrap}
     .cat-tab:hover{border-color:var(--border2);color:var(--text);background:var(--bg3)}
     .cat-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 16px var(--primary-glow)}
     .cat-tab .count{font-size:11px;background:rgba(255,255,255,.15);padding:2px 7px;border-radius:100px}
-
     .endpoints-grid{display:grid;gap:12px}
     .endpoint-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .35s cubic-bezier(.16,1,.3,1)}
     .endpoint-card:hover{border-color:var(--border2)}
@@ -192,21 +184,20 @@
     .endpoint-status .status-dot.offline{background:var(--red)}
     .expand-icon{color:var(--text3);transition:transform .4s cubic-bezier(.16,1,.3,1);flex-shrink:0}
     .endpoint-card.open .expand-icon{transform:rotate(180deg)}
-
     .endpoint-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}
     .endpoint-card.open .endpoint-body{max-height:2000px}
     .endpoint-body-inner{padding:0 20px 20px;border-top:1px solid var(--border)}
-
     .try-section{margin-top:16px}
     .try-section label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text2);text-transform:uppercase;letter-spacing:1px}
-    .try-row{display:flex;gap:8px}
-    .try-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:all .3s}
+    .try-row{display:flex;gap:8px;flex-wrap:wrap}
+    .try-input{flex:1;min-width:120px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:all .3s}
     .try-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
     .try-input::placeholder{color:var(--text3)}
     .try-btn{background:linear-gradient(135deg,var(--primary),var(--primary3));color:#fff;border:none;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;white-space:nowrap;box-shadow:0 2px 12px var(--primary-glow)}
     .try-btn:hover{box-shadow:0 4px 24px var(--primary-glow);transform:translateY(-1px)}
     .try-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-
+    .try-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+    .post-notice{background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--orange);display:flex;align-items:center;gap:8px}
     .response-area{margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;animation:scaleIn .3s ease}
     .response-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap}
     .response-status{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
@@ -232,17 +223,13 @@
     .code-block{background:var(--bg2);border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:16px;position:relative;overflow-x:auto}
     .code-block code{font-size:13px;line-height:1.8;color:var(--text2);display:block;white-space:pre}
     .code-copy{position:absolute;top:10px;right:10px}
-
-    /* Base URL bar */
     .base-url-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;backdrop-filter:blur(12px)}
     .base-url-bar label{font-size:12px;font-weight:700;color:var(--text3);white-space:nowrap;text-transform:uppercase;letter-spacing:1px}
     .base-url-bar code{font-size:14px;color:var(--accent2);word-break:break-all;flex:1}
-
-    /* Quick start */
     .quickstart{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:32px}
     .quickstart h3{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 
-    /* ====== STATUS ====== */
+    /* STATUS */
     .status-overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px}
     .status-stat{text-align:center;padding:20px 12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm)}
     .status-stat .num{font-size:1.8rem;font-weight:800;margin-bottom:2px}
@@ -260,7 +247,7 @@
     .status-info p{font-size:12px;color:var(--text3)}
     .status-ms{font-size:13px;font-weight:600;color:var(--text3);font-family:'JetBrains Mono',monospace;flex-shrink:0}
 
-    /* ====== FOOTER ====== */
+    /* FOOTER */
     footer{border-top:1px solid var(--border);padding:40px 0}
     .footer-inner{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
     .footer-logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
@@ -269,30 +256,27 @@
     footer a{color:var(--primary2);transition:color .2s}
     footer a:hover{text-decoration:underline;color:var(--accent2)}
 
-    /* ====== SCROLL REVEAL ====== */
+    /* SCROLL REVEAL */
     .reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.16,1,.3,1)}
     .reveal.visible{opacity:1;transform:translateY(0)}
     .reveal-delay-1{transition-delay:.1s}
     .reveal-delay-2{transition-delay:.2s}
     .reveal-delay-3{transition-delay:.3s}
 
-    /* ====== SCROLLBAR ====== */
+    /* SCROLLBAR */
     ::-webkit-scrollbar{width:6px;height:6px}
     ::-webkit-scrollbar-track{background:var(--bg)}
     ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
     ::-webkit-scrollbar-thumb:hover{background:var(--text3)}
 
-    /* Spinner */
     .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
     .spinner-sm{width:14px;height:14px}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* Back to top */
     .back-to-top{position:fixed;bottom:24px;right:24px;z-index:900;width:44px;height:44px;border-radius:12px;background:var(--primary);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--primary-glow);opacity:0;visibility:hidden;transition:all .3s;transform:translateY(10px)}
     .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
     .back-to-top:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
 
-    /* Responsive */
     @media(max-width:640px){
       .hero-stats{gap:16px}
       .stat-num{font-size:1.8rem}
@@ -305,17 +289,6 @@
       section{padding:60px 0}
       .features-grid{gap:12px}
     }
-
-    /* Category header colors */
-    .cat-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-
-    /* Floating animation for decorative elements */
-    @keyframes gentleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .float-anim{animation:gentleFloat 4s ease-in-out infinite}
-
-    /* Shimmer overlay for special cards */
-    .shimmer-line{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary-glow),transparent);opacity:0;transition:opacity .4s}
-    .endpoint-card:hover .shimmer-line{opacity:1}
   </style>
 </head>
 <body>
@@ -324,8 +297,11 @@
 <div id="loadingScreen">
   <div class="loader-logo">T</div>
   <div class="loader-text">TOXIC-APIS</div>
-  <div class="loader-subtitle">Loading Experience</div>
-  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  <div class="loader-terminal" id="loaderTerminal">Initializing...</div>
+  <div class="loader-progress-wrap">
+    <div class="loader-bar"><div class="loader-bar-fill" id="loaderBarFill"></div></div>
+    <div class="loader-percent" id="loaderPercent">0%</div>
+  </div>
 </div>
 
 <!-- NOTIFICATIONS -->
@@ -368,12 +344,13 @@
       <svg class="sparkle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z"/></svg>
     </div>
     <h1>The Ultimate<br><span class="gradient-text">REST API Service</span></h1>
-    <p>36 powerful endpoints for AI chat, media downloading, anime scraping, gaming tools, and more. <strong>Free, fast, no API key required.</strong></p>
+    <p>43 powerful endpoints for AI chat, media downloading, anime scraping, gaming tools, sports scores, and more. <strong>Free, fast, no API key required.</strong></p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num" data-count="36">0</div><div class="stat-label">Endpoints</div></div>
-      <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">Categories</div></div>
+      <div class="stat"><div class="stat-num" data-count="43">0</div><div class="stat-label">Endpoints</div></div>
+      <div class="stat"><div class="stat-num" data-count="7">0</div><div class="stat-label">Categories</div></div>
       <div class="stat"><div class="stat-num" data-count="100">0</div><div class="stat-label">% Free</div></div>
       <div class="stat"><div class="stat-num" data-count="0">0</div><div class="stat-label">API Keys</div></div>
+      <div class="stat"><div class="stat-num" id="visitorCount" data-count="0">0</div><div class="stat-label">Total Visits</div></div>
     </div>
     <div class="hero-btns">
       <a href="#docs" class="btn btn-primary">
@@ -416,7 +393,7 @@
         Documentation
       </div>
       <h2>API <span class="gradient-text">Documentation</span></h2>
-      <p>Browse, test, and integrate all 36 endpoints</p>
+      <p>Browse, test, and integrate all 43 endpoints</p>
     </div>
 
     <div class="base-url-bar reveal">
@@ -489,20 +466,17 @@
         <span class="logo-icon">T</span>
         Toxic-APIs
       </div>
-      <p>36 Free REST API Endpoints &mdash; No API Key Required</p>
-      <p>Built by <a href="https://github.com/xhclintohn" target="_blank" rel="noopener">xh_clintohn</a></p>
+      <p>43 Free REST API Endpoints &mdash; No API Key Required</p>
+      <p>Built by <a href="https://github.com/xhclintohn" target="_blank" rel="noopener">xh_clinton</a></p>
     </div>
   </div>
 </footer>
 
 <script>
 // ===== CONFIGURATION =====
-const BACKEND = (() => {
-  const host = window.location.hostname;
-  if (host === 'localhost' || host === '127.0.0.1') return window.location.origin;
-  if (host.includes('.replit.dev') || host.includes('.replit.app')) return window.location.origin;
-  return 'https://toxic-apis.replit.app';
-})();
+const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+const isReplit = location.hostname.includes('.replit');
+const BACKEND = (isLocal || isReplit) ? '' : 'https://toxic-apis.replit.app';
 const SITE_URL = 'https://xhclinton.com/apis';
 
 // ===== CATEGORIES DATA =====
@@ -510,44 +484,47 @@ const categories = [
   {
     name:"AI", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2 4 4 0 0 1-4 4 4 4 0 0 1-4-4 2 2 0 0 1-2-2V9a2 2 0 0 1 2-2V6a4 4 0 0 1 4-4z"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/></svg>', color:"#6366f1",
     endpoints:[
-      {name:"Claude AI",desc:"Chat with Claude AI model - fast, intelligent responses",method:"GET",path:"/ai/claude",params:[{key:"text",example:"Explain quantum computing"}]},
-      {name:"Gemini AI",desc:"Google Gemini AI chat with multi-model options",method:"GET",path:"/ai/gemini",params:[{key:"text",example:"What is machine learning?"}]},
-      {name:"NoteGPT",desc:"GPT-4.1 Mini powered AI chat",method:"GET",path:"/ai/notegpt",params:[{key:"text",example:"Write a short poem about coding"}]},
-      {name:"AI Image Generator",desc:"Generate photorealistic images from text prompts",method:"GET",path:"/ai/imagine",params:[{key:"prompt",example:"A futuristic city at sunset"}]},
-      {name:"Vider AI Art",desc:"Create AI artwork with Vider engine",method:"GET",path:"/ai/vider",params:[{key:"prompt",example:"Anime girl with blue hair"}]}
+      {name:"Claude AI",desc:"Chat with Claude AI model",method:"GET",path:"/ai/claude",params:[{key:"text",example:"Hello"}]},
+      {name:"Gemini AI",desc:"Google Gemini AI chat with multi-model support",method:"GET",path:"/ai/gemini",params:[{key:"text",example:"Hello"},{key:"model",example:"gemini-2-5-flash"}]},
+      {name:"NoteGPT",desc:"GPT-4.1 Mini powered AI chat",method:"GET",path:"/ai/notegpt",params:[{key:"text",example:"Hello"}]},
+      {name:"AI Image Gen",desc:"Generate photorealistic images from text prompts",method:"GET",path:"/ai/imagine",params:[{key:"prompt",example:"beautiful sunset"},{key:"style",example:"photorealistic"}]},
+      {name:"WormGPT",desc:"WormGPT unrestricted AI image generation",method:"GET",path:"/ai/wormgpt",params:[{key:"prompt",example:"futuristic city"},{key:"style",example:"digital-art"}]},
+      {name:"Vider AI Art",desc:"Create AI artwork with Vider engine",method:"GET",path:"/ai/vider",params:[{key:"prompt",example:"a cat"}]}
     ]
   },
   {
     name:"Downloaders", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>', color:"#06b6d4",
     endpoints:[
-      {name:"Facebook Video",desc:"Download Facebook videos in HD/SD quality",method:"GET",path:"/download/facebook",params:[{key:"url",example:"https://www.facebook.com/watch?v=example"}]},
-      {name:"Instagram",desc:"Download Instagram reels, posts & stories",method:"GET",path:"/download/instagram",params:[{key:"url",example:"https://www.instagram.com/reel/example"}]},
-      {name:"Twitter/X Video",desc:"Download videos from Twitter/X posts",method:"GET",path:"/download/x",params:[{key:"url",example:"https://x.com/user/status/123456789"}]},
-      {name:"Douyin Video",desc:"Download Douyin videos without watermark",method:"GET",path:"/download/douyin",params:[{key:"url",example:"https://v.douyin.com/example"}]},
-      {name:"YouTube",desc:"Download YouTube videos in multiple formats",method:"GET",path:"/download/youtube",params:[{key:"url",example:"https://youtu.be/dQw4w9WgXcQ"}]},
-      {name:"YouTube v2",desc:"Alternative YouTube downloader",method:"GET",path:"/download/youtube2",params:[{key:"url",example:"https://youtu.be/dQw4w9WgXcQ"}]},
-      {name:"MediaFire",desc:"Get direct download links from MediaFire",method:"GET",path:"/download/mediafire",params:[{key:"url",example:"https://www.mediafire.com/file/example"}]},
-      {name:"TeraBox",desc:"Download from TeraBox cloud storage",method:"GET",path:"/download/terabox",params:[{key:"url",example:"https://www.terabox.com/sharing/link?surl=example"}]},
-      {name:"Downr Universal",desc:"Universal video downloader for multiple platforms",method:"GET",path:"/download/downr",params:[{key:"url",example:"https://www.youtube.com/watch?v=example"}]}
+      {name:"Facebook Video",desc:"Download Facebook videos in HD/SD",method:"GET",path:"/download/facebook",params:[{key:"url",example:"https://facebook.com/video/123"}]},
+      {name:"Instagram",desc:"Download Instagram reels, posts & stories",method:"GET",path:"/download/instagram",params:[{key:"url",example:"https://instagram.com/p/xyz"}]},
+      {name:"Twitter/X Video",desc:"Download videos from Twitter/X",method:"GET",path:"/download/x",params:[{key:"url",example:"https://x.com/user/status/123"}]},
+      {name:"Douyin Video",desc:"Download Douyin videos without watermark",method:"GET",path:"/download/douyin",params:[{key:"url",example:"https://douyin.com/video/123"}]},
+      {name:"YouTube",desc:"Download YouTube videos in multiple formats",method:"GET",path:"/download/youtube",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"mode",example:"video"}]},
+      {name:"YouTube v2",desc:"Alternative YouTube downloader",method:"GET",path:"/download/youtube2",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
+      {name:"YouTube MP3",desc:"YouTube to MP3 converter v1",method:"GET",path:"/download/ytmp3",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"bitrate",example:"320"}]},
+      {name:"YouTube MP3 v2",desc:"YouTube to MP3 converter v2",method:"GET",path:"/download/ytmp3v2",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
+      {name:"MediaFire",desc:"Get direct download links from MediaFire",method:"GET",path:"/download/mediafire",params:[{key:"url",example:"https://mediafire.com/file/xyz"}]},
+      {name:"TeraBox",desc:"Download from TeraBox cloud storage",method:"GET",path:"/download/terabox",params:[{key:"url",example:"https://terabox.com/s/1xyz"}]},
+      {name:"Downr Universal",desc:"Universal video downloader for multiple platforms",method:"GET",path:"/download/downr",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]}
     ]
   },
   {
-    name:"Anime & Manga", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>', color:"#ec4899",
+    name:"Anime & Manga", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>', color:"#ec4899",
     endpoints:[
       {name:"Doronime",desc:"Search and stream anime with episode listings",method:"GET",path:"/anime/doronime",params:[{key:"q",example:"Naruto"}]},
       {name:"OtakDesu",desc:"Browse anime on OtakDesu with detailed info",method:"GET",path:"/anime/otakdesu",params:[{key:"q",example:"One Piece"}]},
       {name:"Donghua Film",desc:"Search Chinese animated films (Donghua)",method:"GET",path:"/anime/donghua",params:[{key:"q",example:"Soul Land"}]},
       {name:"Nanobana AI",desc:"AI anime image generation via Nanobana",method:"POST",path:"/anime/nanobana",params:[]},
       {name:"KomikCast",desc:"Search manga on KomikCast with chapters",method:"GET",path:"/manga/komikcast",params:[{key:"q",example:"Solo Leveling"}]},
-      {name:"KomikIndo",desc:"Browse manga & manhwa on KomikIndo",method:"GET",path:"/manga/komikindo",params:[{key:"q",example:"Tower of God"}]},
-      {name:"OppaDrama",desc:"Search Korean dramas with episodes",method:"GET",path:"/drama/oppadrama",params:[{key:"q",example:"Squid Game"}]},
-      {name:"DramaBox",desc:"Browse short-form drama series",method:"GET",path:"/drama/dramabox",params:[{key:"q",example:"Romance drama"}]}
+      {name:"KomikIndo",desc:"Browse manga & manhwa on KomikIndo",method:"GET",path:"/manga/komikindo",params:[{key:"q",example:"Demon Slayer"}]},
+      {name:"OppaDrama",desc:"Search Korean dramas with episodes",method:"GET",path:"/drama/oppadrama",params:[{key:"q",example:"Goblin"}]},
+      {name:"DramaBox",desc:"Browse short-form drama series",method:"GET",path:"/drama/dramabox",params:[{key:"q",example:"Romance"}]}
     ]
   },
   {
     name:"Gaming", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>', color:"#eab308",
     endpoints:[
-      {name:"Enka Network",desc:"Genshin Impact player profiles & builds",method:"GET",path:"/game/enka",params:[{key:"uid",example:"800123456"}]},
+      {name:"Enka Network",desc:"Genshin Impact player profiles & builds",method:"GET",path:"/game/enka",params:[{key:"uid",example:"800103030"}]},
       {name:"Free Fire Characters",desc:"Get Free Fire character stats & abilities",method:"GET",path:"/game/ff-character",params:[]},
       {name:"Character Guide",desc:"Game character guides with tips & builds",method:"GET",path:"/game/character-guide",params:[{key:"name",example:"Raiden Shogun"}]}
     ]
@@ -556,19 +533,28 @@ const categories = [
     name:"Search", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>', color:"#22c55e",
     endpoints:[
       {name:"Song Finder",desc:"Search songs with metadata & album art",method:"GET",path:"/search/song",params:[{key:"q",example:"Bohemian Rhapsody"}]},
-      {name:"F-Droid Apps",desc:"Search open-source Android apps",method:"GET",path:"/search/fdroid",params:[{key:"q",example:"Termux"}]},
-      {name:"Meme Templates",desc:"Search popular meme templates",method:"GET",path:"/search/meme",params:[{key:"q",example:"Drake meme"}]},
+      {name:"F-Droid Apps",desc:"Search open-source Android apps",method:"GET",path:"/search/fdroid",params:[{key:"q",example:"browser"}]},
+      {name:"Meme Templates",desc:"Search popular meme templates",method:"GET",path:"/search/meme",params:[{key:"q",example:"drake"}]},
       {name:"Sound Effects",desc:"Browse instant sound effects",method:"GET",path:"/search/sounds",params:[]}
     ]
   },
   {
     name:"Tools", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', color:"#a855f7",
     endpoints:[
-      {name:"Image Upscaler",desc:"AI-powered image upscaling",method:"GET",path:"/tools/upscale",params:[{key:"code",example:"CHECK_CODE"}]},
-      {name:"YouTube Transcript",desc:"Extract YouTube video transcripts",method:"GET",path:"/tools/transcript",params:[{key:"url",example:"https://www.youtube.com/watch?v=example"}]},
-      {name:"Currency Converter",desc:"Real-time currency conversion",method:"GET",path:"/tools/currency",params:[{key:"amount",example:"100"},{key:"from",example:"USD"},{key:"to",example:"EUR"}]},
-      {name:"Korean Name Generator",desc:"Generate authentic Korean names",method:"GET",path:"/tools/korean-name",params:[{key:"name",example:"Rizki"}]},
-      {name:"Random ASCII Art",desc:"Generate random ASCII character strings",method:"GET",path:"/tools/ascii",params:[{key:"length",example:"32"}]}
+      {name:"Image Upscaler",desc:"AI-powered image upscaling",method:"GET",path:"/tools/upscale",params:[{key:"code",example:"abc123"}]},
+      {name:"YouTube Transcript",desc:"Extract YouTube video transcripts",method:"GET",path:"/tools/transcript",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
+      {name:"Currency Converter",desc:"Real-time currency conversion",method:"GET",path:"/tools/currency",params:[{key:"from",example:"USD"},{key:"to",example:"EUR"},{key:"amount",example:"100"}]},
+      {name:"Korean Name Generator",desc:"Generate authentic Korean names",method:"GET",path:"/tools/korean-name",params:[{key:"name",example:"Alex"}]},
+      {name:"Random ASCII Art",desc:"Generate random ASCII character strings",method:"GET",path:"/tools/ascii",params:[{key:"length",example:"10"}]}
+    ]
+  },
+  {
+    name:"Sports", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>', color:"#f97316",
+    endpoints:[
+      {name:"Football Scores",desc:"Live football/soccer scores worldwide",method:"GET",path:"/sports/football",params:[]},
+      {name:"Football Standings",desc:"Football league standings & tables",method:"GET",path:"/sports/football-standings",params:[{key:"league",example:"epl"}]},
+      {name:"NBA Scores",desc:"NBA basketball scores by date",method:"GET",path:"/sports/nba",params:[{key:"date",example:"20260207"}]},
+      {name:"Cricket Scores",desc:"Live cricket scores & match info",method:"GET",path:"/sports/cricket",params:[]}
     ]
   }
 ];
@@ -610,15 +596,49 @@ function dismissNotif(btn) {
 }
 
 // ===== LOADING SCREEN =====
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('loadingScreen').classList.add('hidden');
-    setTimeout(() => {
-      animateCounters();
-      showNotif('success', 'Welcome to Toxic-APIs', '36 free API endpoints ready to use. No API key required!');
-    }, 400);
-  }, 2200);
-});
+(function initLoader() {
+  const messages = [
+    'Connecting to server...',
+    'Loading API endpoints...',
+    'Initializing scrapers...',
+    'Checking system status...',
+    'Loading documentation...',
+    'Configuring CORS headers...',
+    'Preparing interactive tools...',
+    'Finalizing environment...',
+    'Almost ready...',
+    'Welcome to Toxic-APIs!'
+  ];
+  let progress = 0;
+  let msgIndex = 0;
+  const fill = document.getElementById('loaderBarFill');
+  const pct = document.getElementById('loaderPercent');
+  const terminal = document.getElementById('loaderTerminal');
+
+  const interval = setInterval(() => {
+    progress += Math.random() * 12 + 3;
+    if (progress > 100) progress = 100;
+    fill.style.width = progress + '%';
+    pct.textContent = Math.round(progress) + '%';
+
+    if (msgIndex < messages.length - 1 && progress > (msgIndex + 1) * 10) {
+      msgIndex++;
+      terminal.textContent = '> ' + messages[msgIndex];
+    }
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      terminal.textContent = '> ' + messages[messages.length - 1];
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+        setTimeout(() => {
+          animateCounters();
+          showNotif('success', 'Welcome to Toxic-APIs', '43 free API endpoints ready to use. No API key required!');
+        }, 400);
+      }, 500);
+    }
+  }, 200);
+})();
 
 // ===== PARTICLES =====
 function createParticles() {
@@ -639,17 +659,31 @@ function createParticles() {
 }
 createParticles();
 
+// ===== VISITOR COUNTER =====
+(async function fetchVisitors() {
+  try {
+    const res = await fetch(BACKEND + '/api/visitors/stats');
+    const data = await res.json();
+    const count = data.totalVisits || data.total || data.count || 0;
+    const el = document.getElementById('visitorCount');
+    if (el && count > 0) {
+      el.setAttribute('data-count', count);
+    }
+  } catch (e) {}
+})();
+
 // ===== COUNTER ANIMATION =====
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
+    if (target === 0) { el.textContent = '0'; return; }
     const duration = 1500;
     const start = performance.now();
     function step(now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(target * eased);
+      el.textContent = Math.round(target * eased).toLocaleString();
       if (progress < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -670,7 +704,6 @@ const backToTop = document.getElementById('backToTop');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 50);
   backToTop.classList.toggle('visible', window.scrollY > 600);
-  // Active nav
   const sections = ['home', 'features', 'docs', 'status'];
   let current = 'home';
   sections.forEach(id => {
@@ -684,7 +717,6 @@ window.addEventListener('scroll', () => {
 
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// Mobile menu
 document.getElementById('mobileMenuBtn').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
 });
@@ -701,7 +733,7 @@ function renderFeatures() {
     { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', title: 'No API Key Required', desc: 'Start making requests immediately. No registration, no authentication needed.', bg: 'rgba(6,182,212,.12)', color: 'var(--accent2)' },
     { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', title: 'Developer Friendly', desc: 'Clean JSON responses, comprehensive docs, and code examples in multiple languages.', bg: 'rgba(34,197,94,.12)', color: 'var(--green)' },
     { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', title: 'CORS Enabled', desc: 'Full CORS support - call endpoints from any frontend application or website.', bg: 'rgba(168,85,247,.12)', color: 'var(--purple)' },
-    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>', title: '6 Categories', desc: 'AI, downloaders, anime/manga, gaming, search, and tools - all in one place.', bg: 'rgba(236,72,153,.12)', color: 'var(--pink)' },
+    { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>', title: '7 Categories', desc: 'AI, downloaders, anime/manga, gaming, search, tools, and sports - all in one place.', bg: 'rgba(236,72,153,.12)', color: 'var(--pink)' },
     { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', title: 'Reliable & Stable', desc: '99.9% uptime with automatic health monitoring and real-time status tracking.', bg: 'rgba(234,179,8,.12)', color: 'var(--yellow)' }
   ];
   const grid = document.getElementById('featuresGrid');
@@ -716,25 +748,23 @@ function renderFeatures() {
 
 // ===== CATEGORY TABS =====
 function renderCategoryTabs() {
-  const tabs = document.getElementById('catTabs');
-  const total = categories.reduce((s, c) => s + c.endpoints.length, 0);
-  let html = `<div class="cat-tab ${activeCategory === 'all' ? 'active' : ''}" onclick="filterCategory('all')">All <span class="count">${total}</span></div>`;
+  const total = categories.reduce((a, c) => a + c.endpoints.length, 0);
+  let html = `<button class="cat-tab ${activeCategory === 'all' ? 'active' : ''}" onclick="setCategory('all',this)">All <span class="count">${total}</span></button>`;
   categories.forEach(cat => {
-    html += `<div class="cat-tab ${activeCategory === cat.name ? 'active' : ''}" onclick="filterCategory('${cat.name}')">${cat.name} <span class="count">${cat.endpoints.length}</span></div>`;
+    html += `<button class="cat-tab ${activeCategory === cat.name ? 'active' : ''}" onclick="setCategory('${cat.name}',this)">${cat.icon} ${cat.name} <span class="count">${cat.endpoints.length}</span></button>`;
   });
-  tabs.innerHTML = html;
+  document.getElementById('catTabs').innerHTML = html;
 }
 
-function filterCategory(name) {
-  activeCategory = name;
-  renderCategoryTabs();
+function setCategory(cat, btn) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   renderEndpoints();
-  showNotif('info', 'Filter Applied', name === 'all' ? 'Showing all 36 endpoints' : `Showing ${categories.find(c=>c.name===name)?.endpoints.length || 0} ${name} endpoints`);
 }
 
-// ===== SEARCH =====
-function handleSearch(query) {
-  searchQuery = query.toLowerCase().trim();
+function handleSearch(q) {
+  searchQuery = q.toLowerCase().trim();
   renderEndpoints();
 }
 
@@ -742,35 +772,120 @@ function handleSearch(query) {
 function renderEndpoints() {
   const container = document.getElementById('endpointsContainer');
   let html = '';
-  const filtered = activeCategory === 'all' ? categories : categories.filter(c => c.name === activeCategory);
+  let filteredCats = categories;
 
-  filtered.forEach(cat => {
-    const eps = searchQuery
-      ? cat.endpoints.filter(ep => ep.name.toLowerCase().includes(searchQuery) || ep.desc.toLowerCase().includes(searchQuery))
-      : cat.endpoints;
-    if (eps.length === 0) return;
+  if (activeCategory !== 'all') {
+    filteredCats = categories.filter(c => c.name === activeCategory);
+  }
 
-    html += `<div style="margin-bottom:28px" class="reveal visible">
-      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-        <span class="cat-dot" style="background:${cat.color}"></span>
-        ${cat.name}
-        <span style="color:var(--text3);font-size:13px;font-weight:400">${eps.length} endpoint${eps.length > 1 ? 's' : ''}</span>
-      </h3>
-      <div class="endpoints-grid">`;
+  let hasResults = false;
 
-    eps.forEach((ep, i) => {
-      const id = cat.name.replace(/[^a-zA-Z0-9]/g, '') + '_' + i;
-      html += buildEndpointCard(ep, id, cat);
+  filteredCats.forEach(cat => {
+    let eps = cat.endpoints;
+    if (searchQuery) {
+      eps = eps.filter(ep =>
+        ep.name.toLowerCase().includes(searchQuery) ||
+        ep.desc.toLowerCase().includes(searchQuery) ||
+        ep.path.toLowerCase().includes(searchQuery)
+      );
+    }
+    if (!eps.length) return;
+    hasResults = true;
+
+    html += `<div style="margin-bottom:8px;margin-top:24px;display:flex;align-items:center;gap:8px;color:${cat.color}">
+      ${cat.icon}
+      <span style="font-size:14px;font-weight:700;letter-spacing:.5px">${cat.name}</span>
+      <span style="font-size:12px;color:var(--text3)">(${eps.length})</span>
+    </div>`;
+    html += '<div class="endpoints-grid">';
+
+    eps.forEach(ep => {
+      const eid = ep.path.replace(/\//g, '_');
+      const statusInfo = statusResults[ep.path];
+      const statusClass = statusInfo ? (statusInfo.ok ? 'online' : 'offline') : '';
+      const paramsJson = JSON.stringify(ep.params).replace(/'/g, "\\'");
+      const fullUrl = SITE_URL + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
+
+      html += `<div class="endpoint-card" id="card${eid}">
+        <div class="endpoint-header" onclick="toggleEndpoint('${eid}')">
+          <div class="endpoint-left">
+            <span class="method-badge method-${ep.method}">${ep.method}</span>
+            <div class="endpoint-info">
+              <h3>${ep.name}</h3>
+              <p>${ep.path}</p>
+            </div>
+          </div>
+          <div class="endpoint-status">
+            <span class="status-dot ${statusClass}"></span>
+            <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="endpoint-body">
+          <div class="endpoint-body-inner">
+            <p style="font-size:14px;color:var(--text2);margin-top:16px;margin-bottom:8px">${ep.desc}</p>
+            <div style="font-size:13px;color:var(--text3);margin-bottom:4px"><strong>Method:</strong> <span style="color:${ep.method==='GET'?'var(--green)':'var(--orange)'}">${ep.method}</span></div>
+            <div style="font-size:13px;color:var(--text3);margin-bottom:12px"><strong>Path:</strong> <code style="color:var(--accent2)">${ep.path}</code></div>`;
+
+      if (ep.method === 'POST') {
+        html += `<div class="post-notice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          This endpoint requires POST method. See code examples for programmatic usage.
+        </div>`;
+      } else {
+        html += `<div class="try-section">
+              <label>Try it out</label>`;
+
+        if (ep.params.length > 0) {
+          ep.params.forEach(p => {
+            html += `<div class="try-row" style="margin-bottom:6px">
+              <input class="try-input" id="input${eid}_${p.key}" value="${p.example}" placeholder="${p.key}">
+            </div>`;
+          });
+        }
+
+        html += `<div class="try-actions">
+            <button class="try-btn" id="execBtn${eid}" onclick='executeEndpoint("${eid}","${ep.path}","${ep.method}",${paramsJson})'>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Execute
+            </button>
+            <button class="copy-btn" onclick="copyApiUrl('${eid}','${ep.path}',${paramsJson},this)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Copy API URL
+            </button>
+          </div>`;
+
+        html += `<div id="response${eid}" class="hidden"></div>`;
+        html += `</div>`;
+      }
+
+      // Code examples
+      const exParams = ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '';
+      const exUrl = SITE_URL + ep.path + exParams;
+
+      html += `<div class="code-tabs">
+        <div class="code-tab active" onclick="showCode('${eid}','js',this)">JavaScript</div>
+        <div class="code-tab" onclick="showCode('${eid}','py',this)">Python</div>
+        <div class="code-tab" onclick="showCode('${eid}','curl',this)">cURL</div>
+      </div>
+      <div class="code-block">
+        <code id="codeBlock${eid}">${generateCodeExample(ep, 'js')}</code>
+        <button class="copy-btn code-copy" onclick="copyCodeBlock('${eid}',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy
+        </button>
+      </div>`;
+
+      html += `</div></div></div>`;
     });
 
-    html += `</div></div>`;
+    html += '</div>';
   });
 
-  if (!html) {
+  if (!hasResults) {
     html = `<div style="text-align:center;padding:60px 20px;color:var(--text3)">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 16px;display:block;opacity:.4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <p style="font-size:16px;font-weight:600;color:var(--text2)">No endpoints found</p>
-      <p style="font-size:14px;margin-top:4px">Try a different search term</p>
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:16px;opacity:.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p style="font-size:16px;font-weight:600;margin-bottom:4px">No endpoints found</p>
+      <p style="font-size:14px">Try a different search term or category</p>
     </div>`;
   }
 
@@ -778,235 +893,184 @@ function renderEndpoints() {
   observeReveals();
 }
 
-function buildEndpointCard(ep, id, cat) {
-  const statusDot = statusResults[ep.path] ? (statusResults[ep.path].ok ? 'online' : 'offline') : '';
-
-  let body = `<div class="endpoint-body"><div class="endpoint-body-inner">`;
-
-  if (ep.method === 'GET') {
-    if (ep.params.length > 0) {
-      body += `<div class="try-section">
-        <label>Try it out</label>
-        <div class="try-row">`;
-      ep.params.forEach(p => {
-        body += `<input class="try-input" id="input_${id}_${p.key}" placeholder="${p.key}" value="${p.example}">`;
-      });
-      const paramKeysStr = ep.params.map(p => `'${p.key}'`).join(',');
-      body += `<button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',[${paramKeysStr}])">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Execute
-        </button></div></div>`;
-    } else {
-      body += `<div class="try-section">
-        <button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',[])">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          Execute
-        </button></div>`;
-    }
-    body += `<div class="response-area hidden" id="response_${id}">
-      <div class="response-header">
-        <div class="response-status" id="resStatus_${id}"></div>
-        <button class="copy-btn" onclick="copyResponse('${id}',this)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copy
-        </button>
-      </div>
-      <div class="response-body"><pre id="resBody_${id}"></pre></div>
-    </div>`;
-  } else {
-    body += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:12px;color:var(--text2);font-size:13px;line-height:1.7">
-      <strong style="color:var(--orange)">POST Endpoint</strong> &mdash; Use programmatic access (fetch, axios, or curl) to interact with this endpoint. See code examples below.
-    </div>`;
-  }
-
-  // Code examples
-  body += `<div class="code-tabs" style="margin-top:16px">
-    <div class="code-tab active" onclick="showCode('${id}','js',this)">JavaScript</div>
-    <div class="code-tab" onclick="showCode('${id}','py',this)">Python</div>
-    <div class="code-tab" onclick="showCode('${id}','curl',this)">cURL</div>
-  </div>
-  <div class="code-block">
-    <code id="codeBlock_${id}">${getCodeExample(ep, 'js')}</code>
-    <button class="copy-btn code-copy" onclick="copyCodeBlock('${id}',this)">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      Copy
-    </button>
-  </div>`;
-
-  body += `</div></div>`;
-
-  return `<div class="endpoint-card" id="card_${id}">
-    <div class="shimmer-line"></div>
-    <div class="endpoint-header" onclick="toggleCard('${id}')">
-      <div class="endpoint-left">
-        <span class="method-badge method-${ep.method}">${ep.method}</span>
-        <div class="endpoint-info">
-          <h3>${ep.name}</h3>
-          <p>${ep.desc}</p>
-        </div>
-      </div>
-      <div class="endpoint-status">
-        ${statusDot ? `<span class="status-dot ${statusDot}"></span>` : ''}
-      </div>
-      <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    ${body}
-  </div>`;
-}
-
-function getCodeExample(ep, lang) {
-  const paramStr = ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '';
-  const url = SITE_URL + ep.path + paramStr;
+function generateCodeExample(ep, lang) {
+  const exParams = ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '';
+  const url = SITE_URL + ep.path + exParams;
 
   if (lang === 'js') {
     if (ep.method === 'POST') {
-      return `const response = await fetch("${url}", {
+      return `const response = await fetch("${SITE_URL}${ep.path}", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ /* your data */ })
 });
 const data = await response.json();
-console.log(data);`;
+console.log(data);
+// Response: { creator: "xh_clinton", status: true, ... }`;
     }
     return `const response = await fetch("${url}");
 const data = await response.json();
-console.log(data);`;
-  } else if (lang === 'py') {
+console.log(data);
+// Response: { creator: "xh_clinton", status: true, ... }`;
+  }
+
+  if (lang === 'py') {
     if (ep.method === 'POST') {
       return `import requests
 
-response = requests.post("${url}",
-    json={"key": "value"})
-print(response.json())`;
+res = requests.post("${SITE_URL}${ep.path}",
+    json={})
+print(res.json())
+# Response: { "creator": "xh_clinton", "status": True, ... }`;
     }
+    const pyParams = ep.params.length ? ep.params.map(p => `"${p.key}": "${p.example}"`).join(', ') : '';
     return `import requests
 
-response = requests.get("${url}")
-print(response.json())`;
-  } else {
-    if (ep.method === 'POST') {
-      return `curl -X POST "${url}" \\
-  -H "Content-Type: application/json" \\
-  -d '{"key": "value"}'`;
-    }
-    return `curl "${url}"`;
+res = requests.get("${SITE_URL}${ep.path}"${pyParams ? `,\n    params={${pyParams}}` : ''})
+print(res.json())
+# Response: { "creator": "xh_clinton", "status": True, ... }`;
   }
+
+  if (lang === 'curl') {
+    if (ep.method === 'POST') {
+      return `curl -X POST "${SITE_URL}${ep.path}" \\
+  -H "Content-Type: application/json" \\
+  -d '{}'
+# Response: { "creator": "xh_clinton", "status": true, ... }`;
+    }
+    return `curl "${url}"
+# Response: { "creator": "xh_clinton", "status": true, ... }`;
+  }
+  return '';
 }
 
-function showCode(id, lang, tab) {
-  const allEps = categories.flatMap(c => c.endpoints.map((ep, i) => ({ ep, cat: c.name, i })));
-  const match = allEps.find(x => (x.cat.replace(/\s/g, '') + '_' + x.i) === id);
-  if (!match) return;
-  document.getElementById('codeBlock_' + id).textContent = getCodeExample(match.ep, lang);
-  tab.parentElement.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+function showCode(eid, lang, tab) {
+  const card = categories.flatMap(c => c.endpoints).find(ep => ep.path.replace(/\//g, '_') === eid);
+  if (!card) return;
+  document.getElementById('codeBlock' + eid).textContent = generateCodeExample(card, lang);
+  const tabs = tab.parentElement.querySelectorAll('.code-tab');
+  tabs.forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
 }
 
-function toggleCard(id) {
-  const card = document.getElementById('card_' + id);
+function toggleEndpoint(eid) {
+  const card = document.getElementById('card' + eid);
   card.classList.toggle('open');
 }
 
-// ===== TRY ENDPOINT =====
-async function tryEndpoint(id, path, paramKeys) {
-  const btn = document.getElementById('tryBtn_' + id);
-  const responseArea = document.getElementById('response_' + id);
-  const resStatus = document.getElementById('resStatus_' + id);
-  const resBody = document.getElementById('resBody_' + id);
+// ===== EXECUTE ENDPOINT =====
+async function executeEndpoint(eid, path, method, params) {
+  const btn = document.getElementById('execBtn' + eid);
+  const resContainer = document.getElementById('response' + eid);
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner spinner-sm"></span> Loading...';
 
   let url = BACKEND + path;
-  if (paramKeys.length > 0) {
-    const params = paramKeys.map(key => {
-      const input = document.getElementById('input_' + id + '_' + key);
-      return key + '=' + encodeURIComponent(input.value);
+  if (params && params.length > 0) {
+    const queryParts = params.map(p => {
+      const input = document.getElementById('input' + eid + '_' + p.key);
+      const val = input ? input.value : p.example;
+      return p.key + '=' + encodeURIComponent(val);
     });
-    url += '?' + params.join('&');
+    url += '?' + queryParts.join('&');
   }
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner spinner-sm"></span> Executing...';
-  responseArea.classList.remove('hidden');
-  resStatus.innerHTML = '<span class="dot loading"></span> Sending request...';
-  resBody.textContent = '';
-  setTimeout(() => responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+  resContainer.classList.remove('hidden');
+  resContainer.innerHTML = `<div class="response-area">
+    <div class="response-header">
+      <div class="response-status"><span class="dot loading"></span> Loading...</div>
+    </div>
+    <div class="response-body"><pre>Fetching data...</pre></div>
+  </div>`;
 
   try {
     const start = Date.now();
-    const res = await fetch(url, { mode: 'cors' });
+    const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
     const ms = Date.now() - start;
     const contentType = res.headers.get('content-type') || '';
 
+    let bodyHtml = '';
     if (contentType.includes('image')) {
-      resStatus.innerHTML = `<span class="dot success"></span> ${res.status} OK <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
-      resBody.innerHTML = `<img src="${url}" alt="Response image" style="max-width:100%;border-radius:8px">`;
-      showNotif('success', 'Request Successful', `Image response received in ${ms}ms`);
+      bodyHtml = `<img src="${url}" alt="API Response Image">`;
     } else {
-      let data;
       const text = await res.text();
-      try { data = JSON.parse(text); } catch(e) { data = text; }
-      resStatus.innerHTML = `<span class="dot ${res.ok ? 'success' : 'error'}"></span> ${res.status} ${res.ok ? 'OK' : 'Error'} <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
-      resBody.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-      if (res.ok) {
-        showNotif('success', 'Request Successful', `Response received in ${ms}ms`);
-      } else {
-        showNotif('warning', 'Request Failed', `Server returned ${res.status} status`);
-      }
+      let formatted = text;
+      try { formatted = JSON.stringify(JSON.parse(text), null, 2); } catch {}
+      bodyHtml = `<pre id="resBody_${eid}">${escapeHtml(formatted)}</pre>`;
     }
+
+    resContainer.innerHTML = `<div class="response-area">
+      <div class="response-header">
+        <div class="response-status">
+          <span class="dot ${res.ok ? 'success' : 'error'}"></span>
+          ${res.status} ${res.statusText} &mdash; ${ms}ms
+        </div>
+        <button class="copy-btn" onclick="copyResponse('${eid}',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Response
+        </button>
+      </div>
+      <div class="response-body">${bodyHtml}</div>
+    </div>`;
   } catch (err) {
-    resStatus.innerHTML = '<span class="dot error"></span> Connection Error';
-    resBody.textContent = 'Failed to connect to backend.\n\nThis may happen if:\n- The API server is not yet published/deployed\n- CORS is blocking the request\n- Network connectivity issues\n\nError: ' + err.message;
-    showNotif('error', 'Connection Failed', 'Could not reach the API server');
+    resContainer.innerHTML = `<div class="response-area">
+      <div class="response-header">
+        <div class="response-status"><span class="dot error"></span> Error</div>
+      </div>
+      <div class="response-body"><pre id="resBody_${eid}" style="color:var(--red)">${escapeHtml(err.message || 'Request failed')}</pre></div>
+    </div>`;
   }
 
   btn.disabled = false;
-  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Execute';
-  responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Execute';
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ===== STATUS =====
 function renderStatusOverview() {
-  const total = categories.reduce((s, c) => s + c.endpoints.length, 0);
+  const allEps = categories.flatMap(c => c.endpoints);
   const checked = Object.keys(statusResults).length;
   const online = Object.values(statusResults).filter(r => r.ok).length;
   const offline = checked - online;
+  const avgMs = checked ? Math.round(Object.values(statusResults).reduce((a, r) => a + r.ms, 0) / checked) : 0;
+
   document.getElementById('statusOverview').innerHTML = `
-    <div class="status-stat"><div class="num" style="color:var(--primary2)">${total}</div><div class="label">Total</div></div>
+    <div class="status-stat"><div class="num" style="color:var(--text)">${allEps.length}</div><div class="label">Total</div></div>
     <div class="status-stat"><div class="num" style="color:var(--green)">${online}</div><div class="label">Online</div></div>
     <div class="status-stat"><div class="num" style="color:var(--red)">${offline}</div><div class="label">Offline</div></div>
-    <div class="status-stat"><div class="num" style="color:var(--accent2)">${checked > 0 ? Math.round(online / total * 100) : 0}%</div><div class="label">Uptime</div></div>
+    <div class="status-stat"><div class="num" style="color:var(--accent2)">${avgMs}ms</div><div class="label">Avg Response</div></div>
   `;
 }
 
 function renderStatusGrid() {
-  const grid = document.getElementById('statusGrid');
-  let html = '';
-  categories.forEach(cat => {
-    cat.endpoints.forEach(ep => {
-      const r = statusResults[ep.path];
-      const dotClass = r ? (r.ok ? 'online' : 'offline') : 'checking';
-      const msText = r ? (r.ok ? r.ms + 'ms' : 'FAIL') : '--';
-      const msColor = r ? (r.ok ? 'var(--green)' : 'var(--red)') : 'var(--text3)';
-      html += `<div class="status-card" id="status_${ep.path.replace(/\//g, '_')}">
-        <span class="status-dot-lg ${dotClass}"></span>
-        <div class="status-info">
-          <h4>${ep.name}</h4>
-          <p>${ep.desc}</p>
-        </div>
-        <span class="status-ms" style="color:${msColor}">${msText}</span>
-      </div>`;
-    });
-  });
-  grid.innerHTML = html;
+  const allEps = categories.flatMap(c => c.endpoints);
+  document.getElementById('statusGrid').innerHTML = allEps.map(ep => {
+    const sid = 'status_' + ep.path.replace(/\//g, '_');
+    const info = statusResults[ep.path];
+    const dotClass = info ? (info.ok ? 'online' : 'offline') : '';
+    const msText = info ? (info.ok ? info.ms + 'ms' : 'FAIL') : '--';
+    const msColor = info ? (info.ok ? 'var(--green)' : 'var(--red)') : 'var(--text3)';
+    return `<div class="status-card" id="${sid}">
+      <div class="status-dot-lg ${dotClass}"></div>
+      <div class="status-info">
+        <h4>${ep.name}</h4>
+        <p>${ep.path}</p>
+      </div>
+      <span class="status-ms" style="color:${msColor}">${msText}</span>
+    </div>`;
+  }).join('');
 }
 
 async function checkAllStatus() {
   const btn = document.getElementById('checkStatusBtn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner spinner-sm"></span> Checking all endpoints...';
-  showNotif('info', 'Status Check Started', 'Checking all 36 endpoints...');
+  showNotif('info', 'Status Check Started', 'Checking all 43 endpoints...');
 
   const allEndpoints = categories.flatMap(c => c.endpoints);
-  let completed = 0;
   let onlineCount = 0;
 
   for (const ep of allEndpoints) {
@@ -1037,7 +1101,6 @@ async function checkAllStatus() {
         card.querySelector('.status-ms').style.color = 'var(--red)';
       }
     }
-    completed++;
   }
 
   renderStatusOverview();
@@ -1058,39 +1121,41 @@ const quickCodeExamples = {
 const response = await fetch("${SITE_URL}/ai/claude?text=Hello");
 const data = await response.json();
 console.log(data);
+// { creator: "xh_clinton", status: true, result: "..." }
 
 // Download YouTube video info
-const yt = await fetch("${SITE_URL}/download/youtube?url=VIDEO_URL");
+const yt = await fetch("${SITE_URL}/download/youtube?url=VIDEO_URL&mode=video");
 console.log(await yt.json());
 
-// Search for songs
-const songs = await fetch("${SITE_URL}/search/song?q=Bohemian+Rhapsody");
-console.log(await songs.json());`,
+// Live Football Scores
+const scores = await fetch("${SITE_URL}/sports/football");
+console.log(await scores.json());`,
   py: `import requests
 
 # Chat with Claude AI
 res = requests.get("${SITE_URL}/ai/claude", params={"text": "Hello"})
 print(res.json())
+# { "creator": "xh_clinton", "status": True, ... }
 
 # Currency conversion
 currency = requests.get("${SITE_URL}/tools/currency",
     params={"amount": "100", "from": "USD", "to": "EUR"})
 print(currency.json())
 
-# Search anime
-anime = requests.get("${SITE_URL}/anime/doronime", params={"q": "Naruto"})
-print(anime.json())`,
+# NBA Scores
+nba = requests.get("${SITE_URL}/sports/nba", params={"date": "20260207"})
+print(nba.json())`,
   curl: `# AI Chat
 curl "${SITE_URL}/ai/claude?text=Hello"
 
 # Song Search
 curl "${SITE_URL}/search/song?q=Bohemian+Rhapsody"
 
-# Currency Converter
-curl "${SITE_URL}/tools/currency?amount=100&from=USD&to=EUR"
+# Football Standings
+curl "${SITE_URL}/sports/football-standings?league=epl"
 
-# Korean Name Generator
-curl "${SITE_URL}/tools/korean-name?name=Rizki"`
+# Currency Converter
+curl "${SITE_URL}/tools/currency?amount=100&from=USD&to=EUR"`
 };
 
 function showQuickCode(lang, tab) {
@@ -1113,16 +1178,34 @@ function copyText(text, btn) {
 }
 
 function copyResponse(id, btn) {
-  const text = document.getElementById('resBody_' + id).textContent;
-  navigator.clipboard.writeText(text);
-  markCopied(btn);
-  showNotif('success', 'Copied!', 'API response copied to clipboard');
+  const el = document.getElementById('resBody_' + id);
+  if (el) {
+    navigator.clipboard.writeText(el.textContent);
+    markCopied(btn);
+    showNotif('success', 'Copied!', 'API response copied to clipboard');
+  }
 }
 
 function copyCodeBlock(id, btn) {
-  const text = document.getElementById('codeBlock_' + id).textContent;
+  const text = document.getElementById('codeBlock' + id).textContent;
   navigator.clipboard.writeText(text);
   markCopied(btn);
+  showNotif('success', 'Copied!', 'Code example copied to clipboard');
+}
+
+function copyApiUrl(eid, path, params, btn) {
+  let url = SITE_URL + path;
+  if (params && params.length > 0) {
+    const queryParts = params.map(p => {
+      const input = document.getElementById('input' + eid + '_' + p.key);
+      const val = input ? input.value : p.example;
+      return p.key + '=' + encodeURIComponent(val);
+    });
+    url += '?' + queryParts.join('&');
+  }
+  navigator.clipboard.writeText(url);
+  markCopied(btn);
+  showNotif('success', 'Copied!', 'API URL copied to clipboard');
 }
 
 function markCopied(btn) {

@@ -5,7 +5,7 @@ import * as path from 'path';
 const OWNER = 'xhclintohn';
 const REPO = 'P';
 const BRANCH = 'main';
-const COMMIT_MESSAGE = 'feat: Premium UI overhaul - loading screen, notifications, animations, mobile-responsive';
+const COMMIT_MESSAGE = 'feat: Major update - 43 endpoints, sports scrapers, rate limiting, visitor tracking, premium UI, copy buttons';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',

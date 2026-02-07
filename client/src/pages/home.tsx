@@ -16,7 +16,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const iconMap: Record<string, typeof Brain> = {
   brain: Brain, download: Download, shuffle: Shuffle, wrench: Wrench,
-  search: Search, activity: Activity,
+  search: Search, activity: Activity, trophy: Activity,
 };
 
 const categoryColors = [
@@ -26,6 +26,7 @@ const categoryColors = [
   "from-emerald-500/20 to-green-500/20 text-emerald-600 dark:text-emerald-400",
   "from-amber-500/20 to-yellow-500/20 text-amber-600 dark:text-amber-400",
   "from-indigo-500/20 to-blue-500/20 text-indigo-600 dark:text-indigo-400",
+  "from-orange-500/20 to-red-500/20 text-orange-600 dark:text-orange-400",
 ];
 
 function AnimatedCounter({ target, duration = 2000 }: { target: number; duration?: number }) {
@@ -395,7 +396,7 @@ curl "https://your-api.replit.app/download/youtube?url=VIDEO_URL"`,
             <p className="text-xs text-muted-foreground">
               Built by{" "}
               <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                xh_clintohn
+                xh_clinton
               </a>
             </p>
           </div>
