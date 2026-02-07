@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "installCommand": "npm install && cd client && npm install",
+  "buildCommand": "cd client && npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/ai/(.*)", "destination": "/api" },
+    { "source": "/download/(.*)", "destination": "/api" },
+    { "source": "/random/(.*)", "destination": "/api" },
+    { "source": "/tools/(.*)", "destination": "/api" },
+    { "source": "/metrics", "destination": "/api" },
+    { "source": "/health", "destination": "/api" },
+    { "source": "/status", "destination": "/api" },
+    { "source": "/endpoints", "destination": "/api" }
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  }
+}
