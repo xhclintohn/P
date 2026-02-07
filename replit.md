@@ -55,15 +55,19 @@ Response format: `{ status: true, creator: "Toxic-APIs", data: {...} }`
 - `visit_logs` - Individual visit records for tracking unique visitors
 
 ## Static Frontend (apis.html)
-- Standalone HTML file at project root
-- For Netlify: `REPLIT_BACKEND` constant needs to point to deployed Replit URL
-- Auto-detects localhost/replit.dev for local development
-- Features: hero section, docs with try-it-out, status monitoring, code examples
+- Standalone HTML file at project root, also served at `/apis.html` by Express
+- For Netlify deployment at `https://xhclinton.com/apis`
+- Backend URL: `https://toxic-apis.replit.app` (BACKEND constant)
+- Code examples use `https://xhclinton.com/apis` as the site URL (SITE_URL constant)
+- Features: loading screen animation, notification system, hero section, docs with try-it-out, status monitoring, code examples, search/filter, scroll reveal, particles, mobile responsive
+- Premium UI: gradient text, shimmer effects, glass morphism nav, floating particles, glow orbs, animated counters, back-to-top button, hamburger menu for mobile
 
 ## GitHub
 - Repository: `xhclintohn/P` (main branch)
 - Pushed via Octokit GitHub integration (`scripts/push-to-github.ts`)
 
 ## Recent Changes
-- Feb 7, 2026: Integrated 36 scrapers from ScraperCode/Scraper repo, created Express API routes with createRequire pattern, built standalone apis.html for Netlify, fixed ESM/CJS compatibility, replaced puppeteer scrapers with axios alternatives, pushed to GitHub
-- Feb 7, 2026: Fixed endpoint method/param alignment across React frontend, apis.html, and server routes (Sound Effects no-param, Nanobana POST method)
+- Feb 7, 2026: Complete apis.html premium UI overhaul - loading screen, notification system, lots of animations, mobile-responsive, sends requests to Replit backend, code examples use xhclinton.com/apis domain, pushed to GitHub
+- Feb 7, 2026: Rewrote React frontend (docs, status, home pages) to hide all backend URLs from users
+- Feb 7, 2026: Integrated 36 scrapers from ScraperCode/Scraper repo, created Express API routes with createRequire pattern, built standalone apis.html for Netlify, fixed ESM/CJS compatibility
+- Feb 7, 2026: Fixed endpoint method/param alignment across React frontend, apis.html, and server routes

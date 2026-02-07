@@ -497,7 +497,12 @@
 
 <script>
 // ===== CONFIGURATION =====
-const BACKEND = 'https://toxic-apis.replit.app';
+const BACKEND = (() => {
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') return window.location.origin;
+  if (host.includes('.replit.dev') || host.includes('.replit.app')) return window.location.origin;
+  return 'https://toxic-apis.replit.app';
+})();
 const SITE_URL = 'https://xhclinton.com/apis';
 
 // ===== CATEGORIES DATA =====
@@ -754,7 +759,7 @@ function renderEndpoints() {
       <div class="endpoints-grid">`;
 
     eps.forEach((ep, i) => {
-      const id = cat.name.replace(/\s/g, '') + '_' + i;
+      const id = cat.name.replace(/[^a-zA-Z0-9]/g, '') + '_' + i;
       html += buildEndpointCard(ep, id, cat);
     });
 
@@ -786,7 +791,8 @@ function buildEndpointCard(ep, id, cat) {
       ep.params.forEach(p => {
         body += `<input class="try-input" id="input_${id}_${p.key}" placeholder="${p.key}" value="${p.example}">`;
       });
-      body += `<button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',${JSON.stringify(ep.params.map(p=>p.key))})">
+      const paramKeysStr = ep.params.map(p => `'${p.key}'`).join(',');
+      body += `<button class="try-btn" id="tryBtn_${id}" onclick="tryEndpoint('${id}','${ep.path}',[${paramKeysStr}])">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           Execute
         </button></div></div>`;
@@ -922,21 +928,24 @@ async function tryEndpoint(id, path, paramKeys) {
   responseArea.classList.remove('hidden');
   resStatus.innerHTML = '<span class="dot loading"></span> Sending request...';
   resBody.textContent = '';
+  setTimeout(() => responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
 
   try {
     const start = Date.now();
-    const res = await fetch(url);
+    const res = await fetch(url, { mode: 'cors' });
     const ms = Date.now() - start;
     const contentType = res.headers.get('content-type') || '';
 
     if (contentType.includes('image')) {
       resStatus.innerHTML = `<span class="dot success"></span> ${res.status} OK <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
-      resBody.innerHTML = `<img src="${url}" alt="Response image">`;
+      resBody.innerHTML = `<img src="${url}" alt="Response image" style="max-width:100%;border-radius:8px">`;
       showNotif('success', 'Request Successful', `Image response received in ${ms}ms`);
     } else {
-      const data = await res.json();
+      let data;
+      const text = await res.text();
+      try { data = JSON.parse(text); } catch(e) { data = text; }
       resStatus.innerHTML = `<span class="dot ${res.ok ? 'success' : 'error'}"></span> ${res.status} ${res.ok ? 'OK' : 'Error'} <span style="color:var(--text3);font-size:12px">${ms}ms</span>`;
-      resBody.textContent = JSON.stringify(data, null, 2);
+      resBody.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
       if (res.ok) {
         showNotif('success', 'Request Successful', `Response received in ${ms}ms`);
       } else {
@@ -945,12 +954,13 @@ async function tryEndpoint(id, path, paramKeys) {
     }
   } catch (err) {
     resStatus.innerHTML = '<span class="dot error"></span> Connection Error';
-    resBody.textContent = 'Failed to connect: ' + err.message;
-    showNotif('error', 'Request Error', err.message);
+    resBody.textContent = 'Failed to connect to backend.\n\nThis may happen if:\n- The API server is not yet published/deployed\n- CORS is blocking the request\n- Network connectivity issues\n\nError: ' + err.message;
+    showNotif('error', 'Connection Failed', 'Could not reach the API server');
   }
 
   btn.disabled = false;
   btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Execute';
+  responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ===== STATUS =====

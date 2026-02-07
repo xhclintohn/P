@@ -2,6 +2,7 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { createRequire } from "module";
 
@@ -94,6 +95,16 @@ function wrapHandler(fn: (req: Request, res: Response) => Promise<any>) {
 }
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
+  // Serve apis.html as a standalone static file before SPA catch-all
+  app.get("/apis.html", (_req, res) => {
+    const apisPath = path.join(__dirname, "..", "apis.html");
+    if (fs.existsSync(apisPath)) {
+      res.sendFile(apisPath);
+    } else {
+      res.status(404).send("Not found");
+    }
+  });
+
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
