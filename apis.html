@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Toxic-APIs - Free RESTful API Service</title>
-  <meta name="description" content="Toxic-APIs: 43 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, sports scores, search utilities, and more. No API key required.">
+  <meta name="description" content="Toxic-APIs: 49 free REST API endpoints for AI chat, media downloaders, anime scrapers, gaming tools, sports scores, search utilities, and more. No API key required.">
   <meta property="og:title" content="Toxic-APIs - Free RESTful API Service">
-  <meta property="og:description" content="43 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools, Sports. No API key required.">
+  <meta property="og:description" content="49 free REST API endpoints: AI, Downloaders, Anime, Gaming, Search, Tools, Sports. No API key required.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xhclinton.com/apis">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,27 +66,48 @@
     @keyframes notifOut{to{opacity:0;transform:translateX(100%) scale(.9)}}
     @keyframes notifProgress{from{width:100%}to{width:0%}}
 
-    /* NAV */
-    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:all .4s ease}
-    .nav.scrolled{background:rgba(10,10,15,.92);box-shadow:0 4px 30px rgba(0,0,0,.3)}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;gap:8px}
-    .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;flex-shrink:0}
-    .nav-logo .logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;transition:transform .3s}
-    .nav-logo:hover .logo-icon{transform:rotate(-8deg) scale(1.05)}
-    .nav-links{display:flex;gap:4px;align-items:center}
-    .nav-links a{padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text2);transition:all .25s;position:relative}
-    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
-    .nav-links a.active{color:var(--primary2);background:rgba(99,102,241,.1)}
-    .nav-links a.active::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:16px;height:2px;border-radius:2px;background:var(--primary2)}
-    .mobile-menu-btn{display:none;background:none;border:1px solid var(--border2);border-radius:8px;padding:8px;color:var(--text);cursor:pointer}
+    /* TOP BAR */
+    .top-bar{position:fixed;top:0;left:0;right:0;z-index:1001;background:rgba(10,10,15,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;transition:all .3s}
+    .top-bar-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1140px;margin:0 auto;padding:0 20px;gap:8px}
+    @media(min-width:768px){.top-bar-inner{padding:0 32px}}
+    .top-bar-left{display:flex;align-items:center;gap:12px}
+    .top-bar-logo{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;flex-shrink:0}
+    .top-bar-logo .logo-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff}
+    .top-bar-stats{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow-x:auto}
+    .top-bar-stat{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);white-space:nowrap;padding:4px 10px;background:rgba(255,255,255,.04);border-radius:6px;border:1px solid var(--border)}
+    .top-bar-stat .stat-icon{display:flex;align-items:center;color:var(--text3)}
+    .top-bar-stat .stat-val{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:11px}
+    .top-bar-stat .stat-val.green{color:var(--green)}
+    .top-bar-stat .stat-val.primary{color:var(--primary2)}
+    .top-bar-stat .stat-val.accent{color:var(--accent2)}
+    .top-bar-stat .stat-val.yellow{color:var(--yellow)}
+    .top-bar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .top-bar-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all .25s;white-space:nowrap}
+    .top-bar-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary3));color:#fff;box-shadow:0 2px 10px var(--primary-glow)}
+    .top-bar-btn.primary:hover{box-shadow:0 4px 20px var(--primary-glow);transform:translateY(-1px)}
+    .top-bar-btn.outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+    .top-bar-btn.outline:hover{border-color:var(--primary);color:var(--primary2)}
     @media(max-width:640px){
-      .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(10,10,15,.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);flex-direction:column;padding:12px;gap:4px}
-      .nav-links.open{display:flex}
-      .mobile-menu-btn{display:flex}
+      .top-bar-stats{display:none}
+      .top-bar-btn span{display:none}
+    }
+    @media(max-width:480px){
+      .top-bar-btn.outline{display:none}
     }
 
+    /* FLOATING CATEGORY NAV */
+    .cat-nav{position:fixed;top:48px;left:0;right:0;z-index:1000;background:rgba(10,10,15,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transform:translateY(-100%);opacity:0;transition:all .35s cubic-bezier(.16,1,.3,1);pointer-events:none}
+    .cat-nav.visible{transform:translateY(0);opacity:1;pointer-events:all}
+    .cat-nav-inner{display:flex;align-items:center;gap:4px;max-width:1140px;margin:0 auto;padding:6px 20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+    .cat-nav-inner::-webkit-scrollbar{display:none}
+    @media(min-width:768px){.cat-nav-inner{padding:6px 32px}}
+    .cat-nav-item{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid transparent;flex-shrink:0}
+    .cat-nav-item:hover{color:var(--text);background:rgba(255,255,255,.05)}
+    .cat-nav-item.active{color:#fff;background:var(--primary);border-color:var(--primary);box-shadow:0 2px 10px var(--primary-glow)}
+    .cat-nav-item .cat-count{font-size:10px;background:rgba(255,255,255,.15);padding:1px 6px;border-radius:100px;font-weight:700}
+
     /* HERO */
-    .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:80px 0 40px}
+    .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:60px 0 40px}
     .hero::before{content:'';position:absolute;inset:0;background:
       radial-gradient(ellipse 800px 600px at 20% 40%,rgba(99,102,241,.12),transparent),
       radial-gradient(ellipse 600px 500px at 80% 20%,rgba(6,182,212,.08),transparent),
@@ -277,7 +298,14 @@
     .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
     .back-to-top:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--primary-glow)}
 
+    /* Battery */
+    .battery-icon{display:flex;align-items:center;gap:2px}
+    .battery-body{width:20px;height:10px;border:1.5px solid currentColor;border-radius:2px;position:relative;display:flex;align-items:center;padding:1px}
+    .battery-tip{width:2px;height:5px;background:currentColor;border-radius:0 1px 1px 0}
+    .battery-fill{height:100%;border-radius:1px;transition:width .3s}
+
     @media(max-width:640px){
+      .hero{padding:60px 0 30px}
       .hero-stats{gap:16px}
       .stat-num{font-size:1.8rem}
       .stat+.stat::before{display:none}
@@ -307,23 +335,48 @@
 <!-- NOTIFICATIONS -->
 <div id="notifContainer"></div>
 
-<!-- NAV -->
-<nav class="nav" id="nav">
-  <div class="container nav-inner">
-    <a href="#home" class="nav-logo">
-      <span class="logo-icon">T</span>
-      Toxic-APIs
-    </a>
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-    <div class="nav-links" id="navLinks">
-      <a href="#home" class="active" data-nav>Home</a>
-      <a href="#features" data-nav>Features</a>
-      <a href="#docs" data-nav>Docs</a>
-      <a href="#status" data-nav>Status</a>
+<!-- TOP BAR -->
+<div class="top-bar" id="topBar">
+  <div class="top-bar-inner">
+    <div class="top-bar-left">
+      <a href="#home" class="top-bar-logo">
+        <span class="logo-icon">T</span>
+        <span>Toxic-APIs</span>
+      </a>
+      <div class="top-bar-stats">
+        <div class="top-bar-stat">
+          <span class="stat-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="stat-val accent" id="topVisitors">0</span>
+        </div>
+        <div class="top-bar-stat">
+          <span class="stat-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
+          <span class="stat-val primary">49</span>
+        </div>
+        <div class="top-bar-stat" id="batteryContainer">
+          <span class="battery-icon" id="batteryIcon">
+            <span class="battery-body"><span class="battery-fill" id="batteryFill" style="width:100%;background:var(--green)"></span></span>
+            <span class="battery-tip"></span>
+          </span>
+          <span class="stat-val green" id="batteryPercent">--</span>
+        </div>
+        <div class="top-bar-stat" id="clockStat">
+          <span class="stat-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <span class="stat-val" id="topClock">--:--</span>
+        </div>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <a href="#docs" class="top-bar-btn primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>Visit Docs</span>
+      </a>
     </div>
   </div>
+</div>
+
+<!-- FLOATING CATEGORY NAV -->
+<nav class="cat-nav" id="catNav">
+  <div class="cat-nav-inner" id="catNavInner"></div>
 </nav>
 
 <!-- BACK TO TOP -->
@@ -344,12 +397,11 @@
       <svg class="sparkle" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0L14.59 8.41L23 12L14.59 15.59L12 24L9.41 15.59L1 12L9.41 8.41Z"/></svg>
     </div>
     <h1>The Ultimate<br><span class="gradient-text">REST API Service</span></h1>
-    <p>43 powerful endpoints for AI chat, media downloading, anime scraping, gaming tools, sports scores, and more. <strong>Free, fast, no API key required.</strong></p>
+    <p>49 powerful endpoints for AI chat, media downloading, anime scraping, gaming tools, sports scores, and more. <strong>Free, fast, no API key required.</strong></p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num" data-count="43">0</div><div class="stat-label">Endpoints</div></div>
+      <div class="stat"><div class="stat-num" data-count="49">0</div><div class="stat-label">Endpoints</div></div>
       <div class="stat"><div class="stat-num" data-count="7">0</div><div class="stat-label">Categories</div></div>
       <div class="stat"><div class="stat-num" data-count="100">0</div><div class="stat-label">% Free</div></div>
-      <div class="stat"><div class="stat-num" data-count="0">0</div><div class="stat-label">API Keys</div></div>
       <div class="stat"><div class="stat-num" id="visitorCount" data-count="0">0</div><div class="stat-label">Total Visits</div></div>
     </div>
     <div class="hero-btns">
@@ -360,10 +412,6 @@
       <a href="#status" class="btn btn-outline">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         View Status
-      </a>
-      <a href="https://github.com/xhclintohn" target="_blank" rel="noopener" class="btn btn-outline">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-        GitHub
       </a>
     </div>
   </div>
@@ -393,13 +441,13 @@
         Documentation
       </div>
       <h2>API <span class="gradient-text">Documentation</span></h2>
-      <p>Browse, test, and integrate all 43 endpoints</p>
+      <p>Browse, test, and integrate all 49 endpoints</p>
     </div>
 
     <div class="base-url-bar reveal">
       <label>Base URL</label>
-      <code id="baseUrlDisplay">https://xhclinton.com/apis</code>
-      <button class="copy-btn" onclick="copyText('https://xhclinton.com/apis',this)">
+      <code id="baseUrlDisplay">https://toxic-apis.replit.app</code>
+      <button class="copy-btn" onclick="copyText('https://toxic-apis.replit.app',this)">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         Copy
       </button>
@@ -466,8 +514,8 @@
         <span class="logo-icon">T</span>
         Toxic-APIs
       </div>
-      <p>43 Free REST API Endpoints &mdash; No API Key Required</p>
-      <p>Built by <a href="https://github.com/xhclintohn" target="_blank" rel="noopener">xh_clinton</a></p>
+      <p>49 Free REST API Endpoints &mdash; No API Key Required</p>
+      <p>Built by <a href="https://github.com/xhclintohn" target="_blank" rel="noopener">xhclinton</a> &mdash; <a href="https://github.com/xhclintohn/P" target="_blank" rel="noopener">GitHub</a></p>
     </div>
   </div>
 </footer>
@@ -482,25 +530,29 @@ const SITE_URL = 'https://xhclinton.com/apis';
 // ===== CATEGORIES DATA =====
 const categories = [
   {
-    name:"AI", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2 4 4 0 0 1-4 4 4 4 0 0 1-4-4 2 2 0 0 1-2-2V9a2 2 0 0 1 2-2V6a4 4 0 0 1 4-4z"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/></svg>', color:"#6366f1",
+    name:"AI", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4v1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2 4 4 0 0 1-4 4 4 4 0 0 1-4-4 2 2 0 0 1-2-2V9a2 2 0 0 1 2-2V6a4 4 0 0 1 4-4z"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/></svg>', color:"#6366f1",
     endpoints:[
       {name:"Claude AI",desc:"Chat with Claude AI model",method:"GET",path:"/ai/claude",params:[{key:"text",example:"Hello"}]},
       {name:"Gemini AI",desc:"Google Gemini AI chat with multi-model support",method:"GET",path:"/ai/gemini",params:[{key:"text",example:"Hello"},{key:"model",example:"gemini-2-5-flash"}]},
       {name:"NoteGPT",desc:"GPT-4.1 Mini powered AI chat",method:"GET",path:"/ai/notegpt",params:[{key:"text",example:"Hello"}]},
       {name:"AI Image Gen",desc:"Generate photorealistic images from text prompts",method:"GET",path:"/ai/imagine",params:[{key:"prompt",example:"beautiful sunset"},{key:"style",example:"photorealistic"}]},
       {name:"WormGPT",desc:"WormGPT unrestricted AI image generation",method:"GET",path:"/ai/wormgpt",params:[{key:"prompt",example:"futuristic city"},{key:"style",example:"digital-art"}]},
-      {name:"Vider AI Art",desc:"Create AI artwork with Vider engine",method:"GET",path:"/ai/vider",params:[{key:"prompt",example:"a cat"}]}
+      {name:"Vider AI Art",desc:"Create AI artwork with Vider engine",method:"GET",path:"/ai/vider",params:[{key:"prompt",example:"a cat"}]},
+      {name:"AI Image Editor",desc:"AI-powered image editing with text prompts",method:"GET",path:"/ai/editimg",params:[{key:"url",example:"https://example.com/image.jpg"},{key:"prompt",example:"remove background"}]}
     ]
   },
   {
-    name:"Downloaders", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>', color:"#06b6d4",
+    name:"Downloaders", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>', color:"#06b6d4",
     endpoints:[
       {name:"Facebook Video",desc:"Download Facebook videos in HD/SD",method:"GET",path:"/download/facebook",params:[{key:"url",example:"https://facebook.com/video/123"}]},
       {name:"Instagram",desc:"Download Instagram reels, posts & stories",method:"GET",path:"/download/instagram",params:[{key:"url",example:"https://instagram.com/p/xyz"}]},
-      {name:"Twitter/X Video",desc:"Download videos from Twitter/X",method:"GET",path:"/download/x",params:[{key:"url",example:"https://x.com/user/status/123"}]},
+      {name:"Twitter/X dlv1",desc:"Download videos from Twitter/X",method:"GET",path:"/download/x",params:[{key:"url",example:"https://x.com/user/status/123"}]},
+      {name:"Twitter/X dlv2",desc:"Alternative Twitter/X video downloader",method:"GET",path:"/download/xv2",params:[{key:"url",example:"https://x.com/user/status/123"}]},
       {name:"Douyin Video",desc:"Download Douyin videos without watermark",method:"GET",path:"/download/douyin",params:[{key:"url",example:"https://douyin.com/video/123"}]},
-      {name:"YouTube",desc:"Download YouTube videos in multiple formats",method:"GET",path:"/download/youtube",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"mode",example:"video"}]},
-      {name:"YouTube v2",desc:"Alternative YouTube downloader",method:"GET",path:"/download/youtube2",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
+      {name:"YouTube dlv1",desc:"Download YouTube videos in multiple formats",method:"GET",path:"/download/youtube",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"mode",example:"video"}]},
+      {name:"YouTube dlv2",desc:"Alternative YouTube downloader",method:"GET",path:"/download/youtube2",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
+      {name:"YouTube dlv3",desc:"YouTube downloader via ytdown.to",method:"GET",path:"/download/youtubev3",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"type",example:"video"}]},
+      {name:"YouTube dlv4",desc:"SaveTube YouTube downloader with decryption",method:"GET",path:"/download/youtubev4",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"format",example:"mp3"}]},
       {name:"YouTube MP3",desc:"YouTube to MP3 converter v1",method:"GET",path:"/download/ytmp3",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"},{key:"bitrate",example:"320"}]},
       {name:"YouTube MP3 v2",desc:"YouTube to MP3 converter v2",method:"GET",path:"/download/ytmp3v2",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
       {name:"MediaFire",desc:"Get direct download links from MediaFire",method:"GET",path:"/download/mediafire",params:[{key:"url",example:"https://mediafire.com/file/xyz"}]},
@@ -509,7 +561,7 @@ const categories = [
     ]
   },
   {
-    name:"Anime & Manga", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>', color:"#ec4899",
+    name:"Anime & Manga", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>', color:"#ec4899",
     endpoints:[
       {name:"Doronime",desc:"Search and stream anime with episode listings",method:"GET",path:"/anime/doronime",params:[{key:"q",example:"Naruto"}]},
       {name:"OtakDesu",desc:"Browse anime on OtakDesu with detailed info",method:"GET",path:"/anime/otakdesu",params:[{key:"q",example:"One Piece"}]},
@@ -522,7 +574,7 @@ const categories = [
     ]
   },
   {
-    name:"Gaming", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>', color:"#eab308",
+    name:"Gaming", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>', color:"#eab308",
     endpoints:[
       {name:"Enka Network",desc:"Genshin Impact player profiles & builds",method:"GET",path:"/game/enka",params:[{key:"uid",example:"800103030"}]},
       {name:"Free Fire Characters",desc:"Get Free Fire character stats & abilities",method:"GET",path:"/game/ff-character",params:[]},
@@ -530,26 +582,28 @@ const categories = [
     ]
   },
   {
-    name:"Search", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>', color:"#22c55e",
+    name:"Search", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>', color:"#22c55e",
     endpoints:[
       {name:"Song Finder",desc:"Search songs with metadata & album art",method:"GET",path:"/search/song",params:[{key:"q",example:"Bohemian Rhapsody"}]},
       {name:"F-Droid Apps",desc:"Search open-source Android apps",method:"GET",path:"/search/fdroid",params:[{key:"q",example:"browser"}]},
       {name:"Meme Templates",desc:"Search popular meme templates",method:"GET",path:"/search/meme",params:[{key:"q",example:"drake"}]},
-      {name:"Sound Effects",desc:"Browse instant sound effects",method:"GET",path:"/search/sounds",params:[]}
+      {name:"Sound Effects",desc:"Browse instant sound effects",method:"GET",path:"/search/sounds",params:[]},
+      {name:"Spotify Search",desc:"Search Spotify songs without API key",method:"GET",path:"/search/spotify",params:[{key:"q",example:"Bohemian Rhapsody"}]}
     ]
   },
   {
-    name:"Tools", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', color:"#a855f7",
+    name:"Tools", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', color:"#a855f7",
     endpoints:[
       {name:"Image Upscaler",desc:"AI-powered image upscaling",method:"GET",path:"/tools/upscale",params:[{key:"code",example:"abc123"}]},
       {name:"YouTube Transcript",desc:"Extract YouTube video transcripts",method:"GET",path:"/tools/transcript",params:[{key:"url",example:"https://youtube.com/watch?v=dQw4w9WgXcQ"}]},
       {name:"Currency Converter",desc:"Real-time currency conversion",method:"GET",path:"/tools/currency",params:[{key:"from",example:"USD"},{key:"to",example:"EUR"},{key:"amount",example:"100"}]},
       {name:"Korean Name Generator",desc:"Generate authentic Korean names",method:"GET",path:"/tools/korean-name",params:[{key:"name",example:"Alex"}]},
-      {name:"Random ASCII Art",desc:"Generate random ASCII character strings",method:"GET",path:"/tools/ascii",params:[{key:"length",example:"10"}]}
+      {name:"Random ASCII Art",desc:"Generate random ASCII character strings",method:"GET",path:"/tools/ascii",params:[{key:"length",example:"10"}]},
+      {name:"Temp Mail",desc:"Generate temporary email addresses & read inbox",method:"GET",path:"/tools/tempmail",params:[{key:"action",example:"generate"},{key:"count",example:"1"}]}
     ]
   },
   {
-    name:"Sports", icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>', color:"#f97316",
+    name:"Sports", icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>', color:"#f97316",
     endpoints:[
       {name:"Football Scores",desc:"Live football/soccer scores worldwide",method:"GET",path:"/sports/football",params:[]},
       {name:"Football Standings",desc:"Football league standings & tables",method:"GET",path:"/sports/football-standings",params:[{key:"league",example:"epl"}]},
@@ -633,7 +687,7 @@ function dismissNotif(btn) {
         document.getElementById('loadingScreen').classList.add('hidden');
         setTimeout(() => {
           animateCounters();
-          showNotif('success', 'Welcome to Toxic-APIs', '43 free API endpoints ready to use. No API key required!');
+          showNotif('success', 'Welcome to Toxic-APIs', '49 free API endpoints ready to use. No API key required!');
         }, 400);
       }, 500);
     }
@@ -659,6 +713,41 @@ function createParticles() {
 }
 createParticles();
 
+// ===== BATTERY STATUS =====
+(async function initBattery() {
+  try {
+    if ('getBattery' in navigator) {
+      const battery = await navigator.getBattery();
+      function updateBattery() {
+        const level = Math.round(battery.level * 100);
+        const charging = battery.charging;
+        document.getElementById('batteryPercent').textContent = level + '%' + (charging ? '+' : '');
+        const fill = document.getElementById('batteryFill');
+        fill.style.width = level + '%';
+        fill.style.background = level > 50 ? 'var(--green)' : level > 20 ? 'var(--yellow)' : 'var(--red)';
+        document.getElementById('batteryPercent').className = 'stat-val ' + (level > 50 ? 'green' : level > 20 ? 'yellow' : 'red');
+      }
+      updateBattery();
+      battery.addEventListener('levelchange', updateBattery);
+      battery.addEventListener('chargingchange', updateBattery);
+    } else {
+      document.getElementById('batteryContainer').style.display = 'none';
+    }
+  } catch {
+    document.getElementById('batteryContainer').style.display = 'none';
+  }
+})();
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('topClock').textContent = h + ':' + m;
+}
+updateClock();
+setInterval(updateClock, 30000);
+
 // ===== VISITOR COUNTER =====
 (async function fetchVisitors() {
   try {
@@ -666,9 +755,9 @@ createParticles();
     const data = await res.json();
     const count = data.totalVisits || data.total || data.count || 0;
     const el = document.getElementById('visitorCount');
-    if (el && count > 0) {
-      el.setAttribute('data-count', count);
-    }
+    if (el && count > 0) el.setAttribute('data-count', count);
+    const topEl = document.getElementById('topVisitors');
+    if (topEl) topEl.textContent = count.toLocaleString();
   } catch (e) {}
 })();
 
@@ -698,33 +787,48 @@ function observeReveals() {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
 }
 
-// ===== NAV =====
-const nav = document.getElementById('nav');
+// ===== FLOATING CATEGORY NAV =====
+function renderCatNav() {
+  const total = categories.reduce((a, c) => a + c.endpoints.length, 0);
+  let html = `<div class="cat-nav-item ${activeCategory === 'all' ? 'active' : ''}" onclick="setCategoryFromNav('all',this)">All <span class="cat-count">${total}</span></div>`;
+  categories.forEach(cat => {
+    html += `<div class="cat-nav-item ${activeCategory === cat.name ? 'active' : ''}" onclick="setCategoryFromNav('${cat.name}',this)">${cat.icon} ${cat.name} <span class="cat-count">${cat.endpoints.length}</span></div>`;
+  });
+  document.getElementById('catNavInner').innerHTML = html;
+}
+
+function setCategoryFromNav(cat, el) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-nav-item').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderCategoryTabs();
+  renderEndpoints();
+  const docsSection = document.getElementById('docs');
+  if (docsSection) {
+    const y = docsSection.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+}
+
+// ===== NAV SCROLL BEHAVIOR =====
 const backToTop = document.getElementById('backToTop');
+const catNav = document.getElementById('catNav');
+
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 50);
-  backToTop.classList.toggle('visible', window.scrollY > 600);
-  const sections = ['home', 'features', 'docs', 'status'];
-  let current = 'home';
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top <= 120) current = id;
-  });
-  document.querySelectorAll('[data-nav]').forEach(l => {
-    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-  });
+  const scrollY = window.scrollY;
+  backToTop.classList.toggle('visible', scrollY > 600);
+
+  const docsSection = document.getElementById('docs');
+  const statusSection = document.getElementById('status');
+  if (docsSection && statusSection) {
+    const docsTop = docsSection.getBoundingClientRect().top;
+    const statusTop = statusSection.getBoundingClientRect().top;
+    const showCatNav = docsTop <= 60 && statusTop > 200;
+    catNav.classList.toggle('visible', showCatNav);
+  }
 });
 
 backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-  document.getElementById('navLinks').classList.toggle('open');
-});
-document.querySelectorAll('[data-nav]').forEach(link => {
-  link.addEventListener('click', () => {
-    document.getElementById('navLinks').classList.remove('open');
-  });
-});
 
 // ===== FEATURES =====
 function renderFeatures() {
@@ -761,6 +865,7 @@ function setCategory(cat, btn) {
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
   renderEndpoints();
+  renderCatNav();
 }
 
 function handleSearch(q) {
@@ -804,7 +909,6 @@ function renderEndpoints() {
       const statusInfo = statusResults[ep.path];
       const statusClass = statusInfo ? (statusInfo.ok ? 'online' : 'offline') : '';
       const paramsJson = JSON.stringify(ep.params).replace(/'/g, "\\'");
-      const fullUrl = SITE_URL + ep.path + (ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '');
 
       html += `<div class="endpoint-card" id="card${eid}">
         <div class="endpoint-header" onclick="toggleEndpoint('${eid}')">
@@ -858,9 +962,7 @@ function renderEndpoints() {
         html += `</div>`;
       }
 
-      // Code examples
       const exParams = ep.params.length ? '?' + ep.params.map(p => p.key + '=' + encodeURIComponent(p.example)).join('&') : '';
-      const exUrl = SITE_URL + ep.path + exParams;
 
       html += `<div class="code-tabs">
         <div class="code-tab active" onclick="showCode('${eid}','js',this)">JavaScript</div>
@@ -906,12 +1008,12 @@ function generateCodeExample(ep, lang) {
 });
 const data = await response.json();
 console.log(data);
-// Response: { creator: "xh_clinton", status: true, ... }`;
+// Response: { creator: "xhclinton", status: true, ... }`;
     }
     return `const response = await fetch("${url}");
 const data = await response.json();
 console.log(data);
-// Response: { creator: "xh_clinton", status: true, ... }`;
+// Response: { creator: "xhclinton", status: true, ... }`;
   }
 
   if (lang === 'py') {
@@ -921,14 +1023,14 @@ console.log(data);
 res = requests.post("${SITE_URL}${ep.path}",
     json={})
 print(res.json())
-# Response: { "creator": "xh_clinton", "status": True, ... }`;
+# Response: { "creator": "xhclinton", "status": True, ... }`;
     }
     const pyParams = ep.params.length ? ep.params.map(p => `"${p.key}": "${p.example}"`).join(', ') : '';
     return `import requests
 
 res = requests.get("${SITE_URL}${ep.path}"${pyParams ? `,\n    params={${pyParams}}` : ''})
 print(res.json())
-# Response: { "creator": "xh_clinton", "status": True, ... }`;
+# Response: { "creator": "xhclinton", "status": True, ... }`;
   }
 
   if (lang === 'curl') {
@@ -936,10 +1038,10 @@ print(res.json())
       return `curl -X POST "${SITE_URL}${ep.path}" \\
   -H "Content-Type: application/json" \\
   -d '{}'
-# Response: { "creator": "xh_clinton", "status": true, ... }`;
+# Response: { "creator": "xhclinton", "status": true, ... }`;
     }
     return `curl "${url}"
-# Response: { "creator": "xh_clinton", "status": true, ... }`;
+# Response: { "creator": "xhclinton", "status": true, ... }`;
   }
   return '';
 }
@@ -1068,7 +1170,7 @@ async function checkAllStatus() {
   const btn = document.getElementById('checkStatusBtn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner spinner-sm"></span> Checking all endpoints...';
-  showNotif('info', 'Status Check Started', 'Checking all 43 endpoints...');
+  showNotif('info', 'Status Check Started', 'Checking all 49 endpoints...');
 
   const allEndpoints = categories.flatMap(c => c.endpoints);
   let onlineCount = 0;
@@ -1086,12 +1188,21 @@ async function checkAllStatus() {
       const start = Date.now();
       const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
       const ms = Date.now() - start;
-      statusResults[ep.path] = { ok: res.ok, ms };
-      if (res.ok) onlineCount++;
+      const contentType = res.headers.get('content-type') || '';
+      const isJson = contentType.includes('json');
+      let isReallyOk = res.ok;
+      if (isJson) {
+        try {
+          const data = await res.json();
+          isReallyOk = data.status === true;
+        } catch { isReallyOk = res.ok; }
+      }
+      statusResults[ep.path] = { ok: isReallyOk, ms };
+      if (isReallyOk) onlineCount++;
       if (card) {
-        card.querySelector('.status-dot-lg').className = 'status-dot-lg ' + (res.ok ? 'online' : 'offline');
+        card.querySelector('.status-dot-lg').className = 'status-dot-lg ' + (isReallyOk ? 'online' : 'offline');
         card.querySelector('.status-ms').textContent = ms + 'ms';
-        card.querySelector('.status-ms').style.color = res.ok ? 'var(--green)' : 'var(--red)';
+        card.querySelector('.status-ms').style.color = isReallyOk ? 'var(--green)' : 'var(--red)';
       }
     } catch {
       statusResults[ep.path] = { ok: false, ms: 0 };
@@ -1117,14 +1228,14 @@ async function checkAllStatus() {
 
 // ===== QUICK START CODE =====
 const quickCodeExamples = {
-  js: `// Chat with Claude AI
-const response = await fetch("${SITE_URL}/ai/claude?text=Hello");
+  js: `// Chat with Gemini AI
+const response = await fetch("${SITE_URL}/ai/gemini?text=Hello");
 const data = await response.json();
 console.log(data);
-// { creator: "xh_clinton", status: true, result: "..." }
+// { creator: "xhclinton", status: true, result: "..." }
 
 // Download YouTube video info
-const yt = await fetch("${SITE_URL}/download/youtube?url=VIDEO_URL&mode=video");
+const yt = await fetch("${SITE_URL}/download/youtube2?url=VIDEO_URL");
 console.log(await yt.json());
 
 // Live Football Scores
@@ -1132,10 +1243,10 @@ const scores = await fetch("${SITE_URL}/sports/football");
 console.log(await scores.json());`,
   py: `import requests
 
-# Chat with Claude AI
-res = requests.get("${SITE_URL}/ai/claude", params={"text": "Hello"})
+# Chat with Gemini AI
+res = requests.get("${SITE_URL}/ai/gemini", params={"text": "Hello"})
 print(res.json())
-# { "creator": "xh_clinton", "status": True, ... }
+# { "creator": "xhclinton", "status": True, ... }
 
 # Currency conversion
 currency = requests.get("${SITE_URL}/tools/currency",
@@ -1146,7 +1257,7 @@ print(currency.json())
 nba = requests.get("${SITE_URL}/sports/nba", params={"date": "20260207"})
 print(nba.json())`,
   curl: `# AI Chat
-curl "${SITE_URL}/ai/claude?text=Hello"
+curl "${SITE_URL}/ai/gemini?text=Hello"
 
 # Song Search
 curl "${SITE_URL}/search/song?q=Bohemian+Rhapsody"
@@ -1222,6 +1333,7 @@ function markCopied(btn) {
 // ===== INIT =====
 renderFeatures();
 renderCategoryTabs();
+renderCatNav();
 renderEndpoints();
 renderStatusOverview();
 renderStatusGrid();

@@ -18,16 +18,17 @@ const loadScraper = (name: string) => {
 };
 
 const endpointPaths = [
-  "/ai/claude", "/ai/gemini", "/ai/notegpt", "/ai/imagine", "/ai/vider", "/ai/wormgpt",
-  "/download/facebook", "/download/instagram", "/download/x", "/download/douyin",
-  "/download/youtube", "/download/youtube2", "/download/ytmp3", "/download/ytmp3v2",
+  "/ai/claude", "/ai/gemini", "/ai/notegpt", "/ai/imagine", "/ai/vider", "/ai/wormgpt", "/ai/editimg",
+  "/download/facebook", "/download/instagram", "/download/x", "/download/xv2", "/download/douyin",
+  "/download/youtube", "/download/youtube2", "/download/youtubev3", "/download/youtubev4",
+  "/download/ytmp3", "/download/ytmp3v2",
   "/download/mediafire", "/download/terabox", "/download/downr",
   "/anime/doronime", "/anime/otakdesu", "/anime/donghua", "/anime/nanobana",
   "/manga/komikcast", "/manga/komikindo",
   "/drama/oppadrama", "/drama/dramabox",
   "/game/enka", "/game/ff-character", "/game/character-guide",
-  "/search/song", "/search/fdroid", "/search/meme", "/search/sounds",
-  "/tools/upscale", "/tools/transcript", "/tools/currency", "/tools/korean-name", "/tools/ascii",
+  "/search/song", "/search/fdroid", "/search/meme", "/search/sounds", "/search/spotify",
+  "/tools/upscale", "/tools/transcript", "/tools/currency", "/tools/korean-name", "/tools/ascii", "/tools/tempmail",
   "/sports/football", "/sports/football-standings", "/sports/nba", "/sports/cricket",
 ];
 
@@ -162,7 +163,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     max: 60,
     standardHeaders: true,
     legacyHeaders: false,
-    validate: { xForwardedForHeader: false, ip: false },
+    validate: { xForwardedForHeader: false, ip: false, keyGeneratorIpFallback: false },
     message: {
       status: false,
       creator: CREATOR,
@@ -232,6 +233,16 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     if (!prompt) return res.status(400).json({ status: false, creator: CREATOR, error: "prompt or id parameter required" });
     const id = await viderAi(prompt);
     res.json({ status: true, creator: CREATOR, data: { taskId: id, message: "Task created. Use ?id=TASK_ID to check result." } });
+  }));
+
+  app.get("/ai/editimg", wrapHandler(async (req, res) => {
+    const { editImage } = loadScraper("imgeditor");
+    const imageUrl = req.query.url as string;
+    const prompt = req.query.prompt as string;
+    if (!imageUrl) return res.status(400).json({ status: false, creator: CREATOR, error: "url parameter required (image URL)" });
+    if (!prompt) return res.status(400).json({ status: false, creator: CREATOR, error: "prompt parameter required (e.g. 'remove background')" });
+    const result = await editImage(imageUrl, prompt);
+    res.json({ status: true, creator: CREATOR, data: result });
   }));
 
   // ---------- DOWNLOADER ROUTES ----------
@@ -327,6 +338,33 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ status: true, creator: CREATOR, data: result });
   }));
 
+  app.get("/download/xv2", wrapHandler(async (req, res) => {
+    const { twitterDL } = loadScraper("twitterv2");
+    const url = req.query.url as string;
+    if (!url) return res.status(400).json({ status: false, creator: CREATOR, error: "url parameter required" });
+    const result = await twitterDL(url);
+    res.json({ status: true, creator: CREATOR, data: result });
+  }));
+
+  app.get("/download/youtubev3", wrapHandler(async (req, res) => {
+    const { ytdown } = loadScraper("ytdownv3");
+    const url = req.query.url as string;
+    const type = (req.query.type as string) || "video";
+    if (!url) return res.status(400).json({ status: false, creator: CREATOR, error: "url parameter required" });
+    const result = await ytdown(url, type);
+    res.json({ status: true, creator: CREATOR, data: result });
+  }));
+
+  app.get("/download/youtubev4", wrapHandler(async (req, res) => {
+    const { SaveTube } = loadScraper("ytdownv4");
+    const url = req.query.url as string;
+    const format = (req.query.format as string) || "mp3";
+    if (!url) return res.status(400).json({ status: false, creator: CREATOR, error: "url parameter required" });
+    const st = new SaveTube();
+    const result = await st.download(url, format);
+    res.json({ status: true, creator: CREATOR, data: result });
+  }));
+
   // ---------- ANIME & MANGA ROUTES ----------
   app.get("/anime/doronime", wrapHandler(async (req, res) => {
     const { DoronimeScraper } = loadScraper("doronime");
@@ -347,10 +385,10 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const q = (req.query.q as string) || "";
     const scraper = new AnimeScraper();
     if (!q) {
-      const result = await scraper.getLatest();
+      const result = await scraper.getLatestAnime();
       return res.json({ status: true, creator: CREATOR, data: result });
     }
-    const result = await scraper.search(q);
+    const result = await scraper.searchAnime(q);
     res.json({ status: true, creator: CREATOR, data: result });
   }));
 
@@ -490,6 +528,14 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ status: true, creator: CREATOR, data: result });
   }));
 
+  app.get("/search/spotify", wrapHandler(async (req, res) => {
+    const { spotifySearch } = loadScraper("spotify");
+    const q = req.query.q as string;
+    if (!q) return res.status(400).json({ status: false, creator: CREATOR, error: "q parameter required" });
+    const result = await spotifySearch(q);
+    res.json({ status: true, creator: CREATOR, data: result });
+  }));
+
   // ---------- TOOLS ROUTES ----------
   app.get("/tools/upscale", wrapHandler(async (req, res) => {
     const { imglargerGet } = loadScraper("imglarger");
@@ -533,6 +579,25 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const count = req.query.count as string;
     const charset = (req.query.charset as string) || "all";
     const result = await scrapeRandomAscii({ length, count, charset });
+    res.json({ status: true, creator: CREATOR, data: result });
+  }));
+
+  app.get("/tools/tempmail", wrapHandler(async (req, res) => {
+    const { generateEmail, getMessages, getDomains } = loadScraper("tempmail");
+    const action = (req.query.action as string) || "generate";
+    const email = req.query.email as string;
+
+    if (action === "domains") {
+      const result = await getDomains();
+      return res.json({ status: true, creator: CREATOR, data: result });
+    }
+    if (action === "messages") {
+      if (!email) return res.status(400).json({ status: false, creator: CREATOR, error: "email parameter required for messages action" });
+      const result = await getMessages(email);
+      return res.json({ status: true, creator: CREATOR, data: result });
+    }
+    const count = parseInt(req.query.count as string) || 1;
+    const result = await generateEmail(count);
     res.json({ status: true, creator: CREATOR, data: result });
   }));
 

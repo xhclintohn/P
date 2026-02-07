@@ -5,7 +5,7 @@ import * as path from 'path';
 const OWNER = 'xhclintohn';
 const REPO = 'P';
 const BRANCH = 'main';
-const COMMIT_MESSAGE = 'feat: Major update - 43 endpoints, sports scrapers, rate limiting, visitor tracking, premium UI, copy buttons';
+const COMMIT_MESSAGE = 'feat: Expand to 49 endpoints - add AI Image Editor, Twitter/X dlv2, YouTube dlv3/dlv4, Spotify Search, Temp Mail + duplicate scraper versioning';
 
 const EXCLUDED_DIRS = new Set([
   'node_modules',
