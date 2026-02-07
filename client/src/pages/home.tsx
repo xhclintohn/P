@@ -7,26 +7,9 @@ import { StatusDot } from "@/components/status-dot";
 import { apiCategories, getTotalEndpoints, getTotalCategories } from "@/lib/endpoints";
 import type { VisitorStats } from "@shared/schema";
 import {
-  Brain,
-  Download,
-  Shuffle,
-  Wrench,
-  Search,
-  Info,
-  Repeat,
-  Activity,
-  ArrowRight,
-  BookOpen,
-  Zap,
-  Shield,
-  Clock,
-  Users,
-  Eye,
-  BarChart3,
-  Globe,
-  Server,
-  Copy,
-  Check,
+  Brain, Download, Shuffle, Wrench, Search, Info, Repeat, Activity,
+  ArrowRight, BookOpen, Zap, Shield, Clock, Users, Eye, BarChart3,
+  Globe, Server, Copy, Check, Sparkles, Cpu, Rocket,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -79,6 +62,7 @@ function AnimatedCounter({ target, duration = 2000 }: { target: number; duration
 
 export default function Home() {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   const { data: visitorStats } = useQuery<VisitorStats>({
     queryKey: ["/api/visitors/stats"],
@@ -155,8 +139,6 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
     },
   ];
 
-  const [activeTab, setActiveTab] = useState(0);
-
   const copyCode = (code: string, index: number) => {
     navigator.clipboard.writeText(code);
     setCopiedIndex(index);
@@ -165,42 +147,83 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
 
   return (
     <div className="min-h-screen pt-16">
+      <style>{`
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes hero-particle { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+        @keyframes typing-cursor { 0%, 100% { border-color: transparent; } 50% { border-color: hsl(142 76% 36%); } }
+        .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; opacity: 0; }
+        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; opacity: 0; }
+        .animation-delay-100 { animation-delay: 0.1s; }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-300 { animation-delay: 0.3s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-500 { animation-delay: 0.5s; }
+        .animation-delay-600 { animation-delay: 0.6s; }
+        .animation-delay-700 { animation-delay: 0.7s; }
+        .animation-delay-800 { animation-delay: 0.8s; }
+      `}</style>
+
+      {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 md:py-24 px-4 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-20 dark:opacity-10" style={{ background: "hsl(var(--primary))" }} />
-          <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] rounded-full blur-[120px] opacity-15 dark:opacity-8" style={{ background: "hsl(var(--chart-2))" }} />
-          <div
-            className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
-            style={{
-              backgroundImage:
-                "radial-gradient(hsl(var(--primary)) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-20" style={{ background: "linear-gradient(135deg, rgb(34 197 94), rgb(16 185 129))" }} />
+          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] opacity-15" style={{ background: "linear-gradient(135deg, rgb(59 130 246), rgb(99 102 241))" }} />
+          <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] rounded-full blur-[100px] opacity-10" style={{ background: "linear-gradient(135deg, rgb(168 85 247), rgb(236 72 153))" }} />
+          <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" style={{ backgroundImage: "radial-gradient(hsl(var(--primary)) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+        </div>
+
+        {/* Floating particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full"
+              style={{
+                width: Math.random() * 4 + 2 + "px",
+                height: Math.random() * 4 + 2 + "px",
+                left: Math.random() * 100 + "%",
+                bottom: "-5%",
+                background: `rgba(34, 197, 94, ${Math.random() * 0.3 + 0.1})`,
+                animation: `hero-particle ${Math.random() * 8 + 6}s linear ${Math.random() * 5}s infinite`,
+              }}
+            />
+          ))}
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="text-center max-w-4xl mx-auto">
-            <Badge variant="outline" className="mb-6 gap-2 px-4 py-1.5" data-testid="badge-status">
-              <StatusDot isOnline={true} size="sm" />
-              <span className="text-sm font-medium">All Systems Operational</span>
-            </Badge>
+            <div className="animate-fade-in-up">
+              <Badge variant="outline" className="mb-6 gap-2 px-4 py-1.5" data-testid="badge-status">
+                <StatusDot isOnline={true} size="sm" />
+                <span className="text-sm font-medium">All Systems Operational</span>
+              </Badge>
+            </div>
 
             <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight tracking-tight"
+              className="text-5xl md:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight tracking-tight animate-fade-in-up animation-delay-100"
               data-testid="text-hero-title"
             >
-              <span className="text-primary">Toxic</span>
+              <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-400 bg-clip-text text-transparent">Toxic</span>
               <span className="text-foreground">-APIs</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed" data-testid="text-hero-description">
+            <p
+              className="text-lg md:text-xl text-muted-foreground mb-4 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200"
+              data-testid="text-hero-description"
+            >
               Powerful RESTful API with AI integration, media downloaders,
               random content generators, and image processing tools. Built for
               developers who need fast, reliable API services.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
+            <p className="text-sm font-mono text-muted-foreground/60 mb-10 animate-fade-in-up animation-delay-300" style={{ borderRight: "2px solid transparent", animation: "fade-in-up 0.6s ease-out 0.3s forwards, typing-cursor 1s step-end infinite", opacity: 0 }}>
+              {'> ready to serve requests_'}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap animate-fade-in-up animation-delay-400">
               <Link to="/docs">
                 <Button size="lg" className="gap-2 text-base" data-testid="button-explore-docs">
                   <BookOpen className="h-5 w-5" />
@@ -224,34 +247,19 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
+      {/* Stats Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {[
-              {
-                label: "API Endpoints",
-                value: getTotalEndpoints(),
-                icon: Zap,
-              },
-              {
-                label: "Categories",
-                value: getTotalCategories(),
-                icon: BarChart3,
-              },
-              {
-                label: "Total Visitors",
-                value: visitorStats?.totalVisits || 0,
-                icon: Eye,
-              },
-              {
-                label: "Unique Visitors",
-                value: visitorStats?.uniqueVisitors || 0,
-                icon: Users,
-              },
+              { label: "API Endpoints", value: getTotalEndpoints(), icon: Zap },
+              { label: "Categories", value: getTotalCategories(), icon: BarChart3 },
+              { label: "Total Visitors", value: visitorStats?.totalVisits || 0, icon: Eye },
+              { label: "Unique Visitors", value: visitorStats?.uniqueVisitors || 0, icon: Users },
             ].map((stat, i) => (
               <Card
                 key={i}
-                className="p-5 md:p-8 text-center"
+                className={`p-5 md:p-8 text-center animate-fade-in-up animation-delay-${(i + 1) * 100}`}
                 data-testid={`card-stat-${i}`}
               >
                 <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
@@ -266,11 +274,16 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
+      {/* Features Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary uppercase tracking-wider">Features</span>
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Powerful <span className="text-primary">Features</span>
+              Powerful <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Features</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Everything you need to build amazing applications
@@ -281,11 +294,12 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 md:p-8 group hover-elevate"
+                className={`p-6 md:p-8 group hover-elevate animate-fade-in-up animation-delay-${(index + 1) * 100}`}
                 data-testid={`card-feature-${index}`}
               >
                 <div
                   className={`w-12 h-12 bg-gradient-to-br ${feature.gradient} rounded-md flex items-center justify-center mb-5`}
+                  style={{ animation: "float 3s ease-in-out infinite", animationDelay: `${index * 0.5}s` }}
                 >
                   <feature.icon className="h-6 w-6 text-white" />
                 </div>
@@ -301,11 +315,16 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
+      {/* Categories Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <Cpu className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary uppercase tracking-wider">Categories</span>
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Browse <span className="text-primary">Categories</span>
+              Browse <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Categories</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Explore {getTotalEndpoints()}+ endpoints across {getTotalCategories()} categories
@@ -318,7 +337,7 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
               return (
                 <Link key={category.name} to={`/docs?category=${encodeURIComponent(category.name)}`}>
                   <Card
-                    className="p-5 hover-elevate cursor-pointer group"
+                    className={`p-5 hover-elevate cursor-pointer group animate-fade-in-up animation-delay-${((index % 4) + 1) * 100}`}
                     data-testid={`card-category-${category.name.toLowerCase()}`}
                   >
                     <div className="flex items-start gap-3 mb-3">
@@ -339,7 +358,7 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       {category.description}
                     </p>
-                    <div className="flex items-center gap-1 mt-3 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-1 mt-3 text-primary text-sm font-medium invisible group-hover:visible transition-all">
                       Explore <ArrowRight className="h-3.5 w-3.5" />
                     </div>
                   </Card>
@@ -350,19 +369,24 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
+      {/* Code Examples Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 mb-4">
+              <Rocket className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary uppercase tracking-wider">Quick Start</span>
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
-              Quick <span className="text-primary">Start</span>
+              Quick <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Start</span>
             </h2>
             <p className="text-lg text-muted-foreground">
               Integrate in seconds with any language
             </p>
           </div>
 
-          <Card className="overflow-hidden">
-            <div className="flex border-b border-border">
+          <Card className="animate-fade-in-up animation-delay-200">
+            <div className="flex border-b border-border flex-wrap gap-0">
               {codeExamples.map((ex, i) => (
                 <button
                   key={i}
@@ -401,35 +425,39 @@ curl -X GET "https://toxic-api-site.vercel.app/tools/unblur?url=IMG"`,
         </div>
       </section>
 
+      {/* CTA Section */}
       <section className="py-16 md:py-24 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
-            Ready to <span className="text-primary">Get Started</span>?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Start building with Toxic-APIs today. Free to use, no API key required.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
-            <Link to="/docs">
-              <Button size="lg" className="gap-2 text-base" data-testid="button-cta-docs">
-                <BookOpen className="h-5 w-5" />
-                View Documentation
-              </Button>
-            </Link>
-            <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" size="lg" className="gap-2 text-base" data-testid="button-cta-github">
-                <Globe className="h-5 w-5" />
-                Star on GitHub
-              </Button>
-            </a>
+          <div className="animate-fade-in-up">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
+              Ready to <span className="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">Get Started</span>?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+              Start building with Toxic-APIs today. Free to use, no API key required.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center flex-wrap">
+              <Link to="/docs">
+                <Button size="lg" className="gap-2 text-base" data-testid="button-cta-docs">
+                  <BookOpen className="h-5 w-5" />
+                  View Documentation
+                </Button>
+              </Link>
+              <a href="https://github.com/xhclintohn" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" className="gap-2 text-base" data-testid="button-cta-github">
+                  <Globe className="h-5 w-5" />
+                  Star on GitHub
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="border-t border-border py-8 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Zap className="h-5 w-5 text-primary" />
               <span className="font-semibold text-foreground">Toxic-APIs</span>
               <span className="text-muted-foreground text-sm">v2.1.0</span>

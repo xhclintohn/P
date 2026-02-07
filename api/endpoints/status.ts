@@ -46,6 +46,21 @@ const endpointPaths = [
   "/api/endpoints",
   "/api/cache/stats",
   "/api/stats/top",
+  "/random/sports",
+  "/random/dadjoke",
+  "/random/riddle",
+  "/random/pickup",
+  "/random/wyr",
+  "/random/tod",
+  "/ai/imagine",
+  "/ai/summarize",
+  "/search/anime",
+  "/search/movie",
+  "/search/sticker",
+  "/tools/text2img",
+  "/tools/removebg",
+  "/info/country",
+  "/info/crypto",
 ];
 
 interface EndpointStatusResult {

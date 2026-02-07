@@ -5,11 +5,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { SplashScreen } from "@/components/splash-screen";
 import Home from "@/pages/home";
 import Docs from "@/pages/docs";
 import Status from "@/pages/status";
 import NotFound from "@/pages/not-found";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function useTrackVisitor() {
   useEffect(() => {
@@ -48,15 +49,22 @@ function AppContent() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState(() => !localStorage.getItem("toxic_splash_shown"));
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <AppContent />
-          <Toaster />
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <>
+      {showSplash && (
+        <SplashScreen onComplete={() => { setShowSplash(false); localStorage.setItem("toxic_splash_shown", "true"); }} />
+      )}
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ThemeProvider>
+            <AppContent />
+            <Toaster />
+          </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 

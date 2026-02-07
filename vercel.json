@@ -7,6 +7,7 @@
     { "source": "/api/endpoints/status", "destination": "/api/endpoints/status" },
     { "source": "/api/visitors/track", "destination": "/api/visitors/track" },
     { "source": "/api/visitors/stats", "destination": "/api/visitors/stats" },
+    { "source": "/api/proxy", "destination": "/api/proxy" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

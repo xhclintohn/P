@@ -48,6 +48,21 @@ const endpointPaths = [
   "/api/endpoints",
   "/api/cache/stats",
   "/api/stats/top",
+  "/random/sports",
+  "/random/dadjoke",
+  "/random/riddle",
+  "/random/pickup",
+  "/random/wyr",
+  "/random/tod",
+  "/ai/imagine",
+  "/ai/summarize",
+  "/search/anime",
+  "/search/movie",
+  "/search/sticker",
+  "/tools/text2img",
+  "/tools/removebg",
+  "/info/country",
+  "/info/crypto",
 ];
 
 interface EndpointStatusResult {
@@ -138,6 +153,52 @@ export async function registerRoutes(
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/proxy", async (req, res) => {
+    try {
+      const targetPath = req.query.path as string;
+      if (!targetPath) {
+        return res.status(400).json({ error: "path parameter is required" });
+      }
+
+      const queryParams = { ...req.query };
+      delete queryParams.path;
+      const queryString = Object.entries(queryParams)
+        .map(([k, v]) => `${k}=${encodeURIComponent(v as string)}`)
+        .join("&");
+
+      const url = `${BASE_API_URL}${targetPath}${queryString ? "?" + queryString : ""}`;
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+
+      const contentType = response.headers.get("content-type") || "";
+
+      if (contentType.startsWith("image/")) {
+        res.setHeader("Content-Type", contentType);
+        const buffer = await response.arrayBuffer();
+        return res.send(Buffer.from(buffer));
+      }
+
+      if (contentType.includes("audio/")) {
+        res.setHeader("Content-Type", contentType);
+        const buffer = await response.arrayBuffer();
+        return res.send(Buffer.from(buffer));
+      }
+
+      const text = await response.text();
+      try {
+        const json = JSON.parse(text);
+        res.json(json);
+      } catch {
+        res.json({ rawResponse: text });
+      }
+    } catch (error: any) {
+      res.status(500).json({ error: error.message || "Proxy request failed" });
     }
   });
 
