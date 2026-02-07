@@ -1,0 +1,10 @@
+node_modules
+.git
+docker-compose.yml
+Dockerfile
+.dockerignore
+prometheus.yml
+CLEANUP.md
+DEPLOYMENT.md
+*.log
+logs/
