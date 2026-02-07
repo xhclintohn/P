@@ -1,0 +1,17 @@
+{
+  "buildCommand": "npx vite build --config vite.config.ts",
+  "outputDirectory": "dist/public",
+  "framework": null,
+  "installCommand": "npm install",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/endpoints/status", "destination": "/api/endpoints/status" },
+    { "source": "/api/visitors/track", "destination": "/api/visitors/track" },
+    { "source": "/api/visitors/stats", "destination": "/api/visitors/stats" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
